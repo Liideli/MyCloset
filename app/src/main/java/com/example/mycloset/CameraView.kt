@@ -81,7 +81,7 @@ fun CameraView(
             onClick = onTorchButtonClicked,
             modifier = Modifier.padding(16.dp)
         ) {
-            val text = if (torchEnabled.value) "Turn Off Torch" else "Turn On Torch"
+            val text = if (torchEnabled.value) "Turn Off Flashlight" else "Turn On Flashlight"
 
             // Text composable inside the Button
             Text(
