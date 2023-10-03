@@ -66,7 +66,7 @@ fun CameraView(
             ) {
                 // Text displaying barcode information
                 Text(
-                    modifier = Modifier, // Optional modifier for Text composable
+                    modifier = Modifier,
                     text = "Barcode: ${barcode.value.barcode}\n" +
                             "Type: ${barcode.value.barcodeType}\n"
                 )
@@ -92,14 +92,14 @@ fun CameraView(
     }
 }
 
-// Preview function to visualize CameraView in Android Studio's preview pane
+// Preview function to visualize CameraView in Android Studio's preview panel
 @Composable
 @Preview
 fun CameraViewPreview() {
     // Example usage of CameraView
     CameraView(
         cameraController = LifecycleCameraController(LocalContext.current),
-        barcodesFlow = MutableStateFlow(BarcodeModel("12345", "EAN_13")),
+        barcodesFlow = MutableStateFlow(BarcodeModel("", "")),
         torchEnabledFlow = MutableStateFlow(false),
         onTorchButtonClicked = {}
     )
