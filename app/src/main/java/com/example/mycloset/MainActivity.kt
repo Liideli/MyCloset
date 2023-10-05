@@ -11,6 +11,7 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -31,16 +32,18 @@ class MainActivity : ComponentActivity() {
 
             // Set the content of the activity to be a CameraView
             setContent {
-                CameraView(
-                    cameraController = cameraController,
-                    barcodesFlow = viewModel.barcodesFlow,
-                    torchEnabledFlow = viewModel.torchFlow,
-                    onTorchButtonClicked = {
-                        // Toggle torch status when the button is clicked
-                        cameraController.enableTorch(!viewModel.torchFlow.value)
-                        viewModel.updateTorchEnabled()
-                    }
-                )
+                AppTheme {
+                    CameraView(
+                        cameraController = cameraController,
+                        barcodesFlow = viewModel.barcodesFlow,
+                        torchEnabledFlow = viewModel.torchFlow,
+                        onTorchButtonClicked = {
+                            // Toggle torch status when the button is clicked
+                            cameraController.enableTorch(!viewModel.torchFlow.value)
+                            viewModel.updateTorchEnabled()
+                        }
+                    )
+                }
             }
         } else {
             // Request necessary permissions if not granted
@@ -95,13 +98,18 @@ class MainActivity : ComponentActivity() {
 
     // Handle the result of permission request
     @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 buildCameraController()
             } else {
-                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
