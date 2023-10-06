@@ -11,10 +11,12 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.mycloset.Views.MainScreen
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
+
 
 class MainActivity : ComponentActivity() {
 
@@ -22,6 +24,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: CameraScanViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val productViewModel by viewModels<ProductViewModel>()
         super.onCreate(savedInstanceState)
 
         // Check if all required permissions are granted
@@ -33,7 +36,9 @@ class MainActivity : ComponentActivity() {
             // Set the content of the activity to be a CameraView
             setContent {
                 AppTheme {
-                    CameraView(
+                    // Add Navigation
+                    MainScreen()
+                    /*CameraView(
                         cameraController = cameraController,
                         barcodesFlow = viewModel.barcodesFlow,
                         torchEnabledFlow = viewModel.torchFlow,
@@ -42,7 +47,7 @@ class MainActivity : ComponentActivity() {
                             cameraController.enableTorch(!viewModel.torchFlow.value)
                             viewModel.updateTorchEnabled()
                         }
-                    )
+                    )*/
                 }
             }
         } else {
@@ -114,3 +119,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+// Product Info Screen Composable
+/*
+@Composable
+fun ProductInfoScreen(productViewModel: ProductViewModel) {
+    val informationProductArray by rememberUpdatedState(newValue = productViewModel.informationProductArray)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Button(onClick = { productViewModel.getInfo() }) {
+            Text("Fetch Product Info")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Divider(modifier = Modifier.padding(vertical = 20.dp))
+        LazyColumn {
+            items(informationProductArray.entries.toList()) { entry ->
+                Text("${entry.key} : ${entry.value};")
+            }
+        }
+    }
+}*/
