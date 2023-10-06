@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.mycloset.ui.theme.md_theme_light_onTertiary
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -71,7 +70,7 @@ fun CameraView(
                 // Text displaying barcode information
                 Text(
                     modifier = Modifier,
-                    color = md_theme_light_onTertiary,
+                    color = MaterialTheme.colorScheme.onTertiary,
                     text = "Barcode: ${barcode.value.barcode}\n" +
                             "Type: ${barcode.value.barcodeType}\n"
                 )
