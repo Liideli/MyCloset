@@ -84,7 +84,7 @@ fun apiRequest(barcodeAndKey:String):Map<String,String>{
 //view-model used for the take the information about one product from its barcode
 class ProductViewModel : ViewModel() {
     private val repository: BarcodeRepository=BarcodeRepository()
-     var informationProductArray: Map<String,String> by mutableStateOf(emptyMap())
+     var informationProductArray by mutableStateOf(emptyMap())
 
     //the result will be an array of strings
     fun getInfo(barcode: String){
