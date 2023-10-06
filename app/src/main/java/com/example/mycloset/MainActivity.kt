@@ -60,7 +60,7 @@ fun ProductInfoScreen(productViewModel: ProductViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Button(onClick = { productViewModel.getInfo("883412740906") }) {
+        Button(onClick = { productViewModel.getInfo() }) {
             Text("Fetch Product Info")
         }
         Spacer(modifier = Modifier.height(16.dp))

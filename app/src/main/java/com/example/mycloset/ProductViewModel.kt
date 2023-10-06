@@ -15,13 +15,9 @@ class ProductViewModel : ViewModel() {
     var informationProductArray by mutableStateOf(emptyMap<String, String>())
 
     //the result will be an array of strings
-    fun getInfo(barcode: String){
-        /*val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
-            Log.d("coroutineExceptionHandler", "yes this happened")
-            throwable.printStackTrace()
-        }*/
+    fun getInfo(){
         viewModelScope.launch(Dispatchers.IO) {
-            val serverResp = repository.takeInformation(barcode)
+            val serverResp = repository.takeInformation()
             val result = convertFromApi(serverResp.products)
             informationProductArray = result
         }
