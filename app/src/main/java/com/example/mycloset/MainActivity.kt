@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun ProductInfoScreen(productViewModel: ProductViewModel) {
     val informationProductArray by rememberUpdatedState(newValue = productViewModel.informationProductArray)
