@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MyCloset</string>
+    <string name="hello">Hey There,</string>
+    <string name="create_account">Create an Account</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
 </resources>
