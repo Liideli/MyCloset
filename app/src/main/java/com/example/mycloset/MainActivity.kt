@@ -75,7 +75,8 @@ fun PrintResult(req: String){
 fun apiRequest(barcodeAndKey:String):Map<String,String>{
     val result:Map<String,String>
     val model=ProductViewModel()
-    result=model.getInfo(barcodeAndKey)
+    model.getInfo(barcodeAndKey)
+    result=model.informationProductArray
     return result
 }
 
@@ -83,10 +84,26 @@ fun apiRequest(barcodeAndKey:String):Map<String,String>{
 //view-model used for the take the information about one product from its barcode
 class ProductViewModel : ViewModel() {
     private val repository: BarcodeRepository=BarcodeRepository()
-    private var informationProductArray: Map<String,String> by mutableStateOf(emptyMap())
+     var informationProductArray: Map<String,String> by mutableStateOf(emptyMap())
 
     //the result will be an array of strings
-    fun getInfo(barcode: String):Map<String,String>{
+    fun getInfo(barcode: String){
+        /*val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
+            Log.d("coroutineExceptionHandler", "yes this happened")
+            throwable.printStackTrace()
+        }*/
+        viewModelScope.launch(Dispatchers.IO) {
+                val serverResp = repository.takeInformation(barcode)
+                val result = convertFromApi(serverResp.products)
+                //Log.i("WORKS", "The information are successfully saved---> ${result["barcode"]}")
+                informationProductArray = result
+            }
+    }
+
+
+
+
+    /*fun getInfo(barcode: String):Map<String,String>{
         val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
             Log.d("coroutineExceptionHandler", "yes this happened")
             throwable.printStackTrace()
@@ -102,14 +119,16 @@ class ProductViewModel : ViewModel() {
             executeOperations.join()
         }
         return informationProductArray
-    }
+    }*/
 }
 
 
 //Function for convert from the Api result to a map with all the information about a product
-fun convertFromApi(products: List<RetrofitObject.ModelResult.ProductsData>):Map<String,String>{
+fun convertFromApi(products: List<RetrofitObject.ModelResult.Product>):Map<String,String>{
     val result=mutableMapOf<String, String>()
     //save the data from the call in the new Map
+
+
     result["barcodeNumber"]=products[0].barcodeNumber
     result["model"]=products[0].model
     result["title"]=products[0].title
@@ -132,7 +151,7 @@ class BarcodeRepository{
 
     //If we finish the request for the firs account, we have to create a new one
     //if you change key="" you change the account used for the call
-    suspend fun takeInformation(barcode: String) = RetrofitObject.service.productInformation(barcode,key="r397xoebc6u5t57f8sr9gw7atxyqjl")
+    suspend fun takeInformation(barcode: String) = RetrofitObject.service.productInformation(barcode,key="f25572r7skbz3d153rlw0ockqhcflp")
 }
 
 
@@ -141,11 +160,11 @@ object RetrofitObject{
 
     //I use this for map all the field of the JSON result from the API
     object ModelResult{
-        data class ProductResponse(
-            var products: List<ProductsData>
+        data class Model(
+            var products: List<Product>
         )
         //List of the field
-        data class ProductsData(
+        data class Product(
             val barcodeNumber: String,
             val model: String,
             val title: String,
@@ -160,16 +179,6 @@ object RetrofitObject{
             val description: String,
             val images: List<String>
         )
-
-        /* I DON'T THINK WE NEED IT BUT...
-           "features": [
-           "Air-Sole unit provides added shock absorption.",
-           "Genuine leather upper.",
-           "Full-length Phylon midsole.",
-           "Padded ankle collar provides a comfortable fit.",
-           "Solid rubber outsole supplies durable traction."
-           ]
-       */
     }
 
     //declaration
@@ -189,9 +198,8 @@ object RetrofitObject{
         //after this will be added the barcode of the product + the key from the account for make the request
         suspend fun productInformation(
             @Query("barcode")barcode:String,
-            @Query("formatted")formatted:String="y",
             @Query("key")key:String
-        ):ModelResult.ProductResponse
+        ):ModelResult.Model
     }
 
     //here is create the mew retrofit service
