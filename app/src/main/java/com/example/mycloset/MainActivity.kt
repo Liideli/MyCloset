@@ -95,7 +95,7 @@ class ProductViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
                 val serverResp = repository.takeInformation(barcode)
                 val result = convertFromApi(serverResp.products)
-                //Log.i("WORKS", "The information are successfully saved---> ${result["barcode"]}")
+                Log.i("WORKS", "The information are successfully saved---> ${result["barcode"]}")
                 informationProductArray = result
             }
     }
@@ -129,12 +129,12 @@ fun convertFromApi(products: List<RetrofitObject.ModelResult.Product>):Map<Strin
     //save the data from the call in the new Map
 
 
-    result["barcodeNumber"]=products[0].barcodeNumber
+    result["barcodeNumber"]=products[0].barcode_number
     result["model"]=products[0].model
     result["title"]=products[0].title
     result["category"]=products[0].category
     result["brand"]=products[0].brand
-    result["ageGroup"]=products[0].ageGroup
+    result["ageGroup"]=products[0].age_group
     result["color"]=products[0].color
     result["gender"]=products[0].gender
     result["material"]=products[0].material
@@ -161,16 +161,16 @@ object RetrofitObject{
     //I use this for map all the field of the JSON result from the API
     object ModelResult{
         data class Model(
-            var products: List<Product>
+            val products: List<Product>
         )
         //List of the field
         data class Product(
-            val barcodeNumber: String,
+            val barcode_number: String,
             val model: String,
             val title: String,
             val category: String,
             val brand: String,
-            val ageGroup: String,
+            val age_group: String,
             val color: String,
             val gender: String,
             val material: String,
