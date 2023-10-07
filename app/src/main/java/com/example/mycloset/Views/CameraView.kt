@@ -19,12 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.BarcodeModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.mycloset.ProductViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -38,6 +37,8 @@ fun CameraView(
     // Collect the latest barcode data and torch status
     val barcode: State<BarcodeModel> = barcodesFlow.collectAsState()
     val torchEnabled: State<Boolean> = torchEnabledFlow.collectAsState()
+    val productViewModel = viewModel<ProductViewModel>()
+    productViewModel.getInfo(barcode.value.barcode)
 
     // AndroidView to display the camera preview
     AndroidView(factory = { context ->
@@ -72,8 +73,7 @@ fun CameraView(
                 Text(
                     modifier = Modifier,
                     color = MaterialTheme.colorScheme.onTertiary,
-                    text = "Barcode: ${barcode.value.barcode}\n" +
-                            "Type: ${barcode.value.barcodeType}\n"
+                    text = "Barcode: ${barcode.value.barcode}\n"
                 )
             }
 
@@ -102,13 +102,14 @@ fun CameraView(
 }
 
 // Preview function to visualize CameraView in Android Studio's preview panel
+/*
 @Composable
 @Preview
 fun CameraViewPreview() {
     CameraView(
         cameraController = LifecycleCameraController(LocalContext.current),
-        barcodesFlow = MutableStateFlow(BarcodeModel("", "")),
+        barcodesFlow = MutableStateFlow(BarcodeModel("")),
         torchEnabledFlow = MutableStateFlow(false),
         onTorchButtonClicked = {}
     )
-}
+}*/
