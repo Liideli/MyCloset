@@ -22,9 +22,7 @@ object RetrofitObject{
             val category: String,
             val brand: String,
             val color: String,
-            val gender: String,
             val material: String,
-            val pattern: String,
             val size: String,
             val images: List<String>
         )

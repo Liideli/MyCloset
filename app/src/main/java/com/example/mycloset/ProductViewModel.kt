@@ -34,9 +34,7 @@ fun convertFromApi(products: List<RetrofitObject.ModelResult.Product>):Map<Strin
     result["category"]=products[0].category
     result["brand"]=products[0].brand
     result["color"]=products[0].color
-    result["gender"]=products[0].gender
     result["material"]=products[0].material
-    result["pattern"]=products[0].pattern
     result["size"]=products[0].size
     result["images"]= products[0].images[0]
     return result
