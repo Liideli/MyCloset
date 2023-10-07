@@ -12,14 +12,14 @@ import kotlinx.coroutines.launch
 //view-model used for the take the information about one product from its barcode
 class ProductViewModel : ViewModel() {
     private val repository: BarcodeRepository=BarcodeRepository()
-    var informationProductArray by mutableStateOf(emptyMap<String, String>())
+    var informationProductMap by mutableStateOf(emptyMap<String, String>())
 
     //the result will be an array of strings
     fun getInfo(){
         viewModelScope.launch(Dispatchers.IO) {
             val serverResp = repository.takeInformation()
             val result = convertFromApi(serverResp.products)
-            informationProductArray = result
+            informationProductMap = result
         }
     }
 }
@@ -33,13 +33,9 @@ fun convertFromApi(products: List<RetrofitObject.ModelResult.Product>):Map<Strin
     result["title"]=products[0].title
     result["category"]=products[0].category
     result["brand"]=products[0].brand
-    result["ageGroup"]=products[0].age_group
     result["color"]=products[0].color
-    result["gender"]=products[0].gender
     result["material"]=products[0].material
-    result["pattern"]=products[0].pattern
     result["size"]=products[0].size
-    result["description"]=products[0].description
     result["images"]= products[0].images[0]
     return result
 }

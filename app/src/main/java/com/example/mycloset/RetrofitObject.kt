@@ -21,13 +21,9 @@ object RetrofitObject{
             val title: String,
             val category: String,
             val brand: String,
-            val age_group: String,
             val color: String,
-            val gender: String,
             val material: String,
-            val pattern: String,
             val size: String,
-            val description: String,
             val images: List<String>
         )
     }
