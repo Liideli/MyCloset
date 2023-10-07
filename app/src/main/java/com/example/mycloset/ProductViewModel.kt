@@ -13,18 +13,15 @@ import kotlinx.coroutines.launch
 //view-model used for the take the information about one product from its barcode
 class ProductViewModel : ViewModel() {
     private val repository: BarcodeRepository=BarcodeRepository()
-    var informationProductArray by mutableStateOf(emptyMap<String, String>())
+    var informationProductMap by mutableStateOf(emptyMap<String, String>())
     //the result will be an array of strings
     fun getInfo(barcode: String){
             // Code for API call and conversion
-        Log.i("BAR", barcode)
         viewModelScope.launch(Dispatchers.IO) {
         try {
             val serverResp = repository.takeInformation(barcode)
-            Log.i("SER", repository.takeInformation(barcode).toString())
             val result = convertFromApi(serverResp.products)
-            informationProductArray = result
-            Log.i("EEE", result.toString())
+            informationProductMap = result
         } catch (e: Exception) {
             Log.e("Error", "Exception: ${e.message}")
         }

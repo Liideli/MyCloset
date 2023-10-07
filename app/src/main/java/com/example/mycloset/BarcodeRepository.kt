@@ -1,8 +1,7 @@
 package com.example.mycloset
 
 //
-var BARCODE:String="883412740906"
-var APY_KEY:String="yaroh228hxv1i2zefkvcv7vpqqn3j4"
+var APY_KEY:String="3nupb3et7t5lbqlhhhspyrh3si1wu0"
 
 //class for using the barcode-lookup API
 class BarcodeRepository{

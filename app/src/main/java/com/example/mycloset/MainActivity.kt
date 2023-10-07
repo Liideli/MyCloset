@@ -9,24 +9,9 @@ import androidx.activity.viewModels
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.mycloset.Views.CameraView
+import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -53,17 +38,16 @@ class MainActivity : ComponentActivity() {
                 AppTheme {
                     // Add Navigation
                     //MainScreen()
-                    CameraView(
-                        cameraController = cameraController,
+                    ProductScanView(
+                        productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,
+                        cameraController,
                         torchEnabledFlow = viewModel.torchFlow,
                         onTorchButtonClicked = {
                             // Toggle torch status when the button is clicked
                             cameraController.enableTorch(!viewModel.torchFlow.value)
                             viewModel.updateTorchEnabled()
-                        }
-                    )
-                    ProductInfoScreen(productViewModel)
+                        })
                 }
             }
         } else {
@@ -138,17 +122,20 @@ class MainActivity : ComponentActivity() {
 
 // Product Info Screen Composable
 
-
+/*
 @Composable
-fun ProductInfoScreen(productViewModel: ProductViewModel) {
-    val informationProductArray by rememberUpdatedState(newValue = productViewModel.informationProductArray)
+fun ProductInfoScreen(productViewModel: ProductViewModel, barcodesFlow: StateFlow<BarcodeModel>) {
+
+    val informationProductMap by rememberUpdatedState(newValue = productViewModel.informationProductArray)
+    val barcode: State<BarcodeModel> = barcodesFlow.collectAsState()
+    val productViewModel = viewModel<ProductViewModel>()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Button(onClick = { productViewModel.getInfo("883412740906") }) {
+        Button(onClick = {productViewModel.getInfo(barcode.value.barcode)}) {
             Text("Fetch Product Info")
         }
 
@@ -156,10 +143,10 @@ fun ProductInfoScreen(productViewModel: ProductViewModel) {
 
         Divider(modifier = Modifier.padding(vertical = 20.dp))
 
-        LazyColumn {
+        /*LazyColumn {
             items(informationProductArray.entries.toList()) { entry ->
                 Text("${entry.key} : ${entry.value};")
             }
-        }
+        }*/
     }
-}
+}*/
