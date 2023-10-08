@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,12 +32,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.BarcodeModel
 import com.example.mycloset.ImgDisplay
 import com.example.mycloset.ProductViewModel
@@ -43,22 +45,32 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ProductScanView(
-    productViewModel: ProductViewModel,
-    barcodesFlow: StateFlow<BarcodeModel>,
-    cameraController: LifecycleCameraController,
-    torchEnabledFlow: StateFlow<Boolean>,
-    onTorchButtonClicked: () -> Unit
+    // Parameters required for the composable
+    productViewModel: ProductViewModel,    // ViewModel for managing product information
+    barcodesFlow: StateFlow<BarcodeModel>, // StateFlow for real-time barcode information
+    cameraController: LifecycleCameraController, // Controller for camera preview
+    torchEnabledFlow: StateFlow<Boolean>,  // StateFlow for torch/flashlight status
+    onTorchButtonClicked: () -> Unit      // Lambda function for torch button click event
 ) {
+    // State for managing informationProductMap
     val informationProductMap by rememberUpdatedState(newValue = productViewModel.informationProductMap)
-    var showProductInfo by remember { mutableStateOf(false) }
-    val barcode: State<BarcodeModel> = barcodesFlow.collectAsState()
-    val productViewModel = viewModel<ProductViewModel>()
 
-    // Collect the latest barcode data and torch status
+    // State for managing whether to show product information
+    var showProductInfo by remember { mutableStateOf(false) }
+
+    // State for managing barcode information
+    val barcode: State<BarcodeModel> = barcodesFlow.collectAsState()
+
+    // State for managing loading state
+    var isLoading by remember { mutableStateOf(false) }
+
+    // State for managing network result
+    var networkResult by remember { mutableStateOf<Result<String>?>(null) }
+
+    // State for managing torch enabled/disabled
     val torchEnabled: State<Boolean> = torchEnabledFlow.collectAsState()
 
     val context = LocalContext.current
-
 
     if (!showProductInfo) {
         // AndroidView to display the camera preview
@@ -82,7 +94,6 @@ fun ProductScanView(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            // First Column inside the main Column
             Column(
                 modifier = Modifier.weight(1f, false)
             ) {
@@ -93,7 +104,6 @@ fun ProductScanView(
                         .background(MaterialTheme.colorScheme.tertiary)
                         .padding(16.dp)
                 ) {
-                    // Text displaying barcode information
                     Text(
                         modifier = Modifier,
                         color = MaterialTheme.colorScheme.onTertiary,
@@ -109,6 +119,7 @@ fun ProductScanView(
                 )
             }
 
+            // Row for torch button and search button
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -131,13 +142,16 @@ fun ProductScanView(
                         Modifier.padding(2.dp), color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
+
+                // Button to search for product info
                 Button(onClick = {
                     if (barcode.value.barcode.isNotEmpty()) {
+                        isLoading = true
+                        networkResult = null
                         productViewModel.getInfo(barcode.value.barcode)
                         showProductInfo = true
                     } else {
                         Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT).show()
-
                     }
                 }) {
                     Text(text = "Search Product Info")
@@ -146,57 +160,70 @@ fun ProductScanView(
         }
     }
 
+    if (informationProductMap.isEmpty()) {
+        // Display a loading indicator while loading product info
+        if (isLoading) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(50.dp)
+                )
+            }
+        }
+    }
+
+    // Display the product information if there is a successful result
     if (showProductInfo && informationProductMap.isNotEmpty()) {
+        isLoading = false
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            //Spacer(modifier = Modifier.height(16.dp))
-            //Divider(modifier = Modifier.padding(vertical = 20.dp))
 
-            Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+            val title: String = informationProductMap["title"].toString()
+            Text(
+                text = title,
+                modifier = Modifier.padding(16.dp)
+            )
 
-                //Title
-                val title: String = informationProductMap["title"].toString()
-                Text(
-                    text = title,
-                    modifier = Modifier.padding(16.dp)
-                )
+            // Image of the product
+            ImgDisplay.DisplayPicture(informationProductMap["images"].toString())
 
-                //Image
-                ImgDisplay.DisplayPicture(informationProductMap["images"].toString())
-
-                //Table
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    informationProductMap.forEach { (key, value) ->
-                        if (key != "title" && key != "images") {
-                            item {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Text(text = key, fontWeight = FontWeight.Bold)
-                                    Text(text = value.toString())
-                                }
-                                Spacer(modifier = Modifier.height(8.dp))
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                informationProductMap.forEach { (key, value) ->
+                    if (key != "title" && key != "images") {
+                        item {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(text = key, fontWeight = FontWeight.Bold)
+                                Text(text = value.toString())
                             }
+                            Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
                 }
+            }
 
-                //Button
-                Row {
-                    Button(onClick = { showProductInfo = false }) {
-                        Text(text = "Cancel")
-                    }
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "Add")
-                    }
-
+            // Buttons for cancel and add actions
+            Row {
+                Button(onClick = { showProductInfo = false }) {
+                    Text(text = "Cancel")
+                }
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Add")
                 }
             }
         }
