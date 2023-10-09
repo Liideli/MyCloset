@@ -5,9 +5,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,11 +17,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -99,68 +100,72 @@ fun ProductScanView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            if (barcode.value.barcode.isNotEmpty()) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                ) {
-
-                    // Box composable to display barcode information
-                    Box(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.tertiary)
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            modifier = Modifier,
-                            color = MaterialTheme.colorScheme.onTertiary,
-                            text = "Barcode: ${barcode.value.barcode}\n"
-                        )
-                    }
-                }
-
-            }
-
-            // Row for torch button and search button
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                // Button to toggle the torch
-                Button(
-                    onClick = onTorchButtonClicked,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
+                // Card composable to display barcode information
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    shape = RoundedCornerShape(10.dp)
                 ) {
-                    if (torchEnabled.value) {
-                        Icon(
-                            imageVector = Icons.Default.FlashOff,
-                            contentDescription = "Flash off icon"
-                        )
-
-                    } else {
-                        Icon(
-                            imageVector = Icons.Default.FlashOn,
-                            contentDescription = "Flash on icon"
-                        )
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        if (barcode.value.barcode.isNotEmpty()) {
+                            Text(text = "Barcode: ${barcode.value.barcode}")
+                        } else {
+                            Text(text = "Point camera at a barcode")
+                        }
                     }
                 }
+                // Row for torch button and search button
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
 
-                // Button to search for product info
-                Button(onClick = {
-                    if (barcode.value.barcode.isNotEmpty()) {
-                        isLoading = true
-                        networkResult = null
-                        productViewModel.getInfo(barcode.value.barcode)
-                        showProductInfo = true
-                    } else {
-                        Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT).show()
+                    // Button to toggle the torch
+                    Button(
+                        onClick = onTorchButtonClicked,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        if (torchEnabled.value) {
+                            Icon(
+                                imageVector = Icons.Default.FlashOff,
+                                contentDescription = "Flash off icon"
+                            )
+
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.FlashOn,
+                                contentDescription = "Flash on icon"
+                            )
+                        }
                     }
-                }) {
-                    Text(text = "Search Product Info")
+
+                    // Button to search for product info
+                    Button(onClick = {
+                        if (barcode.value.barcode.isNotEmpty()) {
+                            isLoading = true
+                            networkResult = null
+                            productViewModel.getInfo(barcode.value.barcode)
+                            showProductInfo = true
+                        } else {
+                            Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }) {
+                        Text(text = "Search Product Info")
+                    }
                 }
             }
         }
@@ -215,7 +220,7 @@ fun ProductScanView(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(text = key, fontWeight = FontWeight.Bold)
-                                Text(text = value.toString())
+                                Text(text = value)
                             }
                             Spacer(modifier = Modifier.height(8.dp))
                         }
@@ -224,7 +229,10 @@ fun ProductScanView(
             }
 
             // Buttons for cancel and add actions
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Button(onClick = { showProductInfo = false }) {
                     Text(text = "Cancel")
                 }
