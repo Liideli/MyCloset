@@ -19,9 +19,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FlashOff
+import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,32 +95,30 @@ fun ProductScanView(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Column(
-                modifier = Modifier.weight(1f, false)
-            ) {
-
-                // Box composable to display barcode information
-                Box(
+            if (barcode.value.barcode.isNotEmpty()) {
+                Column(
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.tertiary)
                         .padding(16.dp)
                 ) {
-                    Text(
-                        modifier = Modifier,
-                        color = MaterialTheme.colorScheme.onTertiary,
-                        text = "Barcode: ${barcode.value.barcode}\n"
-                    )
+
+                    // Box composable to display barcode information
+                    Box(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.tertiary)
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            modifier = Modifier,
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            text = "Barcode: ${barcode.value.barcode}\n"
+                        )
+                    }
                 }
 
-                // Spacer to add some space between barcode info and the button
-                Spacer(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .weight(1f)
-                )
             }
 
             // Row for torch button and search button
@@ -133,14 +135,18 @@ fun ProductScanView(
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
-                    val text =
-                        if (torchEnabled.value) "Turn Off Flashlight" else "Turn On Flashlight"
+                    if (torchEnabled.value) {
+                        Icon(
+                            imageVector = Icons.Default.FlashOff,
+                            contentDescription = "Flash off icon"
+                        )
 
-                    // Text composable inside the Button
-                    Text(
-                        text = text,
-                        Modifier.padding(2.dp), color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.FlashOn,
+                            contentDescription = "Flash on icon"
+                        )
+                    }
                 }
 
                 // Button to search for product info
