@@ -11,6 +11,7 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -22,9 +23,9 @@ class MainActivity : ComponentActivity() {
 
     // ViewModel for handling camera and barcode scanning logic
     private val viewModel: CameraScanViewModel by viewModels()
+    private val productViewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val productViewModel by viewModels<ProductViewModel>()
         super.onCreate(savedInstanceState)
 
         // Check if all required permissions are granted
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
                 AppTheme {
                     // Add Navigation
                     //MainScreen()
+                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
                     ProductScanView(
                         productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,

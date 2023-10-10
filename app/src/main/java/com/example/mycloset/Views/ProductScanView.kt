@@ -77,6 +77,18 @@ fun ProductScanView(
 
     val context = LocalContext.current
 
+    val barcodeNumber: String = informationProductMap["barcodeNumber"].toString()
+    val model: String = informationProductMap["model"].toString()
+    val title: String = informationProductMap["title"].toString()
+    val category: String = informationProductMap["category"].toString()
+    val brand: String = informationProductMap["brand"].toString()
+    val color: String = informationProductMap["color"].toString()
+    val material: String = informationProductMap["material"].toString()
+    val size: String = informationProductMap["size"].toString()
+    val images: String = informationProductMap["images"].toString()
+
+
+
     if (!showProductInfo) {
         // AndroidView to display the camera preview
         AndroidView(factory = { context ->
@@ -199,7 +211,6 @@ fun ProductScanView(
                 .padding(16.dp)
         ) {
 
-            val title: String = informationProductMap["title"].toString()
             Text(
                 text = title,
                 modifier = Modifier.padding(16.dp)
@@ -236,7 +247,7 @@ fun ProductScanView(
                 Button(onClick = { showProductInfo = false }) {
                     Text(text = "Cancel")
                 }
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {  productViewModel.saveToDatabase(barcodeNumber, model, title, category, brand, color, material, size, images) }) {
                     Text(text = "Add")
                 }
             }
