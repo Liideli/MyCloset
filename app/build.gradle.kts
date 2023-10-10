@@ -97,6 +97,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.3")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     testImplementation("junit:junit:4.13.2")

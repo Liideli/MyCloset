@@ -8,4 +8,6 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
+    <string name="my_closet">MyCloset\n</string>
+    <string name="login">Login</string>
 </resources>
