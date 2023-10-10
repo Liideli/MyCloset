@@ -1,47 +1,20 @@
 package com.example.mycloset
 
+//import com.example.mycloset.ui.theme.MyClosetTheme
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import coil.compose.AsyncImage
-import com.example.mycloset.ImgDisplay.Companion.DisplayPicture
-import com.example.mycloset.ui.theme.AppTheme
-import kotlinx.coroutines.Dispatchers
-//import com.example.mycloset.ui.theme.MyClosetTheme
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import org.jetbrains.annotations.Async
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mycloset.Views.MainScreen
+import com.example.mycloset.App.LoginApp
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -72,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     // Add Navigation
                     navController = rememberNavController()
 //                    SetupNavGraph(navController = navController)
-                    MainScreen()
+                    LoginApp()
                     /*CameraView(
                         cameraController = cameraController,
                         barcodesFlow = viewModel.barcodesFlow,
