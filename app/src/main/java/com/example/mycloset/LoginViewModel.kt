@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.example.mycloset.data.LoginUIEvent
 import com.example.mycloset.data.LoginUIState
 import com.example.mycloset.data.rules.Validator
+import com.example.mycloset.navigation.LoginAppRouter
+import com.example.mycloset.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginViewModel: ViewModel() {
@@ -41,7 +43,11 @@ class LoginViewModel: ViewModel() {
         FirebaseAuth.getInstance()
             .signInWithEmailAndPassword(email, password)
             .addOnCompleteListener{
-            loginInProgress.value = false
+
+                if (it.isSuccessful){
+                    loginInProgress.value = false
+                    LoginAppRouter.navigateTo(Screen.HomeScreen)
+                }
             }
             .addOnFailureListener{
                 loginInProgress.value = false
