@@ -39,7 +39,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
 import com.example.mycloset.ImgDisplay.Companion.DisplayPicture
-import com.example.mycloset.ui.theme.MyClosetTheme
+import com.example.mycloset.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
