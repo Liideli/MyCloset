@@ -1,6 +1,5 @@
 package com.example.mycloset
 
-//import com.example.mycloset.ui.theme.MyClosetTheme
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -15,6 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mycloset.App.LoginApp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -28,9 +29,9 @@ class MainActivity : ComponentActivity() {
 
     // ViewModel for handling camera and barcode scanning logic
     private val viewModel: CameraScanViewModel by viewModels()
+    private val productViewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val productViewModel by viewModels<ProductViewModel>()
         super.onCreate(savedInstanceState)
 
         // Check if all required permissions are granted
@@ -48,7 +49,12 @@ class MainActivity : ComponentActivity() {
                     LoginApp()
                     /*CameraView(
                         cameraController = cameraController,
+                    //MainScreen()
+                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
+                    ProductScanView(
+                        productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,
+                        cameraController,
                         torchEnabledFlow = viewModel.torchFlow,
                         onTorchButtonClicked = {
                             // Toggle torch status when the button is clicked
