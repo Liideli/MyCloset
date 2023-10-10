@@ -1,19 +1,16 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.example.mycloset
+package com.example.mycloset.Views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.Icons.Outlined
-import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,17 +20,18 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+//import com.example.mycloset.Screen
+
 
 //
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmptyHomeScreen() {
-    val icons = listOf(
-        painterResource(id = R.drawable.outline_camera_alt_24)
-    )
     Scaffold(
         topBar = {
             TopAppBar(
@@ -43,12 +41,13 @@ fun EmptyHomeScreen() {
 //                ),
                 title = {
                     Text("MyCloset")
+                }, actions = {
+                    IconButton(
+                        onClick = { /* Navigate to the scanner screen */ }
+                    ) {
+                        Icon(Icons.Default.Camera, contentDescription = null)
+                    }
                 }
-//                navigationIcon = {
-//                    IconButton(onClick = { /*TODO navigation to the Scanner*/ }){
-//                        Icon(icons[0])
-//                    }
-//                }
             )
         }) { innerPadding ->
         Box(
@@ -60,7 +59,6 @@ fun EmptyHomeScreen() {
             Text(
                 text = "You don't have any items yet...",
                 textAlign = TextAlign.Center,
-//            modifier = Modifier.padding(10.dp)
             )
         }
     }
@@ -69,7 +67,7 @@ fun EmptyHomeScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     Scaffold(topBar = {
         TopAppBar(
 //                colors = topAppBarColors(
@@ -78,9 +76,12 @@ fun HomeScreen() {
 //                ),
             title = {
                 Text("MyCloset", modifier = Modifier.padding(2.dp))
-            },
-            navigationIcon = {
-                IconButton(onClick = { /*TODO navigation to the Scanner*/ }) {
+            }, actions = {
+                IconButton(
+                    onClick = { /* Navigate to the scanner screen
+                    navController.navigate(route = Screen.Camera.route)*/}
+                ) {
+                    Icon(Icons.Default.Camera, contentDescription = null)
                 }
             }
         )
@@ -91,7 +92,7 @@ fun HomeScreen() {
                 .padding(16.dp)
         ) {
             items(10) {
-                ItemCard()
+                ItemCard("https://media.istockphoto.com/id/1303978937/fi/valokuva/valkoinen-lenkkari-sinisell%C3%A4-kaltevuustaustalla-miesten-muoti-urheilukenk%C3%A4-lenkkarit.jpg?s=612x612&w=0&k=20&c=X_lwi6td_xtFUGXjOmAU8WzH-MKPZ-OeWKtKUshe-SI=", "nike")
             }
         }
     }
@@ -100,7 +101,9 @@ fun HomeScreen() {
 @Preview
 @Composable
 fun PrevHome() {
-    HomeScreen()
+    HomeScreen(
+        navController = rememberNavController()
+    )
 }
 
 @Preview

@@ -6,23 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +25,7 @@ import coil.compose.AsyncImage
 import com.example.mycloset.ImgDisplay.Companion.DisplayPicture
 import com.example.mycloset.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
+//import com.example.mycloset.ui.theme.MyClosetTheme
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.jetbrains.annotations.Async
@@ -53,6 +38,9 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mycloset.Views.MainScreen
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -61,6 +49,9 @@ import com.google.mlkit.vision.barcode.common.Barcode
 
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var navController: NavHostController
+//    val navController = rememberNavController()
 
     // ViewModel for handling camera and barcode scanning logic
     private val viewModel: CameraScanViewModel by viewModels()
@@ -79,6 +70,8 @@ class MainActivity : ComponentActivity() {
             setContent {
                 AppTheme {
                     // Add Navigation
+                    navController = rememberNavController()
+//                    SetupNavGraph(navController = navController)
                     MainScreen()
                     /*CameraView(
                         cameraController = cameraController,
@@ -234,3 +227,28 @@ fun ProductInfoScreen(productViewModel: ProductViewModel) {
         }
     }
 }*/
+
+//@Composable
+//fun MyNavHost(navController: NavHostController) {
+//    NavHost(
+//        navController = navController,
+//        startDestination = "home"
+//    ) {
+//        composable("HomeScreen") {
+//            HomeScreen(viewModel.items)
+//        }
+//        composable("scanner") {
+//            // Your scanner screen
+//        }
+//        // Add more destinations as needed
+//    }
+//}
+//
+//val navController = rememberNavController()
+//
+//// ...
+//
+//setContent {
+//    MyNavHost(navController)
+//}
+
