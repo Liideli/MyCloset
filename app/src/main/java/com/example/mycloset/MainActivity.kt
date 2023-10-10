@@ -11,10 +11,9 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mycloset.App.LoginApp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -46,7 +45,18 @@ class MainActivity : ComponentActivity() {
                     // Add Navigation
                     navController = rememberNavController()
 //                    SetupNavGraph(navController = navController)
-                    LoginApp()
+                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
+                    ProductScanView(
+                        productViewModel,
+                        barcodesFlow = viewModel.barcodesFlow,
+                        cameraController,
+                        torchEnabledFlow = viewModel.torchFlow,
+                        onTorchButtonClicked = {
+                            // Toggle torch status when the button is clicked
+                            cameraController.enableTorch(!viewModel.torchFlow.value)
+                            viewModel.updateTorchEnabled()
+                        }
+                    )
                     /*CameraView(
                         cameraController = cameraController,
                     //MainScreen()

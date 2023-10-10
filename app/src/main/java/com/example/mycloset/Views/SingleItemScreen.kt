@@ -36,7 +36,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
             .padding(16.dp)
     ) {
         Button(onClick = {
-            productViewModel.getInfo()
+            //productViewModel.getInfo()
             showProductInfo = true
         })
         {
