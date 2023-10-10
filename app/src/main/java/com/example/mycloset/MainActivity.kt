@@ -41,6 +41,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mycloset.App.LoginApp
 import com.example.mycloset.Views.MainScreen
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     // Add Navigation
                     navController = rememberNavController()
 //                    SetupNavGraph(navController = navController)
-                    MainScreen()
+                    LoginApp()
                     /*CameraView(
                         cameraController = cameraController,
                         barcodesFlow = viewModel.barcodesFlow,
