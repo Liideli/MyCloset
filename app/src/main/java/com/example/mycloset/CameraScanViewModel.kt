@@ -11,7 +11,7 @@ class CameraScanViewModel: ViewModel() {
     val barcodesFlow: StateFlow<BarcodeModel> get() = _barcodesFlow
 
     // Private mutable state flow for storing barcode data
-    private val _barcodesFlow = MutableStateFlow(BarcodeModel("", ""))
+    private val _barcodesFlow = MutableStateFlow(BarcodeModel(""))
 
     // StateFlow for broadcasting torch status
     val torchFlow: StateFlow<Boolean> get() = _torchFlow
@@ -26,8 +26,7 @@ class CameraScanViewModel: ViewModel() {
 
         // Create a BarcodeModel from the barcode data
         val barcodeModel = BarcodeModel(
-            barcode = barcode.rawValue ?: "",
-            barcodeType = barcode.valueType.toString(),
+            barcode = barcode.rawValue ?: ""
         )
 
         // Update the _barcodesFlow with the new barcode data

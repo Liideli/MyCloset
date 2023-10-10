@@ -1,6 +1,7 @@
 package com.example.mycloset
 
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,13 +14,18 @@ import kotlinx.coroutines.launch
 class ProductViewModel : ViewModel() {
     private val repository: BarcodeRepository=BarcodeRepository()
     var informationProductMap by mutableStateOf(emptyMap<String, String>())
-
     //the result will be an array of strings
-    fun getInfo(){
+    fun getInfo(barcode: String){
+            // Code for API call and conversion
         viewModelScope.launch(Dispatchers.IO) {
-            val serverResp = repository.takeInformation()
+        try {
+            val serverResp = repository.takeInformation(barcode)
             val result = convertFromApi(serverResp.products)
             informationProductMap = result
+        } catch (e: Exception) {
+            Log.e("Error", "Exception: ${e.message}")
+        }
+
         }
     }
 }
