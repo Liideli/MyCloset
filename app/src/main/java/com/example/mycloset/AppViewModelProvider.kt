@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 
 /**
@@ -17,6 +18,9 @@ object AppViewModelProvider {
                 productDao = MyApplication().container.appDatabase.productDao(),
                 productRepository = MyApplication().container.productRepository
             )
+        }
+        addInitializer(CameraScanViewModel::class) {
+            CameraScanViewModel()
         }
     }
 }

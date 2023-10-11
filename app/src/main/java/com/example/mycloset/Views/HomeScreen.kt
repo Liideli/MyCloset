@@ -1,6 +1,7 @@
 
 package com.example.mycloset.Views
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,59 +21,56 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
+import com.example.mycloset.navigation.LoginAppRouter
+import com.example.mycloset.navigation.Screen
 import kotlinx.coroutines.flow.*
 
 
 
 //import com.example.mycloset.Screen
 
-
-//
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmptyHomeScreen() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
+fun HomeScreen(viewModel: ProductViewModel) {
+    // Observe the products list from the ViewModel
+    //viewModel.getProducts()
+    viewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
+    val products = viewModel.products
+    Log.i("PROD", products.toString())
+    if (products.isEmpty()) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
 //                colors = topAppBarColors(
 //                    containerColor = MaterialTheme.colorScheme.primaryContainer,
 //                    titleContentColor = MaterialTheme.colorScheme.primary,
 //                ),
-                title = {
-                    Text("MyCloset")
-                }, actions = {
-                    IconButton(
-                        onClick = { /* Navigate to the scanner screen */ }
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = null)
+                    title = {
+                        Text("MyCloset")
+                    }, actions = {
+                        IconButton(
+                            onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                        ) {
+                            Icon(Icons.Default.Camera, contentDescription = null)
+                        }
                     }
-                }
-            )
-        }) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "You don't have any items yet...",
-                textAlign = TextAlign.Center,
-            )
+                )
+            }) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "You don't have any items yet...",
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen(navController: NavController, viewModel: ProductViewModel) {
-    // Observe the products list from the ViewModel
-    viewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
-    val products = viewModel.products
+    } else {
     Scaffold(topBar = {
         TopAppBar(
 //                colors = topAppBarColors(
@@ -83,17 +81,17 @@ fun HomeScreen(navController: NavController, viewModel: ProductViewModel) {
                 Text("MyCloset", modifier = Modifier.padding(2.dp))
             }, actions = {
                 IconButton(
-                    onClick = { /* Navigate to the scanner screen
-                    navController.navigate(route = Screen.Camera.route)*/}
+                    onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView)}
                 ) {
                     Icon(Icons.Default.Camera, contentDescription = null)
                 }
             }
         )
-    }) { padding ->
+    }) { innerPadding ->
         LazyVerticalGrid(
             columns = GridCells.Fixed(2), modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(16.dp)
         ) {
             items(products.size) { index ->
@@ -101,6 +99,7 @@ fun HomeScreen(navController: NavController, viewModel: ProductViewModel) {
                 ItemCard(product.images, product.title)
             }
         }
+    }
     }
 }
 

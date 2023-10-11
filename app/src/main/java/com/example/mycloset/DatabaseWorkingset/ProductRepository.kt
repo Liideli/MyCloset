@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface ProductRepository {
     fun getAllProductsStream(): Flow<List<ProductEntity>>
 
-    fun getAllProductsWithEmailStream(userEmail: String): Flow<List<ProductEntity>>
+    fun getAllProductsWithEmailStream(userEmail: String): Flow<List<ProductEntity>?>
 }
