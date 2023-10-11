@@ -148,6 +148,7 @@ class MainActivity : ComponentActivity() {
 }
 
 // Product Info Screen Composable
+
 /*
 @Composable
 fun ProductInfoScreen(productViewModel: ProductViewModel) {
@@ -166,7 +167,9 @@ fun ProductInfoScreen(productViewModel: ProductViewModel) {
         {
             Text("Fetch Product Info")
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Divider(modifier = Modifier.padding(vertical = 20.dp))
 
         if (showProductInfo) {
