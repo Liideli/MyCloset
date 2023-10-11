@@ -27,11 +27,3 @@ abstract class ProductDatabase : RoomDatabase() {
         }
     }
 }
-
-class DatabaseManager(context: Context) {
-    private val database = ProductDatabase.getInstance(context)
-
-    suspend fun insertProduct(product: ProductEntity) {
-        database.productDao().insertProduct(product)
-    }
-}

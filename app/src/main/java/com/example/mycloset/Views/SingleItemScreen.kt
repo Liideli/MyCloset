@@ -65,14 +65,14 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         informationProductMap.forEach { (key, value) ->
-                            if (key != "title" && key != "images") {
+                            if (key != "title" && key != "images" && key != "barcodeNumber") {
                                 item {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = key, fontWeight = FontWeight.Bold)
-                                        Text(text = value.toString())
+                                        Text(text = value)
                                     }
                                     Spacer(modifier = Modifier.height(8.dp))
                                 }
@@ -86,7 +86,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                             Text(text = "Cancel")
                         }
                         Button(onClick = { /*TODO*/ }) {
-                            Text(text = "Add")
+                            Text(text = "Delete")
                         }
 
                     }

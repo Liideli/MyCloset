@@ -13,7 +13,8 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             ProductViewModel(
-                productDao = MyApplication().container.appDatabase.productDao()
+                productDao = MyApplication().container.appDatabase.productDao(),
+                productRepository = MyApplication().container.productRepository
             )
         }
     }

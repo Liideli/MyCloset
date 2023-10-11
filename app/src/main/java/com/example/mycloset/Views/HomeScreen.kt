@@ -21,10 +21,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.mycloset.ProductViewModel
+import kotlinx.coroutines.flow.*
+
+
 //import com.example.mycloset.Screen
 
 
@@ -67,7 +69,10 @@ fun EmptyHomeScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: ProductViewModel) {
+    // Observe the products list from the ViewModel
+    viewModel.getProductsWithEmail(userEmail)
+    val products = viewModel.products
     Scaffold(topBar = {
         TopAppBar(
 //                colors = topAppBarColors(
@@ -91,13 +96,15 @@ fun HomeScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            items(10) {
-                ItemCard("https://media.istockphoto.com/id/1303978937/fi/valokuva/valkoinen-lenkkari-sinisell%C3%A4-kaltevuustaustalla-miesten-muoti-urheilukenk%C3%A4-lenkkarit.jpg?s=612x612&w=0&k=20&c=X_lwi6td_xtFUGXjOmAU8WzH-MKPZ-OeWKtKUshe-SI=", "nike")
+            items(products.size) { index ->
+                val product = products[index]
+                ItemCard(product.images, product.title)
             }
         }
     }
 }
 
+/*
 @Preview
 @Composable
 fun PrevHome() {
@@ -111,4 +118,4 @@ fun PrevHome() {
 fun PreEmpty() {
     EmptyHomeScreen()
 }
-
+*/

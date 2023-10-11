@@ -11,12 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 //view-model used for the take the information about one product from its barcode
-class ProductViewModel(val productDao: ProductDao) : ViewModel() {
+class ProductViewModel(val productDao: ProductDao, val productRepository: ProductRepository) :
+    ViewModel() {
     private val repository: BarcodeRepository = BarcodeRepository()
     var informationProductMap by mutableStateOf(emptyMap<String, String>())
+    var products by mutableStateOf(emptyList<ProductEntity>())
 
     fun saveToDatabase(
         barcodeNumber: String,
+        userEmail: String,
         model: String,
         title: String,
         category: String,
@@ -27,9 +30,38 @@ class ProductViewModel(val productDao: ProductDao) : ViewModel() {
         images: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val productInformation = ProductEntity(barcodeNumber, model, title, category, brand, color, material, size, images)
+            val productInformation = ProductEntity(
+                barcodeNumber,
+                userEmail,
+                model,
+                title,
+                category,
+                brand,
+                color,
+                material,
+                size,
+                images
+            )
             productDao.insertProduct(productInformation)
             Log.i("SAV", "Saved to database")
+        }
+    }
+
+    // Get all products
+    fun getProducts() {
+        viewModelScope.launch {
+            productRepository.getAllProductsStream().collect() { response ->
+                products = response
+            }
+        }
+    }
+
+    // Get products with logged in email
+    fun getProductsWithEmail(userEmail: String) {
+        viewModelScope.launch {
+            productRepository.getAllProductsWithEmailStream(userEmail).collect() { response ->
+                products = response
+            }
         }
     }
 

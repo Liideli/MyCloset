@@ -9,6 +9,7 @@ import android.content.Context
  */
 interface AppContainer {
     val appDatabase: ProductDatabase
+    val productRepository: ProductRepository
 }
 
 class AppDataContainer(private val context: Context) :
@@ -17,4 +18,7 @@ class AppDataContainer(private val context: Context) :
     override val appDatabase: ProductDatabase by lazy {
         ProductDatabase.getInstance(context)
     }
+        override val productRepository: ProductRepository by lazy {
+            OfflineProductRepository(ProductDatabase.getInstance(context).productDao())
+        }
 }

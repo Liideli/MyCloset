@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
 
     // ViewModel for handling camera and barcode scanning logic
     private val viewModel: CameraScanViewModel by viewModels()
-    private val productViewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +45,7 @@ class MainActivity : ComponentActivity() {
                     navController = rememberNavController()
 //                    SetupNavGraph(navController = navController)
                     val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
+                    //HomeScreen(navController = navController, viewModel = productViewModel)
                     ProductScanView(
                         productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,
