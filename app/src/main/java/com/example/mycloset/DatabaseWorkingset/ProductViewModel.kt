@@ -58,6 +58,20 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
     }
 
+    //update
+    fun updateProductDetails(product:ProductEntity){
+        viewModelScope.launch {
+            productRepository.updateProductDetailsStream(product)
+            }
+        }
+
+    //delete
+    fun deleteProduct(product:ProductEntity){
+        viewModelScope.launch {
+            productRepository.deleteProductStream(product)
+        }
+    }
+
     //the result will be an array of strings
     fun getInfo(barcode: String) {
         // Code for API call and conversion
