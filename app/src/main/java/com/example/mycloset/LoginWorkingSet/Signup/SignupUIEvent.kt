@@ -1,4 +1,4 @@
-package com.example.mycloset.data
+package com.example.mycloset.LoginWorkingSet.Signup
 
 sealed class SignupUIEvent{
     data class FirstNameChanged(val firstName: String): SignupUIEvent()

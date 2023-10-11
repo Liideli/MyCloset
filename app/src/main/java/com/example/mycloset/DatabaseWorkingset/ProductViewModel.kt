@@ -19,6 +19,7 @@ class ProductViewModel(val productDao: ProductDao) : ViewModel() {
 
     fun saveToDatabase(
         barcodeNumber: String,
+        userEmail: String,
         model: String,
         title: String,
         category: String,
@@ -29,7 +30,7 @@ class ProductViewModel(val productDao: ProductDao) : ViewModel() {
         images: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val productInformation = ProductEntity(barcodeNumber, model, title, category, brand, color, material, size, images)
+            val productInformation = ProductEntity(barcodeNumber, userEmail, model, title, category, brand, color, material, size, images)
             productDao.insertProduct(productInformation)
             Log.i("SAV", "Saved to database")
         }

@@ -1,9 +1,9 @@
-package com.example.mycloset.data
+package com.example.mycloset.LoginWorkingSet.Signup
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.mycloset.data.rules.Validator
+import com.example.mycloset.Rules.Validator
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
@@ -102,6 +102,7 @@ class SignupViewModel: ViewModel() {
     fun logout(){
         val firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signOut()
+
         val  authStateListener = AuthStateListener{
             if (it.currentUser == null){
                 LoginAppRouter.navigateTo(Screen.LoginScreen)

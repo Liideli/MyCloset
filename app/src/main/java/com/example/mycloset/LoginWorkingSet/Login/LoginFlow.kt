@@ -1,4 +1,4 @@
-package com.example.mycloset.LoginWorkingSet
+package com.example.mycloset.LoginWorkingSet.Login
 
 import android.app.Application
 import com.google.firebase.FirebaseApp

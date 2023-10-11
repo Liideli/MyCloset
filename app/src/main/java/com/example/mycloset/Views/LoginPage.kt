@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mycloset.LoginWorkingSet.LoginViewModel
+import com.example.mycloset.LoginWorkingSet.Login.LoginViewModel
 import com.example.mycloset.R
 import com.example.mycloset.components.ButtonComponent
 import com.example.mycloset.components.ClickableTextComponent
@@ -26,7 +26,7 @@ import com.example.mycloset.components.HeadingTextComponent
 import com.example.mycloset.components.NormalTextComponent
 import com.example.mycloset.components.PasswordTextField
 import com.example.mycloset.components.TextField
-import com.example.mycloset.data.LoginUIEvent
+import com.example.mycloset.LoginWorkingSet.Login.LoginUIEvent
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 
@@ -41,10 +41,13 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()){
             NormalTextComponent(value = stringResource(id = R.string.my_closet))
             HeadingTextComponent(value = stringResource(id = R.string.welcome_back))
 
-            TextField(lableValue = stringResource(id = R.string.email), onTextSelected = {loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))}, errorStatus = loginViewModel.loginUiState.value.emailError , imageVector = Icons.Default.Email)
-            PasswordTextField(labelValue = stringResource(id = R.string.password), onTextSelected = {loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))}, errorStatus = loginViewModel.loginUiState.value.passwordError)
+            TextField(lableValue = stringResource(id = R.string.email), onTextSelected = {loginViewModel.onEvent(
+                LoginUIEvent.EmailChanged(it))}, errorStatus = loginViewModel.loginUiState.value.emailError , imageVector = Icons.Default.Email)
+            PasswordTextField(labelValue = stringResource(id = R.string.password), onTextSelected = {loginViewModel.onEvent(
+                LoginUIEvent.PasswordChanged(it))}, errorStatus = loginViewModel.loginUiState.value.passwordError)
             Spacer(modifier = Modifier.height(40.dp))
-            ButtonComponent(value = stringResource(id = R.string.login), onButtonClicked = { loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked) }, isEnabled = loginViewModel.allValidationPassed.value)
+            ButtonComponent(value = stringResource(id = R.string.login), onButtonClicked = { loginViewModel.onEvent(
+                LoginUIEvent.LoginButtonClicked) }, isEnabled = loginViewModel.allValidationPassed.value)
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
             ClickableTextComponent(onTextSelected = {LoginAppRouter.navigateTo(Screen.SignupScreen)} , tryingToLogin = false)
