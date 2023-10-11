@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface ProductRepository {
     fun getAllProductsStream(): Flow<List<ProductEntity>>
     fun getAllProductsWithEmailStream(userEmail: String): Flow<List<ProductEntity>?>
-    fun updateProductDetailsStream(product: ProductEntity)
-    fun deleteProductStream(product: ProductEntity)
+    suspend fun updateProductDetailsStream(product: ProductEntity)
+    suspend fun deleteProductStream(product: ProductEntity)
 
 }

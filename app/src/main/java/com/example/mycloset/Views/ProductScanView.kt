@@ -244,7 +244,7 @@ fun ProductScanView(
                     Text("MyCloset", modifier = Modifier.padding(2.dp))
                 }, actions = {
                     IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                        onClick = { showProductInfo = false }
                     ) {
                         Icon(Icons.Default.Camera, contentDescription = null)
                     }
