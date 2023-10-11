@@ -1,8 +1,6 @@
-@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.example.mycloset.Views
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.mycloset.ProductViewModel
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
+import com.example.mycloset.LoginWorkingSet.LoggedUser
 import kotlinx.coroutines.flow.*
+
 
 
 //import com.example.mycloset.Screen
@@ -71,7 +71,7 @@ fun EmptyHomeScreen() {
 @Composable
 fun HomeScreen(navController: NavController, viewModel: ProductViewModel) {
     // Observe the products list from the ViewModel
-    viewModel.getProductsWithEmail(userEmail)
+    viewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
     val products = viewModel.products
     Scaffold(topBar = {
         TopAppBar(

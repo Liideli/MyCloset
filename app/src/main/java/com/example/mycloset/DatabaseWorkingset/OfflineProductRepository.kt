@@ -1,4 +1,4 @@
-package com.example.mycloset
+package com.example.mycloset.DatabaseWorkingset
 
 class OfflineProductRepository(private val productDao: ProductDao) : ProductRepository {
     override fun getAllProductsStream() = productDao.getAllProducts()

@@ -26,7 +26,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
-//    val navController = rememberNavController()
+    //val navController = rememberNavController()
 
     // ViewModel for handling camera and barcode scanning logic
     private val viewModel: CameraScanViewModel by viewModels()
@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
 //                    SetupNavGraph(navController = navController)
                     val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
                     //HomeScreen(navController = navController, viewModel = productViewModel)
+                    //LoginScreen()
                     ProductScanView(
                         productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,

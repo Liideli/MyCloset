@@ -1,7 +1,9 @@
 package com.example.mycloset
 
 import android.content.Context
+import com.example.mycloset.DatabaseWorkingset.OfflineProductRepository
 import com.example.mycloset.DatabaseWorkingset.ProductDatabase
+import com.example.mycloset.DatabaseWorkingset.ProductRepository
 
 
 /**
