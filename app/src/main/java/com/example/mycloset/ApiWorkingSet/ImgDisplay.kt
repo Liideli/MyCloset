@@ -1,4 +1,4 @@
-package com.example.mycloset
+package com.example.mycloset.ApiWorkingSet
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

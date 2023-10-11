@@ -1,5 +1,6 @@
 package com.example.mycloset.Views
 
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -43,10 +44,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.mycloset.BarcodeModel
-import com.example.mycloset.ImgDisplay
-import com.example.mycloset.ProductViewModel
+import com.example.mycloset.BarcodeWorkingSet.BarcodeModel
+import com.example.mycloset.ApiWorkingSet.ImgDisplay
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import kotlinx.coroutines.flow.StateFlow
+import com.example.mycloset.LoginWorkingSet.LoggedUser
 
 @Composable
 fun ProductScanView(
@@ -251,23 +253,14 @@ fun ProductScanView(
                 }) {
                     Text(text = "Back")
                 }
-                Button(onClick = {
-                    productViewModel.saveToDatabase(
-                        barcodeNumber,
-                        userEmail,
-                        model,
-                        title,
-                        category,
-                        brand,
-                        color,
-                        material,
-                        size,
-                        images
-                    )
-                    Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT)
-                        .show()
-                }) {
-                    Text(text = "Add")
+                if(LoggedUser.loggedUserEmail!=""){
+                    Button(onClick = {  productViewModel.saveToDatabase(barcodeNumber, LoggedUser.loggedUserEmail,  model, title, category, brand, color, material, size, images)
+                        Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT)
+                            .show()}) {
+                        Text(text = "Add")
+                }
+                }else{
+                    Log.i("LOGIN_ERROR","You can't add a new item to your wardrobe because you aren't logged")
                 }
             }
         }

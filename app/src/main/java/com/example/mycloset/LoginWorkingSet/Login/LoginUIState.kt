@@ -1,4 +1,4 @@
-package com.example.mycloset.data
+package com.example.mycloset.LoginWorkingSet.Login
 
 data class LoginUIState (
     var email: String = "",

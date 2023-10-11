@@ -1,17 +1,12 @@
-package com.example.mycloset
+package com.example.mycloset.LoginWorkingSet.Login
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.mycloset.data.LoginUIEvent
-import com.example.mycloset.data.LoginUIState
-import com.example.mycloset.data.rules.Validator
+import com.example.mycloset.LoginWorkingSet.LoggedUser
+import com.example.mycloset.Rules.Validator
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class LoginViewModel: ViewModel() {
 
@@ -49,6 +44,9 @@ class LoginViewModel: ViewModel() {
             .addOnCompleteListener{
 
                 if (it.isSuccessful){
+                    //if the login work, i set the object that contain the email(i need it for view, add, delete the product from a specific user)
+                    LoggedUser.loggedUserEmail =loginUiState.value.email
+
                     loginInProgress.value = false
                     LoginAppRouter.navigateTo(Screen.HomeScreen)
                 }

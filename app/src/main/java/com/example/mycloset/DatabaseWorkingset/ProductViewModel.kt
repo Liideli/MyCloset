@@ -1,4 +1,4 @@
-package com.example.mycloset
+package com.example.mycloset.DatabaseWorkingset
 
 
 import android.util.Log
@@ -7,6 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mycloset.ApiWorkingSet.RetrofitObject
+import com.example.mycloset.BarcodeWorkingSet.BarcodeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -30,18 +32,7 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         images: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val productInformation = ProductEntity(
-                barcodeNumber,
-                userEmail,
-                model,
-                title,
-                category,
-                brand,
-                color,
-                material,
-                size,
-                images
-            )
+            val productInformation = ProductEntity(barcodeNumber, userEmail, model, title, category, brand, color, material, size, images)
             productDao.insertProduct(productInformation)
             Log.i("SAV", "Saved to database")
         }
