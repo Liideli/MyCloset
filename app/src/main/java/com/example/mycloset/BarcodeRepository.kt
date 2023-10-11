@@ -1,5 +1,7 @@
 package com.example.mycloset
 
+import com.example.mycloset.ApiWorkingSet.RetrofitObject
+
 //
 var APY_KEY:String="3nupb3et7t5lbqlhhhspyrh3si1wu0"
 

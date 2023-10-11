@@ -1,4 +1,4 @@
-package com.example.mycloset
+package com.example.mycloset.DatabaseWorkingset
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

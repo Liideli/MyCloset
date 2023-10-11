@@ -1,4 +1,4 @@
-package com.example.mycloset
+package com.example.mycloset.ApiWorkingSet
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -46,7 +46,7 @@ object RetrofitObject{
         suspend fun productInformation(
             @Query("barcode")barcode:String,
             @Query("key")key:String
-        ):ModelResult.Model
+        ): ModelResult.Model
     }
 
     //here is create the mew retrofit service

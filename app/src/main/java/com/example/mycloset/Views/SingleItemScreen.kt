@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mycloset.ImgDisplay.Companion.DisplayPicture
-import com.example.mycloset.ProductViewModel
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {

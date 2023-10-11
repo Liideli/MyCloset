@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.mycloset.BarcodeModel
 import com.example.mycloset.ImgDisplay
-import com.example.mycloset.ProductViewModel
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
