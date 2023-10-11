@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme

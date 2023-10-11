@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mycloset.ImgDisplay.Companion.DisplayPicture
+import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 
 @Composable

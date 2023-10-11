@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mycloset.ApiWorkingSet.RetrofitObject
-import com.example.mycloset.BarcodeRepository
+import com.example.mycloset.BarcodeWorkingSet.BarcodeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
