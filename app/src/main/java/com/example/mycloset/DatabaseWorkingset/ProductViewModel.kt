@@ -31,18 +31,22 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         obj:ProductObject
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val productInformation = ProductEntity(obj.barcodeNumber,obj.userEmail,obj.model,obj.title,obj.category,obj.brand,obj.color,obj.material,obj.size,obj.images)
+
+            //If the title is to big, make it shorter
+            val title = obj.title
+            val titleModified = if ("," in title) {
+                title.substringBefore(",")
+            } else {
+                title
+            }
+
+            //Same for the category
+            val categoryText = obj.category
+            val category = categoryText.substringAfterLast(">")
+
+            val productInformation = ProductEntity(obj.barcodeNumber,obj.userEmail,obj.model,titleModified,category,obj.brand,obj.color,obj.material,obj.size,obj.images)
             productDao.insertProduct(productInformation)
             Log.i("SAV", "Saved to database")
-        }
-    }
-
-    // Get all products
-    fun getProducts() {
-        viewModelScope.launch {
-            productRepository.getAllProductsStream().collect() { response ->
-                products = response
-            }
         }
     }
 

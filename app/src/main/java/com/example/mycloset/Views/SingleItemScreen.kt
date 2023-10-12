@@ -3,6 +3,7 @@ package com.example.mycloset.Views
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -101,72 +103,138 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 ) {
                     DisplayPicture(product.images)
                 }
+            Text(
+                text = product.title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+            )
 
-                Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            DisplayPicture(product.images)
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
 
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    item {
-                        Text(
-                            text = "Product Information",
-                            style = textType.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                    }
-
-                    item {
-                        Text("Barcode: ${product.barcodeNumber}", style = textType.bodyMedium)
-                    }
-
-                    item {
-                        Text("Model: ${product.model}", style = textType.bodyMedium)
-                    }
-
-                    item {
-                        Text("Category: ${product.category}", style = textType.bodyMedium)
-                    }
-
-                    item {
-                        Text("Brand: ${product.brand}", style = textType.bodyMedium)
-                    }
-
-                    item {
-                        Text("Color: ${product.color}", style = textType.bodyMedium)
-                    }
-
-                    item {
-                        Text("Material: ${product.material}", style = textType.bodyMedium)
-                    }
-
-                    item {
-                        Text("Size: ${product.size}", style = textType.bodyMedium)
-                    }
-
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Product Information :",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
                 }
 
-                // Add more text components or other content as needed
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Button(
-                        onClick = {
-                            productViewModel.deleteProduct(productViewModel.selectedProduct)
-                            Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
-                            LoginAppRouter.navigateTo(Screen.HomeScreen)
-                        }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
                     ) {
-                        Text("Delete Item")
+                        Text("Barcode: ${product.barcodeNumber}")
                     }
-                    Button(
-                        onClick = {
+                }
+
+                if(product.model!=""){
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Model: ${product.model}")
+                        }
+                    }
+                }
+
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                    ) {
+                        Text("Category: ${product.category}")
+                    }
+                }
+                if(product.brand!=""){
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Brand: ${product.brand}")
+                        }
+                    }
+                }
+
+                if(product.color!="") {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Color: ${product.color}")
+                        }
+                    }
+                }
+                if(product.material!="") {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Material: ${product.material}")
+                        }
+                    }
+                }
+                if(informationProductObject.size!=""){
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Size: ${informationProductObject.size}")
+                        }
+                    }
+                }
+
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            // Add more text components or other content as needed
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(
+                    onClick = {
+                        productViewModel.deleteProduct(productViewModel.selectedProduct)
+                        Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
+                        LoginAppRouter.navigateTo(Screen.HomeScreen)
+                    }
+                ) {
+                    Text("Delete Item")
+                }
+                Button(
+                    onClick = {
 
                         }
                     ) {
