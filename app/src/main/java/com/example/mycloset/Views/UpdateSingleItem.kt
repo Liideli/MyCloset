@@ -60,14 +60,14 @@ import kotlinx.coroutines.flow.StateFlow
 fun UpdateSingleItem(
     productViewModel: ProductViewModel,
 ) {
-    var editedProduct by remember { mutableStateOf(productViewModel.singleProduct.copy()) }
+    var editedProduct by remember { mutableStateOf(productViewModel.informationProductObject.copy()) }
     val context = LocalContext.current
     Scaffold(
         topBar = {
             // TopAppBar (the top bar)
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = { onBack() }) {
+                    IconButton(onClick = {  }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back"

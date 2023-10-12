@@ -33,7 +33,6 @@ import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
 import com.example.mycloset.AppViewModelProvider
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
-import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 

@@ -48,12 +48,14 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
     }
 
-    // Get a single product from an account
-    /*fun getSingleProduct(barcode:String,userEmail: String) {
+    fun getProductWithBarcode(barcodeNumber: String) {
         viewModelScope.launch {
-           singleProduct=productRepository.getSingleProductStream(barcode,userEmail)
+            productRepository.getAllProductWithBarcodeStream(barcodeNumber).collect() { response ->
+                products = response
+            }
         }
-    }*/
+    }
+
 
     //update
     fun updateProductDetails(product:ProductEntity){
