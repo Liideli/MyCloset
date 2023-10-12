@@ -3,9 +3,9 @@ package com.example.mycloset.DatabaseWorkingset
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "products")
+@Entity(tableName = "products",primaryKeys = ["barcodeNumber", "userEmail"])
 data class ProductEntity(
-    @PrimaryKey val barcodeNumber: String,
+    val barcodeNumber: String,
     val userEmail: String,
     val model: String,
     val title: String,

@@ -9,6 +9,7 @@ sealed class Screen(){
     object HomeScreen : Screen()
     object ProductScanView : Screen()
     object SingleItemScreen : Screen()
+    object UpdateSingleScreen : Screen()
 }
 
 object LoginAppRouter{

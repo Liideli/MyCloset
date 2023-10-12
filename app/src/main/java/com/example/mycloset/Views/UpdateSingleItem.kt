@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,20 +54,20 @@ import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import kotlinx.coroutines.flow.StateFlow
 
-/*
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
-@Composable
-fun SingleItemScreen(productViewModel: ProductViewModel) {
-    var viewModel: SignupViewModel = viewModel()
-    val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
-    val context = LocalContext.current
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UpdateSingleItem(
+    productViewModel: ProductViewModel,
+) {
+    var editedProduct by remember { mutableStateOf(productViewModel.singleProduct.copy()) }
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             // TopAppBar (the top bar)
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { onBack() }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -74,85 +75,65 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     }
                 },
                 title = {
-                    Text("MyCloset")
-                },
-                actions = {
-                    IconButton(onClick = { /* Handle camera navigation here */ }) {
-                        Icon(
-                            Icons.Default.Camera,
-                            contentDescription = "Camera"
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-                            viewModel.logout()
-                        }
-                    ) {
-                        Icon(Icons.Default.Logout, contentDescription = "Logout")
-                    }
+                    Text("Edit Product")
                 }
             )
         }
     ) { padding ->
-        // Content to be displayed below the top bar
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-
-            DisplayPicture(informationProductObject.images)
+            DisplayPicture(editedProduct.images)
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            Text(
+                text = "Edit Product Information",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
 
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                item {
-                    Text(
-                        text = "Product Information",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
+            TextField(
+                value = editedProduct.model,
+                onValueChange = { editedProduct.model = it },
+                label = { Text("Model") }
+            )
 
-                item {
-                    Text("Barcode: ${informationProductObject.barcodeNumber}")
-                }
+            TextField(
+                value = editedProduct.category,
+                onValueChange = { editedProduct.category = it },
+                label = { Text("Category") }
+            )
 
-                item {
-                    Text("Model: ${informationProductObject.model}")
-                }
+            TextField(
+                value = editedProduct.brand,
+                onValueChange = { editedProduct.brand = it },
+                label = { Text("Brand") }
+            )
 
-                item {
-                    Text("Category: ${informationProductObject.category}")
-                }
+            TextField(
+                value = editedProduct.color,
+                onValueChange = { editedProduct.color = it },
+                label = { Text("Color") }
+            )
 
-                item {
-                    Text("Brand: ${informationProductObject.brand}")
-                }
+            TextField(
+                value = editedProduct.material,
+                onValueChange = { editedProduct.material = it },
+                label = { Text("Material") }
+            )
 
-                item {
-                    Text("Color: ${informationProductObject.color}")
-                }
-
-                item {
-                    Text("Material: ${informationProductObject.material}")
-                }
-
-                item {
-                    Text("Size: ${informationProductObject.size}")
-                }
-
-            }
-
+            TextField(
+                value = editedProduct.size,
+                onValueChange = { editedProduct.size = it },
+                label = { Text("Size") }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Add more text components or other content as needed
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,23 +141,22 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = {
-                        productViewModel.deleteProduct(informationProductObject)
-                        Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
-                        LoginAppRouter.navigateTo(Screen.HomeScreen)
-                    }
+                    onClick = {LoginAppRouter.navigateTo(Screen.SingleItemScreen) }
                 ) {
-                    Text("Delete Item")
+                    Text("Cancel")
                 }
                 Button(
                     onClick = {
-
+                        // Save the edited product
+                        productViewModel.updateProductDetails(editedProduct)
+                        Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
+                        LoginAppRouter.navigateTo(Screen.SingleItemScreen)
                     }
                 ) {
-                    Text("Update Item")
+                    Text("Save")
                 }
+
             }
         }
     }
 }
-*/

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
+import com.example.mycloset.AppViewModelProvider
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.navigation.LoginAppRouter
@@ -41,7 +42,8 @@ import com.example.mycloset.navigation.Screen
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
     var viewModel: SignupViewModel = viewModel()
-    val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
+    val singleProduct by rememberUpdatedState(newValue = productViewModel.singleProduct)
+
     val context = LocalContext.current
 
     Scaffold(
@@ -84,7 +86,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 .padding(16.dp)
         ) {
 
-            DisplayPicture(informationProductObject.images)
+            DisplayPicture(singleProduct.images)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -103,31 +105,31 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 }
 
                 item {
-                    Text("Barcode: ${informationProductObject.barcodeNumber}")
+                    Text("Barcode: ${singleProduct.barcodeNumber}")
                 }
 
                 item {
-                    Text("Model: ${informationProductObject.model}")
+                    Text("Model: ${singleProduct.model}")
                 }
 
                 item {
-                    Text("Category: ${informationProductObject.category}")
+                    Text("Category: ${singleProduct.category}")
                 }
 
                 item {
-                    Text("Brand: ${informationProductObject.brand}")
+                    Text("Brand: ${singleProduct.brand}")
                 }
 
                 item {
-                    Text("Color: ${informationProductObject.color}")
+                    Text("Color: ${singleProduct.color}")
                 }
 
                 item {
-                    Text("Material: ${informationProductObject.material}")
+                    Text("Material: ${singleProduct.material}")
                 }
 
                 item {
-                    Text("Size: ${informationProductObject.size}")
+                    Text("Size: ${singleProduct.size}")
                 }
 
             }
@@ -144,7 +146,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
             ) {
                 Button(
                     onClick = {
-                       productViewModel.deleteProduct(informationProductObject)
+                       //productViewModel.deleteProduct(singleProduct)
                         Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
                         LoginAppRouter.navigateTo(Screen.HomeScreen)
                     }

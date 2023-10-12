@@ -21,6 +21,9 @@ interface ProductDao {
     @Query("SELECT * from products WHERE userEmail = :userEmail")
     fun getProductsWithEmail(userEmail: String): Flow<List<ProductEntity>>
 
+    //Get single product
+    @Query("SELECT * from products WHERE userEmail = :userEmail AND barcodeNumber=:barcode")
+    fun getSingleProduct(barcode:String,userEmail: String): ProductEntity
     @Update
     suspend fun updateProductDetails(product: ProductEntity)
 
