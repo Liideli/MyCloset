@@ -135,8 +135,6 @@ fun UpdateSingleItem(
                 DisplayPicture(product.images)
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
