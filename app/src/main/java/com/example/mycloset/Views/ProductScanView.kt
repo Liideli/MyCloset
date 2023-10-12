@@ -48,7 +48,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -60,6 +59,7 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.fontFamily
 import kotlinx.coroutines.flow.StateFlow
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -99,7 +99,13 @@ fun ProductScanView(
         Scaffold(topBar = {
             TopAppBar(
                 title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "MyCloset",
+                        fontFamily = fontFamily,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displayMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer)
                 },
                 actions = {
                     IconButton(
@@ -233,7 +239,13 @@ fun ProductScanView(
         Scaffold(topBar = {
             TopAppBar(
                 title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "MyCloset",
+                        fontFamily = fontFamily,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displayMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer)
                 },
                 actions = {
                     IconButton(

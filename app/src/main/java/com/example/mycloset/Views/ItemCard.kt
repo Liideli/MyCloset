@@ -11,12 +11,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.textType
 
 
 data class Item(val id: Int, val title: String, val imageUrl: String)
@@ -41,17 +44,21 @@ fun ItemCard(
             LoginAppRouter.navigateTo(Screen.SingleItemScreen)
         }
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
                 painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = null,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
-            name?.let { Text(text = it) }
+            name?.let { Text(text = it, style = textType.bodyMedium) }
         }
     }
 }
-
 
 
 /*
