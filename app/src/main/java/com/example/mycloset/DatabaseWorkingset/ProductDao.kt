@@ -4,13 +4,29 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.mycloset.DatabaseWorkingset.ProductEntity
+import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: ProductEntity)
 
+    // Get all products
     @Query("SELECT * FROM products")
-    suspend fun getAllProducts(): List<ProductEntity>
+    fun getAllProducts(): Flow<List<ProductEntity>>
+
+    // Get products of logged in user
+    @Query("SELECT * from products WHERE userEmail = :userEmail")
+    fun getProductsWithEmail(userEmail: String): Flow<List<ProductEntity>>
+
+    @Query("SELECT * from products WHERE barcodeNumber=:barcodeNumber")
+    fun getProductWithBarcode(barcodeNumber: String): Flow<List<ProductEntity>>
+
+    @Update
+    suspend fun updateProductDetails(product: ProductEntity)
+
+    //@Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
+    @Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
+    suspend fun deleteProduct(barcodeNumber: String)
 }

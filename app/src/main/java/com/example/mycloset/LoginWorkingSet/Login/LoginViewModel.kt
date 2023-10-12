@@ -1,5 +1,6 @@
 package com.example.mycloset.LoginWorkingSet.Login
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
@@ -46,13 +47,16 @@ class LoginViewModel: ViewModel() {
                 if (it.isSuccessful){
                     //if the login work, i set the object that contain the email(i need it for view, add, delete the product from a specific user)
                     LoggedUser.loggedUserEmail =loginUiState.value.email
+                    Log.i("EMAIL", loginUiState.value.email)
 
                     loginInProgress.value = false
                     LoginAppRouter.navigateTo(Screen.HomeScreen)
+                    Log.i("SUCCESS", "Login success")
                 }
             }
             .addOnFailureListener{
                 loginInProgress.value = false
+                Log.i("FAIL", "Login failed")
             }
     }
     private fun validateLoginUIDataWithRules(){

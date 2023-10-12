@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 
 
 private val LightColors = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
+    primary = md_theme_light_outline,
+    onPrimary = md_theme_light_primaryContainer,
     primaryContainer = md_theme_light_primaryContainer,
     onPrimaryContainer = md_theme_light_onPrimaryContainer,
     secondary = md_theme_light_secondary,

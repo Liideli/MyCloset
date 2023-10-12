@@ -11,12 +11,10 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mycloset.App.LoginApp
 import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
-import com.example.mycloset.DatabaseWorkingset.ProductViewModel
-import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -25,12 +23,11 @@ import com.google.mlkit.vision.barcode.common.Barcode
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var navController: NavHostController
-//    val navController = rememberNavController()
+    private lateinit var navController: NavHostController
+    //val navController = rememberNavController()
 
     // ViewModel for handling camera and barcode scanning logic
     private val viewModel: CameraScanViewModel by viewModels()
-    private val productViewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,39 +38,12 @@ class MainActivity : ComponentActivity() {
             // Build a camera controller for handling camera operations
             val cameraController = buildCameraController()
 
-            // Set the content of the activity to be a CameraView
+            // Set the content of the activity to be the App
             setContent {
                 AppTheme {
                     // Add Navigation
                     navController = rememberNavController()
-//                    SetupNavGraph(navController = navController)
-                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
-                    ProductScanView(
-                        productViewModel,
-                        barcodesFlow = viewModel.barcodesFlow,
-                        cameraController,
-                        torchEnabledFlow = viewModel.torchFlow,
-                        onTorchButtonClicked = {
-                            // Toggle torch status when the button is clicked
-                            cameraController.enableTorch(!viewModel.torchFlow.value)
-                            viewModel.updateTorchEnabled()
-                        }
-                    )
-                    /*CameraView(
-                        cameraController = cameraController,
-                    //MainScreen()
-                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
-                    ProductScanView(
-                        productViewModel,
-                        barcodesFlow = viewModel.barcodesFlow,
-                        cameraController,
-                        torchEnabledFlow = viewModel.torchFlow,
-                        onTorchButtonClicked = {
-                            // Toggle torch status when the button is clicked
-                            cameraController.enableTorch(!viewModel.torchFlow.value)
-                            viewModel.updateTorchEnabled()
-                        }
-                    )*/
+                    LoginApp(cameraController = cameraController)
                 }
             }
         } else {
@@ -145,101 +115,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-// Product Info Screen Composable
-/*
-@Composable
-fun ProductInfoScreen(productViewModel: ProductViewModel) {
-    val informationProductMap by rememberUpdatedState(newValue = productViewModel.informationProductMap)
-    var showProductInfo by remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Button(onClick = {
-            productViewModel.getInfo()
-            showProductInfo = true
-        })
-        {
-            Text("Fetch Product Info")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Divider(modifier = Modifier.padding(vertical = 20.dp))
-
-        if (showProductInfo) {
-            if (informationProductMap.isNotEmpty()) {
-                Column {
-
-                    //Title
-                    val title: String = informationProductMap["title"].toString()
-                    Text(
-                        text = title,
-                        modifier = Modifier.padding(16.dp)
-                    )
-
-                    //Image
-                    DisplayPicture(informationProductMap["images"].toString())
-
-                    //Table
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        informationProductMap.forEach { (key, value) ->
-                            if (key != "title" && key != "images") {
-                                item {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Text(text = key, fontWeight = FontWeight.Bold)
-                                        Text(text = value.toString())
-                                    }
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                }
-                            }
-                        }
-                    }
-
-                    //Button
-                    Row {
-                        Button(onClick = { /*TODO*/ }) {
-                            Text(text = "Cancel")
-                        }
-                        Button(onClick = { /*TODO*/ }) {
-                            Text(text = "Add")
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-}*/
-
-//@Composable
-//fun MyNavHost(navController: NavHostController) {
-//    NavHost(
-//        navController = navController,
-//        startDestination = "home"
-//    ) {
-//        composable("HomeScreen") {
-//            HomeScreen(viewModel.items)
-//        }
-//        composable("scanner") {
-//            // Your scanner screen
-//        }
-//        // Add more destinations as needed
-//    }
-//}
-//
-//val navController = rememberNavController()
-//
-//// ...
-//
-//setContent {
-//    MyNavHost(navController)
-//}
-

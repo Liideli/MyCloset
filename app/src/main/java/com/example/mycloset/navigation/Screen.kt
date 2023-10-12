@@ -7,10 +7,14 @@ sealed class Screen(){
     object SignupScreen: Screen()
     object LoginScreen: Screen()
     object HomeScreen : Screen()
+    object ProductScanView : Screen()
+    object MainScreen: Screen()
+    object SingleItemScreen : Screen()
+    object UpdateSingleScreen : Screen()
 }
 
 object LoginAppRouter{
-    val currentScreen: MutableState<Screen> = mutableStateOf(Screen.SignupScreen)
+    val currentScreen: MutableState<Screen> = mutableStateOf(Screen.MainScreen)
 
     fun navigateTo(destination: Screen){
         currentScreen.value = destination

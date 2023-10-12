@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.example.mycloset.Views
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,104 +10,121 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-//import com.example.mycloset.Screen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
+import com.example.mycloset.LoginWorkingSet.LoggedUser
+import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
+import com.example.mycloset.navigation.LoginAppRouter
+import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.fontFamily
+import kotlinx.coroutines.flow.*
 
 
-//
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmptyHomeScreen() {
-    Scaffold(
-        topBar = {
+fun HomeScreen(productViewModel: ProductViewModel) {
+    val signupViewModel: SignupViewModel = viewModel()
+    productViewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
+    val products = productViewModel.products
+
+    if (products.isEmpty()) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "MyCloset",
+                            fontFamily = fontFamily,
+                            modifier = Modifier.padding(vertical = 16.dp),
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                        ) {
+                            Icon(Icons.Default.Camera, contentDescription = "Camera")
+                        }
+                        IconButton(
+                            onClick = {
+                                signupViewModel.logout()
+                            }
+                        ) {
+                            Icon(Icons.Default.Logout, contentDescription = "Logout")
+                        }
+                    }
+                )
+            }) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "You don't have any items yet...",
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    } else {
+        Scaffold(topBar = {
             TopAppBar(
-//                colors = topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
-//                ),
                 title = {
-                    Text("MyCloset")
-                }, actions = {
+                    Text(
+                        text = "MyCloset",
+                        fontFamily = fontFamily,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displayMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer)
+                },
+                actions = {
                     IconButton(
-                        onClick = { /* Navigate to the scanner screen */ }
+                        onClick = { signupViewModel.logout() }
                     ) {
-                        Icon(Icons.Default.Camera, contentDescription = null)
+                        Icon(Icons.Default.Logout, contentDescription = "Logout")
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                    ) {
+                        Icon(Icons.Default.Camera, contentDescription = "Camera")
                     }
                 }
             )
-        }) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "You don't have any items yet...",
-                textAlign = TextAlign.Center,
-            )
         }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen(navController: NavController) {
-    Scaffold(topBar = {
-        TopAppBar(
-//                colors = topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
-//                ),
-            title = {
-                Text("MyCloset", modifier = Modifier.padding(2.dp))
-            }, actions = {
-                IconButton(
-                    onClick = { /* Navigate to the scanner screen
-                    navController.navigate(route = Screen.Camera.route)*/}
-                ) {
-                    Icon(Icons.Default.Camera, contentDescription = null)
+        ) { innerPadding ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2), modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                items(products.size) { index ->
+                    val product = products[index]
+                    ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
                 }
             }
-        )
-    }) { padding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2), modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            items(10) {
-                ItemCard("https://media.istockphoto.com/id/1303978937/fi/valokuva/valkoinen-lenkkari-sinisell%C3%A4-kaltevuustaustalla-miesten-muoti-urheilukenk%C3%A4-lenkkarit.jpg?s=612x612&w=0&k=20&c=X_lwi6td_xtFUGXjOmAU8WzH-MKPZ-OeWKtKUshe-SI=", "nike")
-            }
         }
     }
 }
 
-@Preview
-@Composable
-fun PrevHome() {
-    HomeScreen(
-        navController = rememberNavController()
-    )
-}
 
-@Preview
-@Composable
-fun PreEmpty() {
-    EmptyHomeScreen()
-}
 
