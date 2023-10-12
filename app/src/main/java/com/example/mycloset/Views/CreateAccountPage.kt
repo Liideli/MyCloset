@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,6 +40,7 @@ import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.LoginWorkingSet.Signup.SignupUIEvent
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.fontFamily
 
 
 @Composable
@@ -45,11 +49,29 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
         Surface(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp), // Adjust the height of the image container as needed
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    // Add your image here
+
+                }
                 Spacer(modifier = Modifier.padding(24.dp))
-                HeadingTextComponent(value = stringResource(id = R.string.my_closet))
+                Text(
+                    fontFamily = fontFamily,
+                    text = "MyCloset",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    textAlign = TextAlign.Center // Center align the text
+                )
                 NormalTextComponent(value = stringResource(id = R.string.create_account))
                 Spacer(modifier = Modifier.height(20.dp))
                 TextField(
