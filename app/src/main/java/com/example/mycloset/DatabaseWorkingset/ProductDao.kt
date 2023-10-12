@@ -26,6 +26,7 @@ interface ProductDao {
     @Update
     suspend fun updateProductDetails(product: ProductEntity)
 
-    /*@Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
-    suspend fun deleteProduct(product: ProductEntity)*/
+    //@Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
+    @Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
+    suspend fun deleteProduct(barcodeNumber: String)
 }

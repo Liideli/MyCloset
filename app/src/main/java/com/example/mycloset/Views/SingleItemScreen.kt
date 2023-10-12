@@ -3,14 +3,14 @@ package com.example.mycloset.Views
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Camera
@@ -25,10 +25,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
@@ -75,60 +79,93 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 }
             )
         }
-    ) { padding ->
+    ) { innerPadding ->
         // Content to be displayed below the top bar
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(16.dp)
         ) {
+            val product = products[0]
 
-            //DisplayPicture(informationProductObject.images)
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            DisplayPicture(product.images)
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2), modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp)
             ) {
-                items(products.size) { index ->
-                    val product = products[index]
-                    ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
+                item {
+                    Text(
+                        text = "Product Information",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
                 }
+
+                item {
+                    Text("Barcode: ${product.barcodeNumber}")
+                }
+
+                item {
+                    Text("Model: ${product.model}")
+                }
+
+                item {
+                    Text("Category: ${product.category}")
+                }
+
+                item {
+                    Text("Brand: ${product.brand}")
+                }
+
+                item {
+                    Text("Color: ${product.color}")
+                }
+
+                item {
+                    Text("Material: ${product.material}")
+                }
+
+                item {
+                    Text("Size: ${product.size}")
+                }
+
             }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Add more text components or other content as needed
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.Center
+            // Add more text components or other content as needed
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(
+                    onClick = {
+                        productViewModel.deleteProduct(productViewModel.selectedProduct)
+                        Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
+                        LoginAppRouter.navigateTo(Screen.HomeScreen)
+                    }
                 ) {
-                    Button(
-                        onClick = {
-                            //productViewModel.deleteProduct(informationProductObject)
-                            Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
-                            LoginAppRouter.navigateTo(Screen.HomeScreen)
-                        }
-                    ) {
-                        Text("Delete Item")
-                    }
-                    Button(
-                        onClick = {
+                    Text("Delete Item")
+                }
+                Button(
+                    onClick = {
 
-                        }
-                    ) {
-                        Text("Update Item")
                     }
+                ) {
+                    Text("Update Item")
                 }
             }
         }
     }
-
+}
 
 
 /*@Composable

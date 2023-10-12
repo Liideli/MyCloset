@@ -37,7 +37,7 @@ fun ItemCard(
         modifier = Modifier.padding(5.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = {
-                productViewModel.setSelectedProduct(barcodeNumber)
+            productViewModel.setSelectedProduct(barcodeNumber)
             LoginAppRouter.navigateTo(Screen.SingleItemScreen)
         }
     ) {

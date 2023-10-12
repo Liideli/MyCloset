@@ -72,12 +72,11 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
 
     //delete
-    /*fun deleteProduct(obj:ProductObject){
+    fun deleteProduct(barcodeNumber: String){
         viewModelScope.launch {
-            productRepository.deleteProductStream(ProductEntity(obj.barcodeNumber,obj.userEmail,obj.model,obj.title,obj.category,obj.brand,obj.color,obj.material,obj.size,obj.images)
-            )
+            productRepository.deleteProductStream(barcodeNumber)
         }
-    }*/
+    }
 
     //the result will be an array of strings
     fun getInfo(barcode: String) {
