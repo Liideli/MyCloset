@@ -11,13 +11,10 @@ import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mycloset.App.LoginApp
 import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
-import com.example.mycloset.DatabaseWorkingset.ProductViewModel
-import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -26,7 +23,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var navController: NavHostController
+    private lateinit var navController: NavHostController
     //val navController = rememberNavController()
 
     // ViewModel for handling camera and barcode scanning logic
@@ -41,44 +38,12 @@ class MainActivity : ComponentActivity() {
             // Build a camera controller for handling camera operations
             val cameraController = buildCameraController()
 
-            // Set the content of the activity to be a CameraView
+            // Set the content of the activity to be the App
             setContent {
                 AppTheme {
                     // Add Navigation
                     navController = rememberNavController()
-//                    SetupNavGraph(navController = navController)
-                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
-                    //HomeScreen()
-                   LoginApp()
-
-                    ProductScanView(
-                        productViewModel,
-                        barcodesFlow = viewModel.barcodesFlow,
-                        cameraController,
-                        torchEnabledFlow = viewModel.torchFlow,
-                        onTorchButtonClicked = {
-                            // Toggle torch status when the button is clicked
-                            cameraController.enableTorch(!viewModel.torchFlow.value)
-                            viewModel.updateTorchEnabled()
-                        }
-                    )
-
-
-                    /*CameraView(
-                        cameraController = cameraController,
-                    //MainScreen()
-                    val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
-                    ProductScanView(
-                        productViewModel,
-                        barcodesFlow = viewModel.barcodesFlow,
-                        cameraController,
-                        torchEnabledFlow = viewModel.torchFlow,
-                        onTorchButtonClicked = {
-                            // Toggle torch status when the button is clicked
-                            cameraController.enableTorch(!viewModel.torchFlow.value)
-                            viewModel.updateTorchEnabled()
-                        }
-                    )*/
+                    LoginApp(cameraController = cameraController)
                 }
             }
         } else {
@@ -150,29 +115,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-//@Composable
-//fun MyNavHost(navController: NavHostController) {
-//    NavHost(
-//        navController = navController,
-//        startDestination = "home"
-//    ) {
-//        composable("HomeScreen") {
-//            HomeScreen(viewModel.items)
-//        }
-//        composable("scanner") {
-//            // Your scanner screen
-//        }
-//        // Add more destinations as needed
-//    }
-//}
-//
-//val navController = rememberNavController()
-//
-//// ...
-//
-//setContent {
-//    MyNavHost(navController)
-//}
-

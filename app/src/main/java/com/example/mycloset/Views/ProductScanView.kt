@@ -45,14 +45,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.mycloset.BarcodeWorkingSet.BarcodeModel
 import com.example.mycloset.ApiWorkingSet.ImgDisplay
+import com.example.mycloset.BarcodeWorkingSet.BarcodeModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
-import kotlinx.coroutines.flow.StateFlow
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.navigation.LoginAppRouter
+import com.example.mycloset.navigation.Screen
+import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScanView(
     // Parameters required for the composable

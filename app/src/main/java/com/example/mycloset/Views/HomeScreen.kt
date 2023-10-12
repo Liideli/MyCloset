@@ -1,9 +1,9 @@
-@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.example.mycloset.Views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
+import com.example.mycloset.LoginWorkingSet.LoggedUser
+import com.example.mycloset.navigation.LoginAppRouter
+import com.example.mycloset.navigation.Screen
+import kotlinx.coroutines.flow.*
+
+
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -35,97 +42,84 @@ import com.example.mycloset.navigation.Screen
 
 //import com.example.mycloset.Screen
 
-
-//
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmptyHomeScreen() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
+fun HomeScreen(viewModel: ProductViewModel) {
+    // Observe the products list from the ViewModel
+    //viewModel.getProducts()
+    viewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
+    val products = viewModel.products
+    Log.i("PROD", products.toString())
+    if (products.isEmpty()) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
 //                colors = topAppBarColors(
 //                    containerColor = MaterialTheme.colorScheme.primaryContainer,
 //                    titleContentColor = MaterialTheme.colorScheme.primary,
 //                ),
-                title = {
-                    Text("MyCloset")
-                }, actions = {
-                    IconButton(
-                        onClick = { /* Navigate to the scanner screen */ }
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = null)
-                    }
-                }
-            )
-        }) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "You don't have any items yet...",
-                textAlign = TextAlign.Center,
-            )
-        }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-
-fun HomeScreenView() {
-    var viewModel: SignupViewModel = viewModel()
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "MyCloset",
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-
+                    title = {
+                        Text("MyCloset")
+                    }, actions = {
+                        IconButton(
+                            onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                        ) {
+                            Icon(Icons.Default.Camera, contentDescription = null)
                         }
-                    ) {
-                        Icon(Icons.Default.Logout, contentDescription = "Logout")
                     }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            viewModel.logout()
-                        }
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = "Camera")
-                    }
-                }
-            )
+                )
+            }) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "You don't have any items yet...",
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
-    ) { padding ->
+    } else {
+    Scaffold(topBar = {
+        TopAppBar(
+//                colors = topAppBarColors(
+//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+//                    titleContentColor = MaterialTheme.colorScheme.primary,
+//                ),
+            title = {
+                Text("MyCloset", modifier = Modifier.padding(2.dp))
+            }, actions = {
+                IconButton(
+                    onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView)}
+                ) {
+                    Icon(Icons.Default.Camera, contentDescription = null)
+                }
+            }
+        )
+    }) { innerPadding ->
         LazyVerticalGrid(
             columns = GridCells.Fixed(2), modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            items(10) {
-                ItemCard("https://media.istockphoto.com/id/1303978937/fi/valokuva/valkoinen-lenkkari-sinisell%C3%A4-kaltevuustaustalla-miesten-muoti-urheilukenk%C3%A4-lenkkarit.jpg?s=612x612&w=0&k=20&c=X_lwi6td_xtFUGXjOmAU8WzH-MKPZ-OeWKtKUshe-SI=", "nike")
+            items(products.size) { index ->
+                val product = products[index]
+                ItemCard(product.images, product.title)
             }
         }
     }
+    }
 }
 
+/*
 @Preview
 @Composable
 fun PrevHome() {
-    HomeScreenView(
-
+    HomeScreen(
+        navController = rememberNavController()
     )
 }
 
@@ -134,4 +128,4 @@ fun PrevHome() {
 fun PreEmpty() {
     EmptyHomeScreen()
 }
-
+*/

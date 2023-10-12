@@ -43,7 +43,9 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     fun getProductsWithEmail(userEmail: String) {
         viewModelScope.launch {
             productRepository.getAllProductsWithEmailStream(userEmail).collect() { response ->
-                products = response
+                if (response != null) {
+                    products = response
+                }
             }
         }
     }
