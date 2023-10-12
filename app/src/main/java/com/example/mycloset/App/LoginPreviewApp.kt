@@ -13,6 +13,7 @@ import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.Views.HomeScreen
 import com.example.mycloset.Views.LoginScreen
+import com.example.mycloset.Views.MainScreen
 import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.Views.SignUpScreen
 import com.example.mycloset.Views.SingleItemScreen
@@ -54,6 +55,11 @@ fun LoginApp(cameraController: LifecycleCameraController){
                         }
                     )
                 }
+                is Screen.MainScreen -> {
+                    MainScreen()
+                }
+
+
                 is Screen.SingleItemScreen ->{
                     SingleItemScreen(productViewModel)
                 }
