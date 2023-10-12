@@ -3,20 +3,19 @@ package com.example.mycloset.Views
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.paddingFromBaseline
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Camera
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,16 +26,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
@@ -45,12 +39,13 @@ import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.fontFamilyText
 import com.example.mycloset.ui.theme.md_theme_light_outline
 import com.example.mycloset.ui.theme.textType
+import com.example.mycloset.ui.theme.fontFamily
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
     var viewModel: SignupViewModel = viewModel()
-    val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
+    //val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
     val context = LocalContext.current
@@ -68,7 +63,13 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                         }
                     },
                     title = {
-                        Text("MyCloset", style = textType.titleLarge)
+                        Text(
+                            text = "MyCloset",
+                            fontFamily = fontFamily,
+                            modifier = Modifier.padding(vertical = 16.dp),
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer)
                     },
                     actions = {
                         IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
@@ -87,8 +88,35 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     }
                 )
             }
-        ) { innerPadding ->
+        ) {
+                innerPadding ->
             // Content to be displayed below the top bar
+
+            /*
+            innerPadding ->
+        // Content to be displayed below the top bar
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .paddingFromBaseline(16.dp)
+                .background(MaterialTheme.colorScheme.onPrimary)
+        ) {
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(1), modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+                items(products.size) { index ->
+                    val product = products[index]
+                    SingleItemCard(product.images, product.model, product.title, product.category, product.brand, product.size,  product.barcodeNumber, productViewModel)
+                }
+            }
+
+
+            */
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -240,6 +268,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 ) {
                     Button(
                         onClick = {
+                            //productViewModel.deleteProduct(informationProductObject)
                             productViewModel.deleteProduct(productViewModel.selectedProduct)
                             Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
                             LoginAppRouter.navigateTo(Screen.HomeScreen)
