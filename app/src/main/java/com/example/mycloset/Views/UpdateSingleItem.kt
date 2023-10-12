@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -55,6 +57,8 @@ import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.R
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.md_theme_light_outline
+import com.example.mycloset.ui.theme.textType
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -70,7 +74,7 @@ fun UpdateSingleItem(
     val context = LocalContext.current
     //used for keeping trak of the edits
     var text by remember { mutableStateOf("") }
-
+    Surface(modifier = Modifier.background(md_theme_light_outline)) {
     Scaffold(
         topBar = {
             // TopAppBar (the top bar)
@@ -84,7 +88,7 @@ fun UpdateSingleItem(
                     }
                 },
                 title = {
-                    Text("MyCloset")
+                    Text("MyCloset", style = textType.titleLarge)
                 },
                 actions = {
                     IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
@@ -109,7 +113,7 @@ fun UpdateSingleItem(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp)
+                .background(md_theme_light_outline)
         ) {
             val product = products[0]
 
@@ -118,9 +122,10 @@ fun UpdateSingleItem(
                 text = product.title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
+                modifier = Modifier.padding(16.dp)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            //Spacer(modifier = Modifier.height(24.dp))
 
             //image
             Column(
@@ -134,7 +139,7 @@ fun UpdateSingleItem(
 
 
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp)
             ) {
 
@@ -223,9 +228,9 @@ fun UpdateSingleItem(
 
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            //Spacer(modifier = Modifier.weight(1f))
 
-            //bitton
+            //button
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -251,6 +256,7 @@ fun UpdateSingleItem(
             }
         }
     }
+}
 }
 
 

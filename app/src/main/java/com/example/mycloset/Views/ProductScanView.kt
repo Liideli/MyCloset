@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -60,6 +61,7 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.md_theme_light_outline
 import com.example.mycloset.ui.theme.textType
 import kotlinx.coroutines.flow.StateFlow
 
@@ -95,223 +97,226 @@ fun ProductScanView(
     val context = LocalContext.current
 
     val topAppBarColor = MaterialTheme.colorScheme.onTertiary
+    Surface(modifier = Modifier.background(md_theme_light_outline)) {
+        if (!showProductInfo) {
+            Scaffold(topBar = {
+                TopAppBar(
+                    title = {
+                        Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                LoginAppRouter.navigateTo(Screen.HomeScreen)
+                            }
+                        ) {
 
-    if (!showProductInfo) {
-        Scaffold(topBar = {
-            TopAppBar(
-                title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp), style = textType.titleLarge)
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            LoginAppRouter.navigateTo(Screen.HomeScreen)
+                            Icon(Icons.Default.Home, contentDescription = "Camera")
                         }
-                    ) {
-
-                        Icon(Icons.Default.Home, contentDescription = "Camera")
                     }
-                }
-            )
-        }) { innerPadding ->
-            // AndroidView to display the camera preview
-            AndroidView(factory = { context ->
-                PreviewView(context).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    scaleType = PreviewView.ScaleType.FILL_START
-                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                    this.controller = cameraController
-                }
-            })
+                )
+            }) { innerPadding ->
+                // AndroidView to display the camera preview
+                AndroidView(factory = { context ->
+                    PreviewView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        scaleType = PreviewView.ScaleType.FILL_START
+                        implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                        this.controller = cameraController
+                    }
+                })
 
-            // Column to organize UI elements vertically with space between them
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(innerPadding)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
+                // Column to organize UI elements vertically with space between them
                 Column(
                     modifier = Modifier
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceBetween,
+                        .fillMaxHeight()
+                        .padding(innerPadding)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    // Card composable to display barcode information
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        ),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            if (barcode.value.barcode.isNotEmpty()) {
-                                Text(text = "Barcode: ${barcode.value.barcode}")
-                            } else {
-                                Text(text = "Point camera at a barcode")
-                            }
-                        }
-                    }
-                    // Row for torch button and search button
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight(),
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        // Button to toggle the torch
-                        Button(
-                            onClick = onTorchButtonClicked,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary
-                            )
+                        // Card composable to display barcode information
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            ),
+                            shape = RoundedCornerShape(10.dp)
                         ) {
-                            if (torchEnabled.value) {
-                                Icon(
-                                    imageVector = Icons.Default.FlashOff,
-                                    contentDescription = "Flash off icon"
-                                )
-
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.FlashOn,
-                                    contentDescription = "Flash on icon"
-                                )
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                if (barcode.value.barcode.isNotEmpty()) {
+                                    Text(text = "Barcode: ${barcode.value.barcode}")
+                                } else {
+                                    Text(text = "Point camera at a barcode")
+                                }
                             }
                         }
+                        // Row for torch button and search button
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
 
-                        // Button to search for product info
-                        Button(onClick = {
-                            if (barcode.value.barcode.isNotEmpty()) {
-                                isLoading = true
-                                networkResult = null
-                                productViewModel.getInfo(barcode.value.barcode)
-                                showProductInfo = true
-                            } else {
-                                Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT)
-                                    .show()
+                            // Button to toggle the torch
+                            Button(
+                                onClick = onTorchButtonClicked,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                )
+                            ) {
+                                if (torchEnabled.value) {
+                                    Icon(
+                                        imageVector = Icons.Default.FlashOff,
+                                        contentDescription = "Flash off icon"
+                                    )
+
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.FlashOn,
+                                        contentDescription = "Flash on icon"
+                                    )
+                                }
                             }
-                        }) {
-                            Text(text = "Search Product Info")
+
+                            // Button to search for product info
+                            Button(onClick = {
+                                if (barcode.value.barcode.isNotEmpty()) {
+                                    isLoading = true
+                                    networkResult = null
+                                    productViewModel.getInfo(barcode.value.barcode)
+                                    showProductInfo = true
+                                } else {
+                                    Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }) {
+                                Text(text = "Search Product Info")
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    if (informationProductObject.barcodeNumber != "") {
-        // Display a loading indicator while loading product info
-        if (isLoading) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-
-            ) {
-                CircularProgressIndicator(
+        if (informationProductObject.barcodeNumber != "") {
+            // Display a loading indicator while loading product info
+            if (isLoading) {
+                Column(
                     modifier = Modifier
-                        .size(50.dp)
-                )
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(50.dp)
+                    )
+                }
             }
         }
-    }
 
-    // Display the product information if there is a successful result
-    if (showProductInfo && informationProductObject.barcodeNumber != "") {
-        isLoading = false
-        Scaffold(topBar = {
-            TopAppBar(
-                title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp),  style = textType.titleLarge)
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            showProductInfo=false
+        // Display the product information if there is a successful result
+        if (showProductInfo && informationProductObject.barcodeNumber != "") {
+            isLoading = false
+            Scaffold(topBar = {
+                TopAppBar(
+                    title = {
+                        Text("MyCloset", style = textType.titleLarge)
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                showProductInfo = false
+                            }
+                        ) {
+                            Icon(Icons.Default.Camera, contentDescription = "Camera")
                         }
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = "Camera")
                     }
-                }
-            )
-        }) { innerPadding ->
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(18.dp)
-            ) {
-
-                //If the title is to big, make it shorter
-                val title = informationProductObject.title
-                val textToDisplay = if ("," in title) {
-                    title.substringBefore(",")
-                } else {
-                    if ("-" in title) {
-                        title.substringBefore("-")
-                    } else {
-                        title
-                    }
-                }
-                //Title
-                Text(
-                    text = textToDisplay,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
                 )
+            }) { innerPadding ->
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Image of the product
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    ImgDisplay.DisplayPicture(informationProductObject.images)
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(16.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .background(md_theme_light_outline)
                 ) {
 
-                    //information
-                    item {
-                        Text(
-                            text = "Product Information :",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                    }
-
-                    //barcode number
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                            Text("Barcode: ${informationProductObject.barcodeNumber}")
+                    //If the title is to big, make it shorter
+                    val title = informationProductObject.title
+                    val textToDisplay = if ("," in title) {
+                        title.substringBefore(",")
+                    } else {
+                        if ("-" in title) {
+                            title.substringBefore("-")
+                        } else {
+                            title
                         }
-                        Text("Barcode: ${informationProductObject.barcodeNumber}", style = textType.bodyMedium)
+                    }
+                    //Title
+                    Text(
+                        text = textToDisplay,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Image of the product
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ImgDisplay.DisplayPicture(informationProductObject.images)
                     }
 
-                    //model
-                    if(informationProductObject.model!=""){
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+
+                        //information
+                        item {
+                            Text(
+                                text = "Product Information :",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                        }
+
+                        //barcode number
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Barcode: ${informationProductObject.barcodeNumber}")
+                            }
+                        }
+
+                        //model
+                        if (informationProductObject.model != "") {
                             item {
                                 Box(
                                     modifier = Modifier
@@ -319,30 +324,12 @@ fun ProductScanView(
                                         .padding(4.dp)
                                         .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
                                 ) {
-                                Text("Model: ${informationProductObject.model}")
+                                    Text("Model: ${informationProductObject.model}")
+                                }
                             }
                         }
-                    item {
-                        Text("Model: ${informationProductObject.model}", style = textType.bodyMedium)
-                    }
 
-                    //category
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                        val categoryText = informationProductObject.category
-                        val category = categoryText.substringAfterLast(">")
-                        Text("Category: $category")
-                        }
-                        Text("Category: ${informationProductObject.category}", style = textType.bodyMedium)
-                    }
-
-                    //brand
-                    if(informationProductObject.brand!=""){
+                        //category
                         item {
                             Box(
                                 modifier = Modifier
@@ -350,95 +337,99 @@ fun ProductScanView(
                                     .padding(4.dp)
                                     .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
                             ) {
-                                Text("Brand: ${informationProductObject.brand}")
-                            }
-                        }
-                    item {
-                        Text("Brand: ${informationProductObject.brand}", style = textType.bodyMedium)
-                    }
-
-                    //color
-                    if(informationProductObject.color!="") {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                            ) {
-                                Text("Color: ${informationProductObject.color}")
+                                val categoryText = informationProductObject.category
+                                val category = categoryText.substringAfterLast(">")
+                                Text("Category: $category")
                             }
                         }
 
-                    item {
-                        Text("Color: ${informationProductObject.color}", style = textType.bodyMedium)
-                    }
-
-                    //material
-                    if(informationProductObject.material!="") {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                            ) {
-                                Text("Material: ${informationProductObject.material}")
+                        //brand
+                        if (informationProductObject.brand != "") {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(4.dp)
+                                        .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                                ) {
+                                    Text("Brand: ${informationProductObject.brand}")
+                                }
                             }
                         }
 
-                    item {
-                        Text("Material: ${informationProductObject.material}", style = textType.bodyMedium)
-                    }
-
-                    //size
-                    if(informationProductObject.size!=""){
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                            ) {
-                                Text("Size: ${informationProductObject.size}")
+                        //color
+                        if (informationProductObject.color != "") {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(4.dp)
+                                        .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                                ) {
+                                    Text("Color: ${informationProductObject.color}")
+                                }
                             }
                         }
 
-                    item {
-                        Text("Size: ${informationProductObject.size}", style = textType.bodyMedium)
+                        //material
+                        if (informationProductObject.material != "") {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(4.dp)
+                                        .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                                ) {
+                                    Text("Material: ${informationProductObject.material}")
+                                }
+                            }
+                        }
+
+                        //size
+                        if (informationProductObject.size != "") {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(4.dp)
+                                        .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                                ) {
+                                    Text("Size: ${informationProductObject.size}")
+                                }
+                            }
+                        }
+
                     }
 
-                }
+                    Spacer(modifier = Modifier.weight(1f))
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                //button
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Button(onClick = {
-                        showProductInfo = false
-                    }) {
-                        Text(text = "Back", style = textType.bodyMedium)
-                    }
-                    if (LoggedUser.loggedUserEmail != "") {
+                    //button
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Button(onClick = {
-                            productViewModel.saveToDatabase(informationProductObject)
-                            Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT).show()
-                            LoginAppRouter.navigateTo(Screen.HomeScreen)
+                            showProductInfo = false
                         }) {
-                            Text(text = "Add")
+                            Text(text = "Back")
                         }
-                    } else {
-                        Log.i(
-                            "LOGIN_ERROR",
-                            "You can't add a new item to your wardrobe because you aren't logged"
-                        )
+                        if (LoggedUser.loggedUserEmail != "") {
+                            Button(onClick = {
+                                productViewModel.saveToDatabase(informationProductObject)
+                                Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT).show()
+                                LoginAppRouter.navigateTo(Screen.HomeScreen)
+                            }) {
+                                Text(text = "Add")
+                            }
+                        } else {
+                            Log.i(
+                                "LOGIN_ERROR",
+                                "You can't add a new item to your wardrobe because you aren't logged"
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
-

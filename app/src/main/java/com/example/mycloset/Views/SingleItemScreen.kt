@@ -97,173 +97,166 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
             ) {
                 val product = products[0]
 
-            //title
-            Text(
-                text = product.title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-            )
+                //title
+                Text(
+                    text = product.title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(16.dp)
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            //images
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            DisplayPicture(product.images)
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-
-                //product information
-                item {
-                    Text(
-                        text = "Product Information :",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
-
-                //barcode number
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                    ) {
-                        Text("Barcode: ${product.barcodeNumber}")
-                    }
-                }
-
-                //model
-                if(product.model!=""){
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                            Text("Model: ${product.model}")
-                        }
-                    }
-                }
-
-                //category
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                    ) {
-                        Text("Category: ${product.category}")
-                    }
-                }
-
-                //brand
-                if(product.brand!=""){
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                            Text("Brand: ${product.brand}")
-                        }
-                    }
-                }
-
-                //color
-                if(product.color!="") {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                            Text("Color: ${product.color}")
-                        }
-                    }
-                }
-
-                //material
-                if(product.material!="") {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                            Text("Material: ${product.material}")
-                        }
-                    }
-                }
-
-                //size
-                if(informationProductObject.size!=""){
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
-                        ) {
-                            Text("Size: ${informationProductObject.size}")
-                        }
-                    }
-                }
-
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            //buttons
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = {
-                        productViewModel.deleteProduct(productViewModel.selectedProduct)
-                        Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
-                        LoginAppRouter.navigateTo(Screen.HomeScreen)
-                    }
+                //images
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Delete Item")
+                    DisplayPicture(product.images)
                 }
-                Button(
-                    onClick = {
-                        LoginAppRouter.navigateTo(Screen.UpdateSingleScreen)
-                    }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
                 ) {
-                    Text("Update Item")
+
+                    //product information
+                    item {
+                        Text(
+                            text = "Product Information :",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
+
+                    //barcode number
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Barcode: ${product.barcodeNumber}")
+                        }
+                    }
+
+                    //model
+                    if (product.model != "") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Model: ${product.model}")
+                            }
+                        }
+                    }
+
+                    //category
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Category: ${product.category}")
+                        }
+                    }
+
+                    //brand
+                    if (product.brand != "") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Brand: ${product.brand}")
+                            }
+                        }
+                    }
+
+                    //color
+                    if (product.color != "") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Color: ${product.color}")
+                            }
+                        }
+                    }
+
+                    //material
+                    if (product.material != "") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Material: ${product.material}")
+                            }
+                        }
+                    }
+
+                    //size
+                    if (informationProductObject.size != "") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Size: ${informationProductObject.size}")
+                            }
+                        }
+                    }
+
+                }
+
+
+
+                //buttons
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = {
+                            productViewModel.deleteProduct(productViewModel.selectedProduct)
+                            Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
+                            LoginAppRouter.navigateTo(Screen.HomeScreen)
+                        }
+                    ) {
+                        Text("Delete Item")
+                    }
+                    Button(
+                        onClick = {
+                            LoginAppRouter.navigateTo(Screen.UpdateSingleScreen)
+                        }
+                    ) {
+                        Text("Update Item")
+                    }
                 }
             }
         }
     }
+
 }
-
-
-/*@Composable
-@Preview
-fun SingleItemView(){
-    SingleItemScreen()
-}*/
-
-//@Preview
-//@Composable
-//fun Info() {
-//    SingleItemScreen()
-//}
