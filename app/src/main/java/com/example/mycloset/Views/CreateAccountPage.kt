@@ -1,5 +1,6 @@
 package com.example.mycloset.Views
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,15 +8,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,13 +43,12 @@ import com.example.mycloset.navigation.Screen
 fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Surface(
-            color = Color.White,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(28.dp)
+
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
+                Spacer(modifier = Modifier.padding(24.dp))
                 HeadingTextComponent(value = stringResource(id = R.string.my_closet))
                 NormalTextComponent(value = stringResource(id = R.string.create_account))
                 Spacer(modifier = Modifier.height(20.dp))
@@ -53,19 +57,35 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
                     imageVector = Icons.Default.Person,
                     onTextSelected = { signupViewModel.onEvent(SignupUIEvent.FirstNameChanged(it)) },
                     errorStatus = signupViewModel.registrationUIState.value.firstNameError
-
-
                 )
+                if (!signupViewModel.registrationUIState.value.firstNameError){
+                    Text(
+                        text = "Pleace enter a first name",
+                        color = Color.Red
+                    )
+                }
                 TextField(lableValue = stringResource(id = R.string.last_name),
                     imageVector = Icons.Default.Person,
                     onTextSelected = {
                     signupViewModel.onEvent(SignupUIEvent.LastNameChanged(it))
                 }, errorStatus = signupViewModel.registrationUIState.value.lastNameError)
+                if (!signupViewModel.registrationUIState.value.lastNameError){
+                    Text(
+                        text = "Pleace enter a last name",
+                        color = Color.Red
+                    )
+                }
                 TextField(lableValue = stringResource(id = R.string.email),
                     imageVector = Icons.Default.Email,
                     onTextSelected = {
                     signupViewModel.onEvent(SignupUIEvent.EmailChanged(it))
                 }, errorStatus = signupViewModel.registrationUIState.value.emailError)
+                if (!signupViewModel.registrationUIState.value.emailError){
+                    Text(
+                        text = "Pleace enter a valid email",
+                        color = Color.Red
+                    )
+                }
                 PasswordTextField(
                     labelValue = stringResource(id = R.string.password),
                     onTextSelected = {
@@ -73,6 +93,12 @@ fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
                     },
                     errorStatus = signupViewModel.registrationUIState.value.passwordError
                 )
+                if (!signupViewModel.registrationUIState.value.passwordError){
+                    Text(
+                        text = "Pleace enter a password with min 6 characters",
+                        color = Color.Red
+                    )
+                }
                 Spacer(modifier = Modifier.height(20.dp))
                 ButtonComponent(
                     value = stringResource(id = R.string.register), onButtonClicked = {

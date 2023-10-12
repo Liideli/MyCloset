@@ -55,6 +55,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import com.example.mycloset.ui.theme.fontFamilyText
 
 @Composable
 fun NormalTextComponent(value: String){
@@ -76,7 +77,7 @@ fun HeadingTextComponent(value: String){
     Text(text = value,
         modifier = Modifier.fillMaxWidth(),
         style = TextStyle(
-            fontSize = 30.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Normal
         ),
@@ -202,7 +203,9 @@ fun  ClickableTextComponent(tryingToLogin: Boolean = true, onTextSelected: (Stri
             style = TextStyle(
                 fontSize = 21.sp,
                 fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal
+                fontStyle = FontStyle.Normal,
+                fontFamily = fontFamilyText
+
             ),
             text = annotatedString,
             onClick = { offset ->
