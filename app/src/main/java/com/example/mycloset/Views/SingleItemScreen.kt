@@ -1,5 +1,7 @@
 package com.example.mycloset.Views
 
+import android.widget.Toast
+import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,21 +34,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mycloset.ImgDisplay.Companion.DisplayPicture
-import com.example.mycloset.ProductViewModel
+import com.example.mycloset.ApiWorkingSet.ImgDisplay
+import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
+import com.example.mycloset.BarcodeWorkingSet.BarcodeModel
+import com.example.mycloset.DatabaseWorkingset.ProductEntity
+import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
+import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.R
-import com.example.mycloset.data.SignupViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
-fun SingleItemScreen() {
+fun SingleItemScreen(productViewModel: ProductViewModel) {
     var viewModel: SignupViewModel = viewModel()
-    val imagePainter: Painter = painterResource(id = R.drawable.airfocrce)
+    val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -87,20 +97,55 @@ fun SingleItemScreen() {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Add an Image
-            Image(
-                painter = imagePainter,
-                contentDescription = "Your Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp) // Adjust the height as needed
-            )
+
+            DisplayPicture(informationProductObject.images)
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Add text components or any other content
-            Text("Brand: Nike", modifier = Modifier.align(Alignment.CenterHorizontally))
-            Text("Size: 40", modifier = Modifier.align(Alignment.CenterHorizontally))
+
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Product Information",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+
+                item {
+                    Text("Barcode: ${informationProductObject.barcodeNumber}")
+                }
+
+                item {
+                    Text("Model: ${informationProductObject.model}")
+                }
+
+                item {
+                    Text("Category: ${informationProductObject.category}")
+                }
+
+                item {
+                    Text("Brand: ${informationProductObject.brand}")
+                }
+
+                item {
+                    Text("Color: ${informationProductObject.color}")
+                }
+
+                item {
+                    Text("Material: ${informationProductObject.material}")
+                }
+
+                item {
+                    Text("Size: ${informationProductObject.size}")
+                }
+
+            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -113,21 +158,32 @@ fun SingleItemScreen() {
             ) {
                 Button(
                     onClick = {
-                        // Handle the delete action here
+                       productViewModel.deleteProduct(informationProductObject)
+                        Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
                     }
                 ) {
                     Text("Delete Item")
                 }
+
+                //i have to implement the window for update all the field and after save it
+                /*Button(
+                    onClick = {
+                        productViewModel.saveToDatabase(barcodeNumber, LoggedUser.loggedUserEmail,  model, title, category, brand, color, material, size, images)
+
+                    }
+                ) {
+                    Text("Update Item")
+                }*/
             }
         }
     }
 }
 
-@Composable
+/*@Composable
 @Preview
 fun SingleItemView(){
     SingleItemScreen()
-}
+}*/
 
 //@Preview
 //@Composable

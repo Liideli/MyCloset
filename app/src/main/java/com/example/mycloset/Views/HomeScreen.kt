@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.mycloset.data.SignupViewModel
+import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.Screen
 
 //import com.example.mycloset.Screen
@@ -76,7 +76,7 @@ fun EmptyHomeScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-fun HomeScreen() {
+fun HomeScreenView() {
     var viewModel: SignupViewModel = viewModel()
     Scaffold(
         topBar = {
@@ -124,7 +124,7 @@ fun HomeScreen() {
 @Preview
 @Composable
 fun PrevHome() {
-    HomeScreen(
+    HomeScreenView(
 
     )
 }

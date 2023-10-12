@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mycloset.App.LoginApp
 import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.Views.ProductScanView
@@ -47,8 +48,9 @@ class MainActivity : ComponentActivity() {
                     navController = rememberNavController()
 //                    SetupNavGraph(navController = navController)
                     val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
-                    //HomeScreen(navController = navController, viewModel = productViewModel)
-                    //LoginScreen()
+                    //HomeScreen()
+                   LoginApp()
+
                     ProductScanView(
                         productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,
@@ -60,6 +62,8 @@ class MainActivity : ComponentActivity() {
                             viewModel.updateTorchEnabled()
                         }
                     )
+
+
                     /*CameraView(
                         cameraController = cameraController,
                     //MainScreen()
@@ -147,81 +151,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Product Info Screen Composable
-
-/*
-@Composable
-fun ProductInfoScreen(productViewModel: ProductViewModel) {
-    val informationProductMap by rememberUpdatedState(newValue = productViewModel.informationProductMap)
-    var showProductInfo by remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Button(onClick = {
-            productViewModel.getInfo()
-            showProductInfo = true
-        })
-        {
-            Text("Fetch Product Info")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Divider(modifier = Modifier.padding(vertical = 20.dp))
-
-        if (showProductInfo) {
-            if (informationProductMap.isNotEmpty()) {
-                Column {
-
-                    //Title
-                    val title: String = informationProductMap["title"].toString()
-                    Text(
-                        text = title,
-                        modifier = Modifier.padding(16.dp)
-                    )
-
-                    //Image
-                    DisplayPicture(informationProductMap["images"].toString())
-
-                    //Table
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        informationProductMap.forEach { (key, value) ->
-                            if (key != "title" && key != "images") {
-                                item {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Text(text = key, fontWeight = FontWeight.Bold)
-                                        Text(text = value.toString())
-                                    }
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                }
-                            }
-                        }
-                    }
-
-                    //Button
-                    Row {
-                        Button(onClick = { /*TODO*/ }) {
-                            Text(text = "Cancel")
-                        }
-                        Button(onClick = { /*TODO*/ }) {
-                            Text(text = "Add")
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-}*/
 
 //@Composable
 //fun MyNavHost(navController: NavHostController) {
