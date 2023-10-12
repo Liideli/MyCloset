@@ -52,6 +52,9 @@ fun LoginApp(cameraController: LifecycleCameraController){
                         }
                     )
                 }
+                is Screen.ClothesDetailScreen ->{
+                    Screen.ClothesDetailScreen
+                }
             }
             
         }
