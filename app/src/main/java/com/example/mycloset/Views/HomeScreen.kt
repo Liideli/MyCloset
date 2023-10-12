@@ -33,17 +33,20 @@ import kotlinx.coroutines.flow.*
 
 
 
-
+//import com.example.mycloset.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(productviewModel: ProductViewModel) {
+fun HomeScreen(productViewModel: ProductViewModel) {
+
     // Observe the products list from the ViewModel
     //viewModel.getProducts()
     val signupViewModel: SignupViewModel = viewModel()
-    productviewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
-    val products = productviewModel.products
-    Log.i("PROD", products.toString())
+
+    productViewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
+
+    val products = productViewModel.products
+
     if (products.isEmpty()) {
         Scaffold(
             topBar = {
@@ -87,7 +90,8 @@ fun HomeScreen(productviewModel: ProductViewModel) {
                 },
                 actions = {
                     IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView)}
+                        onClick = {
+                            LoginAppRouter.navigateTo(Screen.ProductScanView)}
                     ) {
                         Icon(Icons.Default.Camera, contentDescription = "Camera")
                     }
@@ -109,7 +113,7 @@ fun HomeScreen(productviewModel: ProductViewModel) {
             ) {
                 items(products.size) { index ->
                     val product = products[index]
-                    ItemCard(product.images, product.title)
+                    ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
                 }
             }
         }

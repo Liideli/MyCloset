@@ -1,6 +1,8 @@
 package com.example.mycloset.Views
 
 import android.widget.Toast
+import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,27 +27,38 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mycloset.ApiWorkingSet.ImgDisplay
 import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
-import com.example.mycloset.DatabaseWorkingset.ProductViewModel
+import com.example.mycloset.BarcodeWorkingSet.BarcodeModel
+import com.example.mycloset.DatabaseWorkingset.ProductEntity
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
+import com.example.mycloset.DatabaseWorkingset.ProductViewModel
+import com.example.mycloset.LoginWorkingSet.LoggedUser
+import com.example.mycloset.R
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import kotlinx.coroutines.flow.StateFlow
 
+/*
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
     var viewModel: SignupViewModel = viewModel()
     val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
-    productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
-    val products = productViewModel.products
     val context = LocalContext.current
 
     Scaffold(
@@ -52,7 +66,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
             // TopAppBar (the top bar)
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -63,7 +77,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     Text("MyCloset")
                 },
                 actions = {
-                    IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
+                    IconButton(onClick = { /* Handle camera navigation here */ }) {
                         Icon(
                             Icons.Default.Camera,
                             contentDescription = "Camera"
@@ -79,19 +93,15 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 }
             )
         }
-    ) { innerPadding ->
+    ) { padding ->
         // Content to be displayed below the top bar
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            val product = products[0]
 
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            DisplayPicture(product.images)
-            }
+            DisplayPicture(informationProductObject.images)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -110,46 +120,49 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 }
 
                 item {
-                    Text("Barcode: ${product.barcodeNumber}")
+                    Text("Barcode: ${informationProductObject.barcodeNumber}")
                 }
 
                 item {
-                    Text("Model: ${product.model}")
+                    Text("Model: ${informationProductObject.model}")
                 }
 
                 item {
-                    Text("Category: ${product.category}")
+                    Text("Category: ${informationProductObject.category}")
                 }
 
                 item {
-                    Text("Brand: ${product.brand}")
+                    Text("Brand: ${informationProductObject.brand}")
                 }
 
                 item {
-                    Text("Color: ${product.color}")
+                    Text("Color: ${informationProductObject.color}")
                 }
 
                 item {
-                    Text("Material: ${product.material}")
+                    Text("Material: ${informationProductObject.material}")
                 }
 
                 item {
-                    Text("Size: ${product.size}")
+                    Text("Size: ${informationProductObject.size}")
                 }
 
             }
+
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Add more text components or other content as needed
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.Center
             ) {
                 Button(
                     onClick = {
-                        productViewModel.deleteProduct(productViewModel.selectedProduct)
-                        Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
+                        productViewModel.deleteProduct(informationProductObject)
+                        Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
                         LoginAppRouter.navigateTo(Screen.HomeScreen)
                     }
                 ) {
@@ -166,16 +179,4 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
         }
     }
 }
-
-
-/*@Composable
-@Preview
-fun SingleItemView(){
-    SingleItemScreen()
-}*/
-
-//@Preview
-//@Composable
-//fun Info() {
-//    SingleItemScreen()
-//}
+*/

@@ -1,5 +1,6 @@
 package com.example.mycloset.Views
 
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -9,11 +10,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.mycloset.ApiWorkingSet.ImgDisplay
 import com.example.mycloset.BarcodeWorkingSet.BarcodeModel
@@ -57,6 +57,7 @@ import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import kotlinx.coroutines.flow.StateFlow
 
+//@OptIn(ExperimentalMaterial3Api::class)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScanView(
@@ -68,7 +69,7 @@ fun ProductScanView(
     onTorchButtonClicked: () -> Unit      // Lambda function for torch button click event
 ) {
     // State for managing informationProductMap
-    val informationProductMap by rememberUpdatedState(newValue = productViewModel.informationProductMap)
+    val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
 
     // State for managing whether to show product information
     var showProductInfo by remember { mutableStateOf(false) }
@@ -87,32 +88,19 @@ fun ProductScanView(
 
     val context = LocalContext.current
 
-    val barcodeNumber: String = informationProductMap["barcodeNumber"].toString()
-    val model: String = informationProductMap["model"].toString()
-    val title: String = informationProductMap["title"].toString()
-    val category: String = informationProductMap["category"].toString()
-    val brand: String = informationProductMap["brand"].toString()
-    val color: String = informationProductMap["color"].toString()
-    val material: String = informationProductMap["material"].toString()
-    val size: String = informationProductMap["size"].toString()
-    val images: String = informationProductMap["images"].toString()
-
-
+    val topAppBarColor = MaterialTheme.colorScheme.onTertiary
 
     if (!showProductInfo) {
         Scaffold(topBar = {
             TopAppBar(
-//                colors = topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
-//                ),
                 title = {
                     Text("MyCloset", modifier = Modifier.padding(2.dp))
-                }, actions = {
+                },
+                actions = {
                     IconButton(
                         onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }
                     ) {
-                        Icon(Icons.Default.Home, contentDescription = null)
+                        Icon(Icons.Default.Home, contentDescription = "Camera")
                     }
                 }
             )
@@ -212,7 +200,7 @@ fun ProductScanView(
         }
     }
 
-    if (informationProductMap.isEmpty()) {
+    if (informationProductObject.barcodeNumber != "") {
         // Display a loading indicator while loading product info
         if (isLoading) {
             Column(
@@ -232,61 +220,79 @@ fun ProductScanView(
     }
 
     // Display the product information if there is a successful result
-    if (showProductInfo && informationProductMap.isNotEmpty()) {
+    if (showProductInfo && informationProductObject.barcodeNumber != "") {
         isLoading = false
         Scaffold(topBar = {
             TopAppBar(
-//                colors = topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
-//                ),
                 title = {
                     Text("MyCloset", modifier = Modifier.padding(2.dp))
-                }, actions = {
+                },
+                actions = {
                     IconButton(
-                        onClick = { showProductInfo = false }
+                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
                     ) {
-                        Icon(Icons.Default.Camera, contentDescription = null)
+                        Icon(Icons.Default.Camera, contentDescription = "Camera")
                     }
                 }
             )
         }) { innerPadding ->
+
             Column(
                 modifier = Modifier
-                    .padding(innerPadding)
                     .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(16.dp)
             ) {
 
                 Text(
-                    text = title,
+                    text = informationProductObject.title,
                     modifier = Modifier.padding(16.dp)
                 )
 
                 // Image of the product
-                ImgDisplay.DisplayPicture(informationProductMap["images"].toString())
+                ImgDisplay.DisplayPicture(informationProductObject.images)
 
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-                    informationProductMap.forEach { (key, value) ->
-                        if (key != "title" && key != "images" && key != "barcodeNumber") {
-                            item {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    if (value.isNotEmpty()) {
-                                        Text(text = "$key: ", fontWeight = FontWeight.Bold)
-                                        Text(text = value)
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(8.dp))
-                            }
-                        }
+                    item {
+                        Text(
+                            text = "Product Information",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
+
+                    item {
+                        Text("Barcode: ${informationProductObject.barcodeNumber}")
+                    }
+
+                    item {
+                        Text("Model: ${informationProductObject.model}")
+                    }
+
+                    item {
+                        Text("Category: ${informationProductObject.category}")
+                    }
+
+                    item {
+                        Text("Brand: ${informationProductObject.brand}")
+                    }
+
+                    item {
+                        Text("Color: ${informationProductObject.color}")
+                    }
+
+                    item {
+                        Text("Material: ${informationProductObject.material}")
+                    }
+
+                    item {
+                        Text("Size: ${informationProductObject.size}")
                     }
                 }
-
                 // Buttons for cancel and add actions
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -297,25 +303,20 @@ fun ProductScanView(
                     }) {
                         Text(text = "Back")
                     }
-                    Button(onClick = {
-                        productViewModel.saveToDatabase(
-                            barcodeNumber,
-                            LoggedUser.loggedUserEmail,
-                            model,
-                            title,
-                            category,
-                            brand,
-                            color,
-                            material,
-                            size,
-                            images
+                    if (LoggedUser.loggedUserEmail != "") {
+                        Button(onClick = {
+                            productViewModel.saveToDatabase(informationProductObject)
+                            Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT).show()
+                            LoginAppRouter.navigateTo(Screen.HomeScreen)
+                        }) {
+                            Text(text = "Add")
+                        }
+                    } else {
+                        Log.i(
+                            "LOGIN_ERROR",
+                            "You can't add a new item to your wardrobe because you aren't logged"
                         )
-                        Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT)
-                            .show()
-                    }) {
-                        Text(text = "Add")
                     }
-
                 }
             }
         }
