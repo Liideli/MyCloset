@@ -15,6 +15,7 @@ import com.example.mycloset.Views.HomeScreen
 import com.example.mycloset.Views.LoginScreen
 import com.example.mycloset.Views.ProductScanView
 import com.example.mycloset.Views.SignUpScreen
+import com.example.mycloset.Views.SingleItemScreen
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 
@@ -52,8 +53,8 @@ fun LoginApp(cameraController: LifecycleCameraController){
                         }
                     )
                 }
-                is Screen.ClothesDetailScreen ->{
-                    Screen.ClothesDetailScreen
+                is Screen.SingleItemScreen ->{
+                    SingleItemScreen(productViewModel)
                 }
             }
             

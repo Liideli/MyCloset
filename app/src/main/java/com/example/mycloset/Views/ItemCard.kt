@@ -35,7 +35,7 @@ fun ItemCard(
         modifier = Modifier.padding(5.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = {
-            LoginAppRouter.navigateTo(Screen.ClothesDetailScreen)
+            LoginAppRouter.navigateTo(Screen.SingleItemScreen)
         }
     ) {
         Column(modifier = Modifier.padding(10.dp)) {

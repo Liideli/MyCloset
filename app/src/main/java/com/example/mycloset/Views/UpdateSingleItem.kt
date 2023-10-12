@@ -53,6 +53,7 @@ import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import kotlinx.coroutines.flow.StateFlow
 
+/*
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
@@ -178,3 +179,4 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
         }
     }
 }
+*/
