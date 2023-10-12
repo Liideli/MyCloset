@@ -38,83 +38,42 @@ import kotlinx.coroutines.flow.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(productViewModel: ProductViewModel) {
-
-    // Observe the products list from the ViewModel
-    //viewModel.getProducts()
     val signupViewModel: SignupViewModel = viewModel()
-
     productViewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
-
     val products = productViewModel.products
 
-    if (products.isEmpty()) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text("MyCloset")
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
-                        ) {
-                            Icon(Icons.Default.Camera, contentDescription = null)
-                        }
-                        IconButton(
-                            onClick = {
-                                signupViewModel.logout()
-                            }
-                        ) {
-                            Icon(Icons.Default.Logout, contentDescription = "Logout")
-                        }
-                    }
-                )
-            }) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "You don't have any items yet...",
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
-    } else {
-        Scaffold(topBar = {
+    Scaffold(
+        topBar = {
             TopAppBar(
                 title = {
                     Text("MyCloset", modifier = Modifier.padding(2.dp))
                 },
                 actions = {
                     IconButton(
-                        onClick = {
-                            LoginAppRouter.navigateTo(Screen.ProductScanView)}
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = "Camera")
-                    }
-                    IconButton(
-                        onClick = {
-                            signupViewModel.logout()
-                        }
+                        onClick = { signupViewModel.logout() }
                     ) {
                         Icon(Icons.Default.Logout, contentDescription = "Logout")
                     }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                    ) {
+                        Icon(Icons.Default.Camera, contentDescription = "Camera")
+                    }
                 }
             )
-        }) { innerPadding ->
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2), modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(16.dp)
-            ) {
-                items(products.size) { index ->
-                    val product = products[index]
-                    ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
-                }
+        }
+    ) { innerPadding ->
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2), modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            items(products.size) { index ->
+                val product = products[index]
+                ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
             }
         }
     }
