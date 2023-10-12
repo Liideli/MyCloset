@@ -2,11 +2,13 @@
 package com.example.mycloset.Views
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
@@ -14,14 +16,15 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
@@ -29,48 +32,121 @@ import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.md_theme_light_outline
+import com.example.mycloset.ui.theme.md_theme_light_primary
+import com.example.mycloset.ui.theme.textType
 import kotlinx.coroutines.flow.*
 
+
+
+//import com.example.mycloset.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(productViewModel: ProductViewModel) {
+
+    // Observe the products list from the ViewModel
+    //viewModel.getProducts()
     val signupViewModel: SignupViewModel = viewModel()
+
     productViewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
+
     val products = productViewModel.products
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
-                },
-                actions = {
-                    IconButton(
-                        onClick = { signupViewModel.logout() }
-                    ) {
-                        Icon(Icons.Default.Logout, contentDescription = "Logout")
+    if (products.isEmpty()) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = md_theme_light_outline
+        ) {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                "MyCloset",
+                                modifier = Modifier,
+                                style = textType.titleLarge,
+                            )
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                            ) {
+                                Icon(Icons.Default.Camera, contentDescription = null)
+                            }
+                            IconButton(
+                                onClick = {
+                                    signupViewModel.logout()
+                                }
+                            ) {
+                                Icon(Icons.Default.Logout, contentDescription = "Logout")
+                            }
+                        }
+                    )
+                }) { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .background(md_theme_light_outline),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "You don't have any items yet...",
+                        textAlign = TextAlign.Center,
+                        style = textType.bodyLarge
+                    )
+                }
+            }
+        }
+    } else {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = md_theme_light_outline
+        ) {
+            Scaffold(topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            "MyCloset",
+                            modifier = Modifier.padding(2.dp),
+                            style = textType.titleLarge,
+                        )
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                LoginAppRouter.navigateTo(Screen.ProductScanView)
+                            }
+                        ) {
+                            Icon(Icons.Default.Camera, contentDescription = "Camera")
+                        }
+                        IconButton(
+                            onClick = {
+                                signupViewModel.logout()
+                            }
+                        ) {
+                            Icon(Icons.Default.Logout, contentDescription = "Logout")
+                        }
                     }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = "Camera")
+                )
+            }) { innerPadding ->
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2), modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .background(md_theme_light_outline)
+                ) {
+                    items(products.size) { index ->
+                        val product = products[index]
+                        ItemCard(
+                            product.images,
+                            product.title,
+                            product.barcodeNumber,
+                            productViewModel
+                        )
                     }
                 }
-            )
-        }
-    ) { innerPadding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2), modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp)
-        ) {
-            items(products.size) { index ->
-                val product = products[index]
-                ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
             }
         }
     }

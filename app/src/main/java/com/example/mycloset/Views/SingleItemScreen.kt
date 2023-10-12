@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -40,6 +41,10 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.fontFamily
+import com.example.mycloset.ui.theme.fontFamilyText
+import com.example.mycloset.ui.theme.md_theme_light_outline
+import com.example.mycloset.ui.theme.textType
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -49,48 +54,48 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
     val context = LocalContext.current
-
-    Scaffold(
-        topBar = {
-            // TopAppBar (the top bar)
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                title = {
-                    Text("MyCloset")
-                },
-                actions = {
-                    IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
-                        Icon(
-                            Icons.Default.Camera,
-                            contentDescription = "Camera"
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-                            viewModel.logout()
+    Surface(modifier = Modifier.background(md_theme_light_outline)) {
+        Scaffold(
+            topBar = {
+                // TopAppBar (the top bar)
+                TopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }) {
+                            Icon(
+                                Icons.Default.ArrowBack,
+                                contentDescription = "Back"
+                            )
                         }
-                    ) {
-                        Icon(Icons.Default.Logout, contentDescription = "Logout")
+                    },
+                    title = {
+                        Text("MyCloset", style = textType.titleLarge)
+                    },
+                    actions = {
+                        IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
+                            Icon(
+                                Icons.Default.Camera,
+                                contentDescription = "Camera"
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                viewModel.logout()
+                            }
+                        ) {
+                            Icon(Icons.Default.Logout, contentDescription = "Logout")
+                        }
                     }
-                }
-            )
-        }
-    ) { innerPadding ->
-        // Content to be displayed below the top bar
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp)
-        ) {
-            val product = products[0]
+                )
+            }
+        ) { innerPadding ->
+            // Content to be displayed below the top bar
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .background(md_theme_light_outline)
+            ) {
+                val product = products[0]
 
             //title
             Text(
@@ -249,3 +254,16 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
         }
     }
 }
+
+
+/*@Composable
+@Preview
+fun SingleItemView(){
+    SingleItemScreen()
+}*/
+
+//@Preview
+//@Composable
+//fun Info() {
+//    SingleItemScreen()
+//}

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,8 @@ class ImgDisplay {
                 bitmap= showImg(url)?.asImageBitmap()
             }
             bitmap?.let { bitmap ->
-                Image(modifier = Modifier.size(200.dp), bitmap = bitmap, contentDescription = "downloaded picture")
+                Image(modifier = Modifier.size(300.dp)
+                    .clip(RoundedCornerShape(16.dp)), bitmap = bitmap, contentDescription = "downloaded picture" )
             }
         }
 

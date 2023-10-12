@@ -60,6 +60,7 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.textType
 import kotlinx.coroutines.flow.StateFlow
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -99,7 +100,7 @@ fun ProductScanView(
         Scaffold(topBar = {
             TopAppBar(
                 title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    Text("MyCloset", modifier = Modifier.padding(2.dp), style = textType.titleLarge)
                 },
                 actions = {
                     IconButton(
@@ -233,7 +234,7 @@ fun ProductScanView(
         Scaffold(topBar = {
             TopAppBar(
                 title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    Text("MyCloset", modifier = Modifier.padding(2.dp),  style = textType.titleLarge)
                 },
                 actions = {
                     IconButton(
@@ -306,6 +307,7 @@ fun ProductScanView(
                         ) {
                             Text("Barcode: ${informationProductObject.barcodeNumber}")
                         }
+                        Text("Barcode: ${informationProductObject.barcodeNumber}", style = textType.bodyMedium)
                     }
 
                     //model
@@ -320,6 +322,8 @@ fun ProductScanView(
                                 Text("Model: ${informationProductObject.model}")
                             }
                         }
+                    item {
+                        Text("Model: ${informationProductObject.model}", style = textType.bodyMedium)
                     }
 
                     //category
@@ -334,6 +338,7 @@ fun ProductScanView(
                         val category = categoryText.substringAfterLast(">")
                         Text("Category: $category")
                         }
+                        Text("Category: ${informationProductObject.category}", style = textType.bodyMedium)
                     }
 
                     //brand
@@ -348,6 +353,8 @@ fun ProductScanView(
                                 Text("Brand: ${informationProductObject.brand}")
                             }
                         }
+                    item {
+                        Text("Brand: ${informationProductObject.brand}", style = textType.bodyMedium)
                     }
 
                     //color
@@ -362,6 +369,9 @@ fun ProductScanView(
                                 Text("Color: ${informationProductObject.color}")
                             }
                         }
+
+                    item {
+                        Text("Color: ${informationProductObject.color}", style = textType.bodyMedium)
                     }
 
                     //material
@@ -376,6 +386,9 @@ fun ProductScanView(
                                 Text("Material: ${informationProductObject.material}")
                             }
                         }
+
+                    item {
+                        Text("Material: ${informationProductObject.material}", style = textType.bodyMedium)
                     }
 
                     //size
@@ -390,6 +403,9 @@ fun ProductScanView(
                                 Text("Size: ${informationProductObject.size}")
                             }
                         }
+
+                    item {
+                        Text("Size: ${informationProductObject.size}", style = textType.bodyMedium)
                     }
 
                 }
@@ -404,7 +420,7 @@ fun ProductScanView(
                     Button(onClick = {
                         showProductInfo = false
                     }) {
-                        Text(text = "Back")
+                        Text(text = "Back", style = textType.bodyMedium)
                     }
                     if (LoggedUser.loggedUserEmail != "") {
                         Button(onClick = {
