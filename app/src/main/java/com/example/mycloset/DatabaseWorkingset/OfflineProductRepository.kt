@@ -8,10 +8,9 @@ class OfflineProductRepository(private val productDao: ProductDao) : ProductRepo
 
     override fun getAllProductWithBarcodeStream(barcodeNumber: String) = productDao.getProductWithBarcode(barcodeNumber)
 
-    // override fun getAllProductWithBarcodeStream(barcodeNumber: String ,userEmail: String)=productDao.getProductWithBarcode(barcodeNumber, userEmail)
     override suspend fun updateProductDetailsStream(product: ProductEntity) = productDao.updateProductDetails(product)
 
     override suspend fun deleteProductStream(barcodeNumber: String) = productDao.deleteProduct(barcodeNumber)
 
-    override fun getSingleProductStream(barcode:String,userEmail: String)=productDao.getSingleProduct(barcode,userEmail)
+    //override fun getSingleProductStream(barcode:String,userEmail: String)=productDao.getSingleProduct(barcode,userEmail)
 }

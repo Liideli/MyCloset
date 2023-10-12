@@ -6,13 +6,17 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -44,6 +48,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -98,8 +103,11 @@ fun ProductScanView(
                 },
                 actions = {
                     IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }
+                        onClick = {
+                            LoginAppRouter.navigateTo(Screen.HomeScreen)
+                        }
                     ) {
+
                         Icon(Icons.Default.Home, contentDescription = "Camera")
                     }
                 }
@@ -229,7 +237,9 @@ fun ProductScanView(
                 },
                 actions = {
                     IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                        onClick = {
+                            showProductInfo=false
+                        }
                     ) {
                         Icon(Icons.Default.Camera, contentDescription = "Camera")
                     }
@@ -241,58 +251,130 @@ fun ProductScanView(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .padding(16.dp)
+                    .padding(18.dp)
             ) {
 
+                //If the title is to big, make it shorter
+                val title = informationProductObject.title
+                val textToDisplay = if ("," in title) {
+                    title.substringBefore(",")
+                } else {
+                    title
+                }
+                //Title
                 Text(
-                    text = informationProductObject.title,
-                    modifier = Modifier.padding(16.dp)
+                    text = textToDisplay,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
                 )
-
+                Spacer(modifier = Modifier.height(24.dp))
                 // Image of the product
-                ImgDisplay.DisplayPicture(informationProductObject.images)
-
+                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    ImgDisplay.DisplayPicture(informationProductObject.images)
+                }
+                Spacer(modifier = Modifier.height(24.dp))
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)
                 ) {
                     item {
                         Text(
-                            text = "Product Information",
+                            text = "Product Information :",
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                     }
-
+                    //the barcode always exist
                     item {
-                        Text("Barcode: ${informationProductObject.barcodeNumber}")
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                            Text("Barcode: ${informationProductObject.barcodeNumber}")
+                        }
+                    }
+
+                    if(informationProductObject.model!=""){
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(4.dp)
+                                        .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                                ) {
+                                Text("Model: ${informationProductObject.model}")
+                            }
+                        }
                     }
 
                     item {
-                        Text("Model: ${informationProductObject.model}")
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                        ) {
+                        val categoryText = informationProductObject.category
+                        val category = categoryText.substringAfterLast(">")
+                        Text("Category: $category")
+                        }
                     }
 
-                    item {
-                        Text("Category: ${informationProductObject.category}")
+                    if(informationProductObject.brand!=""){
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Brand: ${informationProductObject.brand}")
+                            }
+                        }
+                    }
+                    if(informationProductObject.color!="") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Color: ${informationProductObject.color}")
+                            }
+                        }
+                    }
+                    if(informationProductObject.material!="") {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Material: ${informationProductObject.material}")
+                            }
+                        }
+                    }
+                    if(informationProductObject.size!=""){
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant) // Colore di sfondo personalizzato per Model
+                            ) {
+                                Text("Size: ${informationProductObject.size}")
+                            }
+                        }
                     }
 
-                    item {
-                        Text("Brand: ${informationProductObject.brand}")
-                    }
-
-                    item {
-                        Text("Color: ${informationProductObject.color}")
-                    }
-
-                    item {
-                        Text("Material: ${informationProductObject.material}")
-                    }
-
-                    item {
-                        Text("Size: ${informationProductObject.size}")
-                    }
                 }
+
+                Spacer(modifier = Modifier.weight(1f))
                 // Buttons for cancel and add actions
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -322,3 +404,4 @@ fun ProductScanView(
         }
     }
 }
+

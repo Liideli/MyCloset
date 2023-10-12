@@ -106,7 +106,7 @@ fun HomeScreen(productViewModel: ProductViewModel) {
             ) {
                 items(products.size) { index ->
                     val product = products[index]
-                    ItemCard(product.images, product.title)
+                    ItemCard(product.images, product.title,product.barcodeNumber,productViewModel)
                 }
             }
         }

@@ -3,7 +3,7 @@ package com.example.mycloset.BarcodeWorkingSet
 import com.example.mycloset.ApiWorkingSet.RetrofitObject
 
 //
-var APY_KEY:String="dl8mxnhxbvfg5zxt7gh9h3ndw31jx5"
+var APY_KEY:String="82m5dj79cuxyk3ql4nbtxvgpsv4a1l"
 
 //class for using the barcode-lookup API
 class BarcodeRepository{

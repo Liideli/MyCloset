@@ -59,7 +59,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun UpdateSingleItem(
     productViewModel: ProductViewModel,
-) {
+) {/*
     var editedProduct by remember { mutableStateOf(productViewModel.informationProductObject.copy()) }
     val context = LocalContext.current
     Scaffold(
@@ -158,5 +158,5 @@ fun UpdateSingleItem(
 
             }
         }
-    }
+    }*/
 }
