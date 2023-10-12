@@ -1,7 +1,9 @@
 package com.example.mycloset.Views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,12 +13,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.md_theme_dark_onTertiaryContainer
+import com.example.mycloset.ui.theme.md_theme_dark_secondaryContainer
+import com.example.mycloset.ui.theme.md_theme_light_outline
+import com.example.mycloset.ui.theme.md_theme_light_primary
+import com.example.mycloset.ui.theme.md_theme_light_primaryContainer
+import com.example.mycloset.ui.theme.md_theme_light_secondaryContainer
+import com.example.mycloset.ui.theme.textType
 
 
 data class Item(val id: Int, val title: String, val imageUrl: String)
@@ -31,27 +41,33 @@ fun ItemCard(
 //    onClick: () -> Unit
 ) {
     Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
-        modifier = Modifier.padding(5.dp),
+        modifier = Modifier
+            .padding(5.dp)
+            .background(md_theme_light_outline),
         shape = RoundedCornerShape(10.dp),
         onClick = {
             productViewModel.setSelectedProduct(barcodeNumber)
             LoginAppRouter.navigateTo(Screen.SingleItemScreen)
         }
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .background(md_theme_light_secondaryContainer),
+                horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
                 painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = null,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier
+                    .size(120.dp)
+                    .aspectRatio(16f / 9f)
+                    .background(md_theme_light_secondaryContainer)
             )
-            name?.let { Text(text = it) }
+            name?.let { Text(text = it, style = textType.bodyMedium) }
         }
     }
 }
-
 
 
 /*

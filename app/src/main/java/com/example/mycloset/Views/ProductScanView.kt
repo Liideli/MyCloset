@@ -55,6 +55,7 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.textType
 import kotlinx.coroutines.flow.StateFlow
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -94,7 +95,7 @@ fun ProductScanView(
         Scaffold(topBar = {
             TopAppBar(
                 title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    Text("MyCloset", modifier = Modifier.padding(2.dp), style = textType.titleLarge)
                 },
                 actions = {
                     IconButton(
@@ -225,7 +226,7 @@ fun ProductScanView(
         Scaffold(topBar = {
             TopAppBar(
                 title = {
-                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                    Text("MyCloset", modifier = Modifier.padding(2.dp),  style = textType.titleLarge)
                 },
                 actions = {
                     IconButton(
@@ -266,31 +267,31 @@ fun ProductScanView(
                     }
 
                     item {
-                        Text("Barcode: ${informationProductObject.barcodeNumber}")
+                        Text("Barcode: ${informationProductObject.barcodeNumber}", style = textType.bodyMedium)
                     }
 
                     item {
-                        Text("Model: ${informationProductObject.model}")
+                        Text("Model: ${informationProductObject.model}", style = textType.bodyMedium)
                     }
 
                     item {
-                        Text("Category: ${informationProductObject.category}")
+                        Text("Category: ${informationProductObject.category}", style = textType.bodyMedium)
                     }
 
                     item {
-                        Text("Brand: ${informationProductObject.brand}")
+                        Text("Brand: ${informationProductObject.brand}", style = textType.bodyMedium)
                     }
 
                     item {
-                        Text("Color: ${informationProductObject.color}")
+                        Text("Color: ${informationProductObject.color}", style = textType.bodyMedium)
                     }
 
                     item {
-                        Text("Material: ${informationProductObject.material}")
+                        Text("Material: ${informationProductObject.material}", style = textType.bodyMedium)
                     }
 
                     item {
-                        Text("Size: ${informationProductObject.size}")
+                        Text("Size: ${informationProductObject.size}", style = textType.bodyMedium)
                     }
                 }
                 // Buttons for cancel and add actions
@@ -301,7 +302,7 @@ fun ProductScanView(
                     Button(onClick = {
                         showProductInfo = false
                     }) {
-                        Text(text = "Back")
+                        Text(text = "Back", style = textType.bodyMedium)
                     }
                     if (LoggedUser.loggedUserEmail != "") {
                         Button(onClick = {
