@@ -84,7 +84,8 @@ fun HomeScreen(productViewModel: ProductViewModel) {
                 },
                 actions = {
                     IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView)}
+                        onClick = {
+                            LoginAppRouter.navigateTo(Screen.ProductScanView)}
                     ) {
                         Icon(Icons.Default.Camera, contentDescription = "Camera")
                     }
@@ -106,7 +107,7 @@ fun HomeScreen(productViewModel: ProductViewModel) {
             ) {
                 items(products.size) { index ->
                     val product = products[index]
-                    ItemCard(product.images, product.title)
+                    ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
                 }
             }
         }

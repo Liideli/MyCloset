@@ -20,6 +20,13 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     var informationProductObject by mutableStateOf(ProductObject("","","","","", "", "","","",""))
     var products by mutableStateOf(emptyList<ProductEntity>())
 
+
+    var selectedProduct by mutableStateOf(String())
+    fun setSelectedProduct(product: String): String {
+        selectedProduct = product
+        return selectedProduct
+    }
+
     fun saveToDatabase(
         obj:ProductObject
     ) {
@@ -43,9 +50,16 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     fun getProductsWithEmail(userEmail: String) {
         viewModelScope.launch {
             productRepository.getAllProductsWithEmailStream(userEmail).collect() { response ->
-                if (response != null) {
                     products = response
-                }
+            }
+        }
+    }
+
+    // Get product with barcode
+    fun getProductWithBarcode(barcodeNumber: String) {
+        viewModelScope.launch {
+            productRepository.getAllProductWithBarcodeStream(barcodeNumber).collect() { response ->
+                    products = response
             }
         }
     }
@@ -58,12 +72,12 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
 
     //delete
-    fun deleteProduct(obj:ProductObject){
+    /*fun deleteProduct(obj:ProductObject){
         viewModelScope.launch {
             productRepository.deleteProductStream(ProductEntity(obj.barcodeNumber,obj.userEmail,obj.model,obj.title,obj.category,obj.brand,obj.color,obj.material,obj.size,obj.images)
             )
         }
-    }
+    }*/
 
     //the result will be an array of strings
     fun getInfo(barcode: String) {

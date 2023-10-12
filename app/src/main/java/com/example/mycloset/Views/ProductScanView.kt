@@ -10,26 +10,30 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -54,6 +58,7 @@ import com.example.mycloset.navigation.Screen
 import kotlinx.coroutines.flow.StateFlow
 
 //@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScanView(
     // Parameters required for the composable
@@ -84,100 +89,116 @@ fun ProductScanView(
     val context = LocalContext.current
 
     if (!showProductInfo) {
-        // AndroidView to display the camera preview
-        AndroidView(factory = { context ->
-            PreviewView(context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-                scaleType = PreviewView.ScaleType.FILL_START
-                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                this.controller = cameraController
-            }
-        })
+        Scaffold(topBar = {
+            TopAppBar(
+                title = {
+                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                },
+                actions = {
+                    IconButton(
+                        onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }
+                    ) {
+                        Icon(Icons.Default.Home, contentDescription = "Camera")
+                    }
+                }
+            )
+        }) { innerPadding ->
+            // AndroidView to display the camera preview
+            AndroidView(factory = { context ->
+                PreviewView(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    scaleType = PreviewView.ScaleType.FILL_START
+                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                    this.controller = cameraController
+                }
+            })
 
-        // Column to organize UI elements vertically with space between them
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
+            // Column to organize UI elements vertically with space between them
             Column(
                 modifier = Modifier
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween,
+                    .fillMaxHeight()
+                    .padding(innerPadding)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                // Card composable to display barcode information
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    ),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        if (barcode.value.barcode.isNotEmpty()) {
-                            Text(text = "Barcode: ${barcode.value.barcode}")
-                        } else {
-                            Text(text = "Point camera at a barcode")
-                        }
-                    }
-                }
-                // Row for torch button and search button
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    // Button to toggle the torch
-                    Button(
-                        onClick = onTorchButtonClicked,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
+                    // Card composable to display barcode information
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        ),
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        if (torchEnabled.value) {
-                            Icon(
-                                imageVector = Icons.Default.FlashOff,
-                                contentDescription = "Flash off icon"
-                            )
-
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.FlashOn,
-                                contentDescription = "Flash on icon"
-                            )
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            if (barcode.value.barcode.isNotEmpty()) {
+                                Text(text = "Barcode: ${barcode.value.barcode}")
+                            } else {
+                                Text(text = "Point camera at a barcode")
+                            }
                         }
                     }
+                    // Row for torch button and search button
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
 
-                    // Button to search for product info
-                    Button(onClick = {
-                        if (barcode.value.barcode.isNotEmpty()) {
-                            isLoading = true
-                            networkResult = null
-                            productViewModel.getInfo(barcode.value.barcode)
-                            showProductInfo = true
-                        } else {
-                            Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT)
-                                .show()
+                        // Button to toggle the torch
+                        Button(
+                            onClick = onTorchButtonClicked,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            )
+                        ) {
+                            if (torchEnabled.value) {
+                                Icon(
+                                    imageVector = Icons.Default.FlashOff,
+                                    contentDescription = "Flash off icon"
+                                )
+
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Default.FlashOn,
+                                    contentDescription = "Flash on icon"
+                                )
+                            }
                         }
-                    }) {
-                        Text(text = "Search Product Info")
+
+                        // Button to search for product info
+                        Button(onClick = {
+                            if (barcode.value.barcode.isNotEmpty()) {
+                                isLoading = true
+                                networkResult = null
+                                productViewModel.getInfo(barcode.value.barcode)
+                                showProductInfo = true
+                            } else {
+                                Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }) {
+                            Text(text = "Search Product Info")
+                        }
                     }
                 }
             }
         }
     }
 
-    if (informationProductObject.barcodeNumber!="") {
+    if (informationProductObject.barcodeNumber != "") {
         // Display a loading indicator while loading product info
         if (isLoading) {
             Column(
@@ -197,85 +218,105 @@ fun ProductScanView(
     }
 
     // Display the product information if there is a successful result
-    if (showProductInfo && informationProductObject.barcodeNumber!="") {
+    if (showProductInfo && informationProductObject.barcodeNumber != "") {
         isLoading = false
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-
-            Text(
-                text = informationProductObject.title,
-                modifier = Modifier.padding(16.dp)
+        Scaffold(topBar = {
+            TopAppBar(
+                title = {
+                    Text("MyCloset", modifier = Modifier.padding(2.dp))
+                },
+                actions = {
+                    IconButton(
+                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                    ) {
+                        Icon(Icons.Default.Camera, contentDescription = "Camera")
+                    }
+                }
             )
+        }) { innerPadding ->
 
-            // Image of the product
-            ImgDisplay.DisplayPicture(informationProductObject.images)
-
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(16.dp)
             ) {
-                item {
-                    Text(
-                        text = "Product Information",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
 
-                item {
-                    Text("Barcode: ${informationProductObject.barcodeNumber}")
-                }
+                Text(
+                    text = informationProductObject.title,
+                    modifier = Modifier.padding(16.dp)
+                )
 
-                item {
-                    Text("Model: ${informationProductObject.model}")
-                }
+                // Image of the product
+                ImgDisplay.DisplayPicture(informationProductObject.images)
 
-                item {
-                    Text("Category: ${informationProductObject.category}")
-                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    item {
+                        Text(
+                            text = "Product Information",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
 
-                item {
-                    Text("Brand: ${informationProductObject.brand}")
-                }
+                    item {
+                        Text("Barcode: ${informationProductObject.barcodeNumber}")
+                    }
 
-                item {
-                    Text("Color: ${informationProductObject.color}")
-                }
+                    item {
+                        Text("Model: ${informationProductObject.model}")
+                    }
 
-                item {
-                    Text("Material: ${informationProductObject.material}")
-                }
+                    item {
+                        Text("Category: ${informationProductObject.category}")
+                    }
 
-                item {
-                    Text("Size: ${informationProductObject.size}")
+                    item {
+                        Text("Brand: ${informationProductObject.brand}")
+                    }
+
+                    item {
+                        Text("Color: ${informationProductObject.color}")
+                    }
+
+                    item {
+                        Text("Material: ${informationProductObject.material}")
+                    }
+
+                    item {
+                        Text("Size: ${informationProductObject.size}")
+                    }
                 }
-        }
-            }
-            // Buttons for cancel and add actions
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(onClick = {
-                    showProductInfo = false
-                }) {
-                    Text(text = "Back")
-                }
-                if(LoggedUser.loggedUserEmail!=""){
+                // Buttons for cancel and add actions
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Button(onClick = {
-                        productViewModel.saveToDatabase(informationProductObject)
-                        Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT).show()
-                        LoginAppRouter.navigateTo(Screen.HomeScreen)
+                        showProductInfo = false
                     }) {
-                        Text(text = "Add")
-                }
-                }else{
-                    Log.i("LOGIN_ERROR","You can't add a new item to your wardrobe because you aren't logged")
+                        Text(text = "Back")
+                    }
+                    if (LoggedUser.loggedUserEmail != "") {
+                        Button(onClick = {
+                            productViewModel.saveToDatabase(informationProductObject)
+                            Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT).show()
+                            LoginAppRouter.navigateTo(Screen.HomeScreen)
+                        }) {
+                            Text(text = "Add")
+                        }
+                    } else {
+                        Log.i(
+                            "LOGIN_ERROR",
+                            "You can't add a new item to your wardrobe because you aren't logged"
+                        )
+                    }
                 }
             }
         }
     }
+}
