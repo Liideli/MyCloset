@@ -6,12 +6,12 @@ import androidx.room.Entity
 data class ProductEntity(
     val barcodeNumber: String,
     val userEmail: String,
-    val model: String,
-    val title: String,
-    val category: String,
-    val brand: String,
-    val color: String,
-    val material: String,
-    val size: String,
+    var model: String,
+    var title: String,
+    var category: String,
+    var brand: String,
+    var color: String,
+    var material: String,
+    var size: String,
     val images: String
 )

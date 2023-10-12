@@ -3,7 +3,9 @@ package com.example.mycloset.Views
 import android.widget.Toast
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -58,16 +61,22 @@ import kotlinx.coroutines.flow.StateFlow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateSingleItem(
-    productViewModel: ProductViewModel,
-) {/*
-    var editedProduct by remember { mutableStateOf(productViewModel.informationProductObject.copy()) }
+    productViewModel: ProductViewModel
+) {
+    var viewModel: SignupViewModel = viewModel()
+    val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
+    productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
+    val products = productViewModel.products
     val context = LocalContext.current
+    //used for keeping trak of the edits
+    var text by remember { mutableStateOf("") }
+
     Scaffold(
         topBar = {
             // TopAppBar (the top bar)
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = { LoginAppRouter.navigateTo(Screen.HomeScreen) }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -75,88 +84,174 @@ fun UpdateSingleItem(
                     }
                 },
                 title = {
-                    Text("Edit Product")
+                    Text("MyCloset")
+                },
+                actions = {
+                    IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
+                        Icon(
+                            Icons.Default.Camera,
+                            contentDescription = "Camera"
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            viewModel.logout()
+                        }
+                    ) {
+                        Icon(Icons.Default.Logout, contentDescription = "Logout")
+                    }
                 }
             )
         }
-    ) { padding ->
+    ) { innerPadding ->
+        // Content to be displayed below the top bar
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            DisplayPicture(editedProduct.images)
+            val product = products[0]
+
+            //title
+            Text(
+                text = product.title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                text = "Edit Product Information",
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+            //image
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                DisplayPicture(product.images)
+            }
 
-            TextField(
-                value = editedProduct.model,
-                onValueChange = { editedProduct.model = it },
-                label = { Text("Model") }
-            )
+            Spacer(modifier = Modifier.height(24.dp))
 
-            TextField(
-                value = editedProduct.category,
-                onValueChange = { editedProduct.category = it },
-                label = { Text("Category") }
-            )
 
-            TextField(
-                value = editedProduct.brand,
-                onValueChange = { editedProduct.brand = it },
-                label = { Text("Brand") }
-            )
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
 
-            TextField(
-                value = editedProduct.color,
-                onValueChange = { editedProduct.color = it },
-                label = { Text("Color") }
-            )
+                //info
+                item {
+                    Text(
+                        text = "Edit the fields :",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
 
-            TextField(
-                value = editedProduct.material,
-                onValueChange = { editedProduct.material = it },
-                label = { Text("Material") }
-            )
+                //prepare the object for save the update
+                var product = products[0]
 
-            TextField(
-                value = editedProduct.size,
-                onValueChange = { editedProduct.size = it },
-                label = { Text("Size") }
-            )
+                //model
+                if (product.model != "") {
+                    item {
+                                EditableTextField(
+                                initialValue = product.model,
+                                onValueChange = { newValue: String ->
+                                    product.model = newValue
+                                }
+                            )
+                        }
+                    }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                //category
+                item {
+                    EditableTextField(
+                        initialValue = product.category,
+                        onValueChange = { newValue: String ->
+                            product.category = newValue
+                        }
+                    )
+                }
 
+                //brand
+                if (product.brand != "") {
+                    item {
+                        EditableTextField(
+                            initialValue = product.brand,
+                            onValueChange = { newValue: String ->
+                                product.brand = newValue
+                            }
+                        )
+                    }
+                }
+
+                //color
+                if (product.color != "") {
+                    item {
+                        EditableTextField(
+                            initialValue = product.color,
+                            onValueChange = { newValue: String ->
+                                product.color = newValue
+                            }
+                        )
+                    }
+                }
+
+                //material
+                if (product.material != "") {
+                    item {
+                        EditableTextField(
+                            initialValue = product.material,
+                            onValueChange = { newValue: String ->
+                                product.material = newValue
+                            }
+                        )
+                    }
+                }
+
+                //size
+                if (informationProductObject.size != "") {
+                    item {
+                        EditableTextField(
+                            initialValue = product.size,
+                            onValueChange = { newValue: String ->
+                                product.size = newValue
+                            }
+                        )
+                    }
+                }
+
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            //bitton
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
-                    onClick = {LoginAppRouter.navigateTo(Screen.SingleItemScreen) }
+                    onClick = {
+                        LoginAppRouter.navigateTo(Screen.SingleItemScreen)
+                    }
                 ) {
                     Text("Cancel")
                 }
                 Button(
                     onClick = {
-                        // Save the edited product
-                        productViewModel.updateProductDetails(editedProduct)
-                        Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
-                        LoginAppRouter.navigateTo(Screen.SingleItemScreen)
+                        productViewModel.updateProductDetails(product)
+                        Toast.makeText(context, "Item Updated!", Toast.LENGTH_SHORT).show()
+                        LoginAppRouter.navigateTo(Screen.HomeScreen)
                     }
                 ) {
-                    Text("Save")
+                    Text("Confirm")
                 }
-
             }
         }
-    }*/
+    }
 }
+
+
+

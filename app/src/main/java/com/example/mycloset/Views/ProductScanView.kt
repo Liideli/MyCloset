@@ -259,7 +259,11 @@ fun ProductScanView(
                 val textToDisplay = if ("," in title) {
                     title.substringBefore(",")
                 } else {
-                    title
+                    if ("-" in title) {
+                        title.substringBefore("-")
+                    } else {
+                        title
+                    }
                 }
                 //Title
                 Text(
@@ -267,16 +271,22 @@ fun ProductScanView(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                 )
+
                 Spacer(modifier = Modifier.height(24.dp))
+
                 // Image of the product
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     ImgDisplay.DisplayPicture(informationProductObject.images)
                 }
+
                 Spacer(modifier = Modifier.height(24.dp))
+
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)
                 ) {
+
+                    //information
                     item {
                         Text(
                             text = "Product Information :",
@@ -285,7 +295,8 @@ fun ProductScanView(
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                     }
-                    //the barcode always exist
+
+                    //barcode number
                     item {
                         Box(
                             modifier = Modifier
@@ -297,6 +308,7 @@ fun ProductScanView(
                         }
                     }
 
+                    //model
                     if(informationProductObject.model!=""){
                             item {
                                 Box(
@@ -310,6 +322,7 @@ fun ProductScanView(
                         }
                     }
 
+                    //category
                     item {
                         Box(
                             modifier = Modifier
@@ -323,6 +336,7 @@ fun ProductScanView(
                         }
                     }
 
+                    //brand
                     if(informationProductObject.brand!=""){
                         item {
                             Box(
@@ -335,6 +349,8 @@ fun ProductScanView(
                             }
                         }
                     }
+
+                    //color
                     if(informationProductObject.color!="") {
                         item {
                             Box(
@@ -347,6 +363,8 @@ fun ProductScanView(
                             }
                         }
                     }
+
+                    //material
                     if(informationProductObject.material!="") {
                         item {
                             Box(
@@ -359,6 +377,8 @@ fun ProductScanView(
                             }
                         }
                     }
+
+                    //size
                     if(informationProductObject.size!=""){
                         item {
                             Box(
@@ -375,7 +395,8 @@ fun ProductScanView(
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
-                // Buttons for cancel and add actions
+
+                //button
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween

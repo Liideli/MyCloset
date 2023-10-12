@@ -92,6 +92,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
         ) {
             val product = products[0]
 
+            //title
             Text(
                 text = product.title,
                 fontWeight = FontWeight.Bold,
@@ -100,6 +101,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            //images
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             DisplayPicture(product.images)
             }
@@ -111,6 +113,8 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(16.dp)
             ) {
+
+                //product information
                 item {
                     Text(
                         text = "Product Information :",
@@ -120,6 +124,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     )
                 }
 
+                //barcode number
                 item {
                     Box(
                         modifier = Modifier
@@ -131,6 +136,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     }
                 }
 
+                //model
                 if(product.model!=""){
                     item {
                         Box(
@@ -144,6 +150,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     }
                 }
 
+                //category
                 item {
                     Box(
                         modifier = Modifier
@@ -154,6 +161,8 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                         Text("Category: ${product.category}")
                     }
                 }
+
+                //brand
                 if(product.brand!=""){
                     item {
                         Box(
@@ -167,6 +176,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     }
                 }
 
+                //color
                 if(product.color!="") {
                     item {
                         Box(
@@ -179,6 +189,8 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                         }
                     }
                 }
+
+                //material
                 if(product.material!="") {
                     item {
                         Box(
@@ -191,6 +203,8 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                         }
                     }
                 }
+
+                //size
                 if(informationProductObject.size!=""){
                     item {
                         Box(
@@ -205,8 +219,10 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 }
 
             }
+
             Spacer(modifier = Modifier.weight(1f))
-            // Add more text components or other content as needed
+
+            //buttons
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -224,7 +240,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 }
                 Button(
                     onClick = {
-
+                        LoginAppRouter.navigateTo(Screen.UpdateSingleScreen)
                     }
                 ) {
                     Text("Update Item")
@@ -233,16 +249,3 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
         }
     }
 }
-
-
-/*@Composable
-@Preview
-fun SingleItemView(){
-    SingleItemScreen()
-}*/
-
-//@Preview
-//@Composable
-//fun Info() {
-//    SingleItemScreen()
-//}

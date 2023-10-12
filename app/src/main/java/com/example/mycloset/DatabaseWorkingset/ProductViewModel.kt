@@ -37,7 +37,11 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
             val titleModified = if ("," in title) {
                 title.substringBefore(",")
             } else {
-                title
+                if ("-" in title) {
+                    title.substringBefore("-")
+                } else {
+                    title
+                }
             }
 
             //Same for the category
