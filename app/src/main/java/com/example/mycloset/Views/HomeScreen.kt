@@ -1,6 +1,7 @@
 
 package com.example.mycloset.Views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
@@ -30,6 +32,7 @@ import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
+import com.example.mycloset.ui.theme.md_theme_light_outline
 import kotlinx.coroutines.flow.*
 
 
@@ -41,8 +44,55 @@ fun HomeScreen(productViewModel: ProductViewModel) {
     val products = productViewModel.products
 
     if (products.isEmpty()) {
-        Scaffold(
-            topBar = {
+
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = "MyCloset",
+                                fontFamily = fontFamily,
+                                modifier = Modifier.padding(vertical = 16.dp),
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.displayMedium,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                textAlign = TextAlign.Center
+                            )
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = { signupViewModel.logout() }
+                            ) {
+                                Icon(Icons.Default.Logout, contentDescription = "Logout")
+                            }
+                        },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
+                            ) {
+                                Icon(Icons.Default.Camera, contentDescription = "Camera")
+                            }
+                        }
+
+                    )
+                }) { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center
+
+                ) {
+                    Text(
+                        text = "You don't have any items yet...",
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+
+    } else {
+            Scaffold(topBar = {
                 TopAppBar(
                     title = {
                         Text(
@@ -51,78 +101,46 @@ fun HomeScreen(productViewModel: ProductViewModel) {
                             modifier = Modifier.padding(vertical = 16.dp),
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center
+                        )
                     },
                     actions = {
+                        IconButton(
+                            onClick = { signupViewModel.logout() }
+                        ) {
+                            Icon(Icons.Default.Logout, contentDescription = "Logout")
+                        }
+                    },
+                    navigationIcon = {
                         IconButton(
                             onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
                         ) {
                             Icon(Icons.Default.Camera, contentDescription = "Camera")
                         }
-                        IconButton(
-                            onClick = {
-                                signupViewModel.logout()
-                            }
-                        ) {
-                            Icon(Icons.Default.Logout, contentDescription = "Logout")
-                        }
                     }
-                )
-            }) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "You don't have any items yet...",
-                    textAlign = TextAlign.Center,
                 )
             }
-        }
-    } else {
-        Scaffold(topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "MyCloset",
-                        fontFamily = fontFamily,
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.displayMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer)
-                },
-                actions = {
-                    IconButton(
-                        onClick = { signupViewModel.logout() }
-                    ) {
-                        Icon(Icons.Default.Logout, contentDescription = "Logout")
+            ) { innerPadding ->
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2), modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .background(md_theme_light_outline)
+                ) {
+                    items(products.size) { index ->
+                        val product = products[index]
+                        ItemCard(
+                            product.images,
+                            product.title,
+                            product.barcodeNumber,
+                            productViewModel
+                        )
                     }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }
-                    ) {
-                        Icon(Icons.Default.Camera, contentDescription = "Camera")
-                    }
-                }
-            )
-        }
-        ) { innerPadding ->
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2), modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                items(products.size) { index ->
-                    val product = products[index]
-                    ItemCard(product.images, product.title, product.barcodeNumber, productViewModel)
                 }
             }
         }
     }
-}
 
 
 /*@Preview
