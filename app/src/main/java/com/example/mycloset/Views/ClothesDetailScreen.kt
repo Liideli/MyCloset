@@ -1,13 +1,15 @@
 package com.example.mycloset.Views
 
-/*@Composable
+import androidx.compose.runtime.Composable
+
+@Composable
 fun clothesDetailScreen(
-    navController: NavHostController,
+    /*navController: NavHostController,
     clothesViewModel:ClothesViewModel,
-    barcode: String?
+    barcode: String?*/
 ) {
 
-    clothesViewModel.findClothesByBarcode(barcode!!)
+    /*clothesViewModel.findClothesByBarcode(barcode!!)
 
    val selectedClothes = clothesViewModel.foundClothes.observeAsState().value;
 
@@ -60,6 +62,6 @@ fun clothesDetailScreen(
                     }
                 }
             }
-        }
+        }*/
     }
-    */
+

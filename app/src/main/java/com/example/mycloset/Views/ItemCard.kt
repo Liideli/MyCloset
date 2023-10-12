@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.mycloset.navigation.LoginAppRouter
+import com.example.mycloset.navigation.Screen
+
 
 data class Item(val id: Int, val title: String, val imageUrl: String)
 
@@ -31,9 +34,9 @@ fun ItemCard(
         ),
         modifier = Modifier.padding(5.dp),
         shape = RoundedCornerShape(10.dp),
-//        onClick = {
-            // open single item screen
-//        }
+        onClick = {
+            LoginAppRouter.navigateTo(Screen.ClothesDetailScreen)
+        }
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Image(
