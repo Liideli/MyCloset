@@ -1,14 +1,8 @@
 package com.example.mycloset.Views
 
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Camera
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -92,34 +85,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
             ) {
                 items(products.size) { index ->
                     val product = products[index]
-                    SingleItemCard(product.images, product.model, product.title, product.category, product.brand, product.size,  product.barcodeNumber, productViewModel)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Add more text components or other content as needed
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = {
-                        //productViewModel.deleteProduct(informationProductObject)
-                        Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
-                        LoginAppRouter.navigateTo(Screen.HomeScreen)
-                    }
-                ) {
-                    Text("Delete Item")
-                }
-                Button(
-                    onClick = {
-
-                    }
-                ) {
-                    Text("Update Item")
+                    SingleItemCard(product.images, product.model, product.title, product.category, product.brand, product.size, productViewModel)
                 }
             }
         }

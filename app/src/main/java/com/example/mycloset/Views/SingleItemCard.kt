@@ -39,7 +39,6 @@ fun SingleItemCard(
     category: String?,
     brand: String?,
     size: String?,
-    barcodeNumber: String,
     productViewModel: ProductViewModel
 //    onClick: () -> Unit
 ) {
