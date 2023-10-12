@@ -38,7 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
-import com.example.mycloset.navigation.Screen
 
 //import com.example.mycloset.Screen
 

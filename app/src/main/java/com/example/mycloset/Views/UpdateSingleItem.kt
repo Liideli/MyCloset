@@ -160,14 +160,14 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
             ) {
                 Button(
                     onClick = {
-                       productViewModel.deleteProduct(informationProductObject)
+                        productViewModel.deleteProduct(informationProductObject)
                         Toast.makeText(context, "Item Delated!", Toast.LENGTH_SHORT).show()
                         LoginAppRouter.navigateTo(Screen.HomeScreen)
                     }
                 ) {
                     Text("Delete Item")
                 }
-             Button(
+                Button(
                     onClick = {
 
                     }
@@ -178,15 +178,3 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
         }
     }
 }
-
-/*@Composable
-@Preview
-fun SingleItemView(){
-    SingleItemScreen()
-}*/
-
-//@Preview
-//@Composable
-//fun Info() {
-//    SingleItemScreen()
-//}

@@ -51,11 +51,9 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
-import com.example.mycloset.navigation.LoginAppRouter
-import com.example.mycloset.navigation.Screen
 import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalMaterial3Api::class)
+//@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScanView(
     // Parameters required for the composable
@@ -255,10 +253,8 @@ fun ProductScanView(
                 item {
                     Text("Size: ${informationProductObject.size}")
                 }
-
         }
             }
-
             // Buttons for cancel and add actions
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -271,14 +267,11 @@ fun ProductScanView(
                 }
                 if(LoggedUser.loggedUserEmail!=""){
                     Button(onClick = {
-
-                        LoginAppRouter.navigateTo(Screen.HomeScreen)
-                        Log.i("eeeeeeeeee","rrrrr")
                         productViewModel.saveToDatabase(informationProductObject)
                         Toast.makeText(context, "Item added!", Toast.LENGTH_SHORT).show()
+                        LoginAppRouter.navigateTo(Screen.HomeScreen)
                     }) {
                         Text(text = "Add")
-
                 }
                 }else{
                     Log.i("LOGIN_ERROR","You can't add a new item to your wardrobe because you aren't logged")
