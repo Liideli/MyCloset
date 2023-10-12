@@ -135,29 +135,32 @@ fun UpdateSingleItem(
                 DisplayPicture(product.images)
             }
 
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
             ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
 
-                //info
-                item {
-                    Text(
-                        text = "Edit the fields :",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
-
-                //prepare the object for save the update
-                var product = products[0]
-
-                //model
-                if (product.model != "") {
+                    //info
                     item {
-                                EditableTextField(
+                        Text(
+                            text = "Edit the fields :",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
+
+                    //prepare the object for save the update
+                    var product = products[0]
+
+                    //model
+                    if (product.model != "") {
+                        item {
+                            EditableTextField(
                                 initialValue = product.model,
                                 onValueChange = { newValue: String ->
                                     product.model = newValue
@@ -166,66 +169,66 @@ fun UpdateSingleItem(
                         }
                     }
 
-                //category
-                item {
-                    EditableTextField(
-                        initialValue = product.category,
-                        onValueChange = { newValue: String ->
-                            product.category = newValue
+                    //category
+                    item {
+                        EditableTextField(
+                            initialValue = product.category,
+                            onValueChange = { newValue: String ->
+                                product.category = newValue
+                            }
+                        )
+                    }
+
+                    //brand
+                    if (product.brand != "") {
+                        item {
+                            EditableTextField(
+                                initialValue = product.brand,
+                                onValueChange = { newValue: String ->
+                                    product.brand = newValue
+                                }
+                            )
                         }
-                    )
-                }
-
-                //brand
-                if (product.brand != "") {
-                    item {
-                        EditableTextField(
-                            initialValue = product.brand,
-                            onValueChange = { newValue: String ->
-                                product.brand = newValue
-                            }
-                        )
                     }
-                }
 
-                //color
-                if (product.color != "") {
-                    item {
-                        EditableTextField(
-                            initialValue = product.color,
-                            onValueChange = { newValue: String ->
-                                product.color = newValue
-                            }
-                        )
+                    //color
+                    if (product.color != "") {
+                        item {
+                            EditableTextField(
+                                initialValue = product.color,
+                                onValueChange = { newValue: String ->
+                                    product.color = newValue
+                                }
+                            )
+                        }
                     }
-                }
 
-                //material
-                if (product.material != "") {
-                    item {
-                        EditableTextField(
-                            initialValue = product.material,
-                            onValueChange = { newValue: String ->
-                                product.material = newValue
-                            }
-                        )
+                    //material
+                    if (product.material != "") {
+                        item {
+                            EditableTextField(
+                                initialValue = product.material,
+                                onValueChange = { newValue: String ->
+                                    product.material = newValue
+                                }
+                            )
+                        }
                     }
-                }
 
-                //size
-                if (informationProductObject.size != "") {
-                    item {
-                        EditableTextField(
-                            initialValue = product.size,
-                            onValueChange = { newValue: String ->
-                                product.size = newValue
-                            }
-                        )
+                    //size
+                    if (informationProductObject.size != "") {
+                        item {
+                            EditableTextField(
+                                initialValue = product.size,
+                                onValueChange = { newValue: String ->
+                                    product.size = newValue
+                                }
+                            )
+                        }
                     }
-                }
 
+                }
             }
-
             //Spacer(modifier = Modifier.weight(1f))
 
             //button
