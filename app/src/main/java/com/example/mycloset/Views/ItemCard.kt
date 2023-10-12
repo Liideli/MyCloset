@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
@@ -45,7 +46,7 @@ fun ItemCard(
         }
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(3.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -55,7 +56,7 @@ fun ItemCard(
                     .size(120.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
-            name?.let { Text(text = it, style = textType.bodyMedium) }
+            name?.let { Text(text = it, style = textType.bodyMedium,fontWeight = FontWeight.Bold,) }
         }
     }
 }

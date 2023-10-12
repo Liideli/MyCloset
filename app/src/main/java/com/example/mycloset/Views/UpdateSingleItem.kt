@@ -57,6 +57,7 @@ import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.R
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
+import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.md_theme_light_outline
 import com.example.mycloset.ui.theme.textType
 import kotlinx.coroutines.flow.StateFlow
@@ -88,7 +89,13 @@ fun UpdateSingleItem(
                     }
                 },
                 title = {
-                    Text("MyCloset", style = textType.titleLarge)
+                    Text(
+                        text = "MyCloset",
+                        fontFamily = fontFamily,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displayMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer)
                 },
                 actions = {
                     IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
@@ -134,7 +141,14 @@ fun UpdateSingleItem(
             ) {
                 DisplayPicture(product.images)
             }
-
+            Column (modifier=Modifier.padding(horizontal = 20.dp)){
+                Text(
+                    text = "Edit the fields :",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -146,12 +160,7 @@ fun UpdateSingleItem(
 
                     //info
                     item {
-                        Text(
-                            text = "Edit the fields :",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
+
                     }
 
                     //prepare the object for save the update
@@ -164,7 +173,8 @@ fun UpdateSingleItem(
                                 initialValue = product.model,
                                 onValueChange = { newValue: String ->
                                     product.model = newValue
-                                }
+                                },
+                                "Model"
                             )
                         }
                     }
@@ -175,7 +185,8 @@ fun UpdateSingleItem(
                             initialValue = product.category,
                             onValueChange = { newValue: String ->
                                 product.category = newValue
-                            }
+                            },
+                            "Category"
                         )
                     }
 
@@ -186,7 +197,8 @@ fun UpdateSingleItem(
                                 initialValue = product.brand,
                                 onValueChange = { newValue: String ->
                                     product.brand = newValue
-                                }
+                                },
+                                "Brand"
                             )
                         }
                     }
@@ -198,7 +210,8 @@ fun UpdateSingleItem(
                                 initialValue = product.color,
                                 onValueChange = { newValue: String ->
                                     product.color = newValue
-                                }
+                                },
+                                "Color"
                             )
                         }
                     }
@@ -210,26 +223,28 @@ fun UpdateSingleItem(
                                 initialValue = product.material,
                                 onValueChange = { newValue: String ->
                                     product.material = newValue
-                                }
+                                },
+                                "Material"
                             )
                         }
                     }
 
                     //size
-                    if (informationProductObject.size != "") {
+                    if (product.size != "") {
                         item {
                             EditableTextField(
                                 initialValue = product.size,
                                 onValueChange = { newValue: String ->
                                     product.size = newValue
                                 }
+                                ,
+                                "Size"
                             )
                         }
                     }
 
                 }
             }
-            //Spacer(modifier = Modifier.weight(1f))
 
             //button
             Row(
