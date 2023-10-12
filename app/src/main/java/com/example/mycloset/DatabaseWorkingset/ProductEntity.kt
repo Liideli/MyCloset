@@ -1,7 +1,6 @@
 package com.example.mycloset.DatabaseWorkingset
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "products",primaryKeys = ["barcodeNumber", "userEmail"])
 data class ProductEntity(

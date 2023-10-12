@@ -15,19 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 
+
+data class Item(val id: Int, val title: String, val imageUrl: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemCard(
     imageUrl: String?,
     name: String?,
-    barcode:String,
-    userEmail:String,
+    barcodeNumber: String,
     productViewModel: ProductViewModel
+//    onClick: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -52,3 +53,10 @@ fun ItemCard(
 
 
 
+/*
+@Preview
+@Composable
+fun MyPrev() {
+    ItemCard("https://media.istockphoto.com/id/1303978937/fi/valokuva/valkoinen-lenkkari-sinisell%C3%A4-kaltevuustaustalla-miesten-muoti-urheilukenk%C3%A4-lenkkarit.jpg?s=612x612&w=0&k=20&c=X_lwi6td_xtFUGXjOmAU8WzH-MKPZ-OeWKtKUshe-SI=", "nike")
+}
+*/

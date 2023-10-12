@@ -11,7 +11,6 @@ import com.example.mycloset.ApiWorkingSet.RetrofitObject
 import com.example.mycloset.BarcodeWorkingSet.BarcodeRepository
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 //view-model used for the take the information about one product from its barcode
@@ -21,9 +20,12 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     var informationProductObject by mutableStateOf(ProductObject("","","","","", "", "","","",""))
     var products by mutableStateOf(emptyList<ProductEntity>())
 
-    var singleProduct by mutableStateOf(ProductEntity(
-        "","","","","", "", "","","",""))
 
+    var selectedProduct by mutableStateOf(String())
+    fun setSelectedProduct(product: String): String {
+        selectedProduct = product
+        return selectedProduct
+    }
 
     fun saveToDatabase(
         obj:ProductObject
@@ -47,11 +49,12 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     }
 
     // Get a single product from an account
-    fun getSingleProduct(barcode:String,userEmail: String) {
+    /*fun getSingleProduct(barcode:String,userEmail: String) {
         viewModelScope.launch {
            singleProduct=productRepository.getSingleProductStream(barcode,userEmail)
         }
-    }
+    }*/
+
     //update
     fun updateProductDetails(product:ProductEntity){
         viewModelScope.launch {
@@ -62,8 +65,8 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     //delete
     fun deleteProduct(obj:ProductObject){
         viewModelScope.launch {
-            productRepository.deleteProductStream(singleProduct)
-
+            productRepository.deleteProductStream(ProductEntity(obj.barcodeNumber,obj.userEmail,obj.model,obj.title,obj.category,obj.brand,obj.color,obj.material,obj.size,obj.images)
+            )
         }
     }
 
@@ -82,10 +85,7 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
     }
 }
-data class SelectedObject(
-    val barcodeNumber:String,
-    val userEmail: String
-)
+
 data class ProductObject(
     val barcodeNumber: String,
     val userEmail: String,
