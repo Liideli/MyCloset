@@ -88,6 +88,8 @@ fun ProductScanView(
 
     val context = LocalContext.current
 
+    val topAppBarColor = MaterialTheme.colorScheme.onTertiary
+
     if (!showProductInfo) {
         Scaffold(topBar = {
             TopAppBar(

@@ -9,5 +9,5 @@ interface ProductRepository {
     fun getAllProductWithBarcodeStream(barcodeNumber: String): Flow<List<ProductEntity>>
     // fun getAllProductWithBarcodeStream(barcodeNumber: String, userEmail: String):ProductEntity
     suspend fun updateProductDetailsStream(product: ProductEntity)
-    suspend fun deleteProductStream(product: ProductEntity)
+    suspend fun deleteProductStream(barcodeNumber: String)
 }

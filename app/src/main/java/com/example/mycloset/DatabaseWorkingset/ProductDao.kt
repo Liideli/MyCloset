@@ -1,7 +1,6 @@
 package com.example.mycloset.DatabaseWorkingset
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -27,6 +26,7 @@ interface ProductDao {
     @Update
     suspend fun updateProductDetails(product: ProductEntity)
 
-    @Delete
-    suspend fun deleteProduct(product: ProductEntity)
+    //@Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
+    @Query("DELETE FROM products WHERE barcodeNumber = :barcodeNumber")
+    suspend fun deleteProduct(barcodeNumber: String)
 }

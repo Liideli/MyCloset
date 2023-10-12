@@ -37,25 +37,32 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
     }
 
-    // Get all the products from an account
-    fun getProductsWithEmail(userEmail: String) {
+    // Get all products
+    fun getProducts() {
         viewModelScope.launch {
-            productRepository.getAllProductsWithEmailStream(userEmail).collect() { response ->
-                if (response != null) {
-                    products = response
-                }
-            }
-        }
-    }
-
-    fun getProductWithBarcode(barcodeNumber: String) {
-        viewModelScope.launch {
-            productRepository.getAllProductWithBarcodeStream(barcodeNumber).collect() { response ->
+            productRepository.getAllProductsStream().collect() { response ->
                 products = response
             }
         }
     }
 
+    // Get products with logged in email
+    fun getProductsWithEmail(userEmail: String) {
+        viewModelScope.launch {
+            productRepository.getAllProductsWithEmailStream(userEmail).collect() { response ->
+                    products = response
+            }
+        }
+    }
+
+    // Get product with barcode
+    fun getProductWithBarcode(barcodeNumber: String) {
+        viewModelScope.launch {
+            productRepository.getAllProductWithBarcodeStream(barcodeNumber).collect() { response ->
+                    products = response
+            }
+        }
+    }
 
     //update
     fun updateProductDetails(product:ProductEntity){
@@ -65,10 +72,9 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
         }
 
     //delete
-    fun deleteProduct(obj:ProductObject){
+    fun deleteProduct(barcodeNumber: String){
         viewModelScope.launch {
-            productRepository.deleteProductStream(ProductEntity(obj.barcodeNumber,obj.userEmail,obj.model,obj.title,obj.category,obj.brand,obj.color,obj.material,obj.size,obj.images)
-            )
+            productRepository.deleteProductStream(barcodeNumber)
         }
     }
 
@@ -89,16 +95,16 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
 }
 
 data class ProductObject(
-    val barcodeNumber: String,
-    val userEmail: String,
-    val model: String,
-    val title: String,
-    val category: String,
-    val brand: String,
-    val color: String,
-    val material: String,
-    val size: String,
-    val images: String
+val barcodeNumber: String,
+val userEmail: String,
+val model: String,
+val title: String,
+val category: String,
+val brand: String,
+val color: String,
+val material: String,
+val size: String,
+val images: String
 )
 
 //Function for convert from the Api result to a map with all the information about a product
