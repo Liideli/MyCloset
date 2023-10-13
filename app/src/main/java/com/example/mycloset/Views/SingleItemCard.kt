@@ -30,6 +30,7 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 
+//View used for show all the information about a single product that the user select from the card list in the home page
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemCard(
@@ -41,9 +42,10 @@ fun SingleItemCard(
     size: String?,
     barcodeNumber: String,
     productViewModel: ProductViewModel
-//    onClick: () -> Unit
 ) {
+    
     val context = LocalContext.current
+    
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
