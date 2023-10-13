@@ -20,13 +20,14 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     var informationProductObject by mutableStateOf(ProductObject("","","","","", "", "","","",""))
     var products by mutableStateOf(emptyList<ProductEntity>())
 
-
+    //used when we chose from the cards the element abaut we want to see the information
     var selectedProduct by mutableStateOf(String())
     fun setSelectedProduct(product: String): String {
         selectedProduct = product
         return selectedProduct
     }
 
+    //use for save the first time (during the scan) the new item in the database
     fun saveToDatabase(
         obj:ProductObject
     ) {
@@ -102,6 +103,7 @@ class ProductViewModel(val productDao: ProductDao, val productRepository: Produc
     }
 }
 
+    //used for convert from the api model to the database model
 data class ProductObject(
 val barcodeNumber: String,
 val userEmail: String,
