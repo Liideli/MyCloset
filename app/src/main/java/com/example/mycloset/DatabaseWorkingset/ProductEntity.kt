@@ -2,7 +2,8 @@ package com.example.mycloset.DatabaseWorkingset
 
 import androidx.room.Entity
 
-@Entity(tableName = "products",primaryKeys = ["barcodeNumber", "userEmail"])
+// This is a data class representing a product entity in the database.
+@Entity(tableName = "products", primaryKeys = ["barcodeNumber", "userEmail"])
 data class ProductEntity(
     val barcodeNumber: String,
     val userEmail: String,
@@ -15,3 +16,4 @@ data class ProductEntity(
     var size: String,
     val images: String
 )
+

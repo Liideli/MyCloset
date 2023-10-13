@@ -50,7 +50,6 @@ import com.example.mycloset.ui.theme.md_theme_light_outline
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
     val viewModel: SignupViewModel = viewModel()
-    //val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
     val context = LocalContext.current

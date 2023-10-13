@@ -63,7 +63,7 @@ import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.md_theme_light_outline
 import kotlinx.coroutines.flow.StateFlow
 
-//@OptIn(ExperimentalMaterial3Api::class)
+// View for barcode scanning and seeing the product information
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScanView(
@@ -200,7 +200,13 @@ fun ProductScanView(
                                     isLoading = true
                                     networkResult = null
                                     productViewModel.getInfo(barcode.value.barcode)
+                                    if (productViewModel.informationProductObject.title.isNotEmpty()) {
                                     showProductInfo = true
+                                    } else {
+                                        isLoading = false
+                                        Toast.makeText(context, "No product found", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
                                 } else {
                                     Toast.makeText(context, "No barcode found", Toast.LENGTH_SHORT)
                                         .show()
