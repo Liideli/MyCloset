@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mycloset.App.LoginApp
+import com.example.mycloset.App.MyClosetApp
 import com.example.mycloset.BarcodeWorkingSet.CameraScanViewModel
 import com.example.mycloset.ui.theme.AppTheme
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 AppTheme {
                     // Add Navigation
                     navController = rememberNavController()
-                    LoginApp(cameraController = cameraController)
+                    MyClosetApp(cameraController = cameraController)
                 }
             }
         } else {
@@ -102,12 +102,19 @@ class MainActivity : ComponentActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                buildCameraController()
+                val cameraController = buildCameraController()
+                setContent {
+                    AppTheme {
+                        // Add Navigation
+                        navController = rememberNavController()
+                        MyClosetApp(cameraController = cameraController)
+                    }
+                }
             } else {
                 Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_LONG)
                     .show()

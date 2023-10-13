@@ -23,7 +23,7 @@ import com.example.mycloset.navigation.Screen
 
 
 @Composable
-fun LoginApp(cameraController: LifecycleCameraController){
+fun MyClosetApp(cameraController: LifecycleCameraController){
     val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
     // ViewModel for handling camera and barcode scanning logic
     val viewModel: CameraScanViewModel = viewModel(factory = AppViewModelProvider.Factory)

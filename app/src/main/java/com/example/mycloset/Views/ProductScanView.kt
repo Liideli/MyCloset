@@ -36,7 +36,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -60,9 +59,8 @@ import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.LoggedUser
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
-import com.example.mycloset.ui.theme.md_theme_light_outline
-import com.example.mycloset.ui.theme.textType
 import com.example.mycloset.ui.theme.fontFamily
+import com.example.mycloset.ui.theme.md_theme_light_outline
 import kotlinx.coroutines.flow.StateFlow
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -96,7 +94,6 @@ fun ProductScanView(
 
     val context = LocalContext.current
 
-    val topAppBarColor = MaterialTheme.colorScheme.onTertiary
 
     if (!showProductInfo) {
         Scaffold(topBar = {
@@ -217,7 +214,7 @@ fun ProductScanView(
             }
         }
 
-        if (informationProductObject.barcodeNumber != "") {
+        if (informationProductObject.barcodeNumber.isEmpty()) {
             // Display a loading indicator while loading product info
             if (isLoading) {
                 Column(
@@ -237,7 +234,7 @@ fun ProductScanView(
         }
 
     // Display the product information if there is a successful result
-    if (showProductInfo && informationProductObject.barcodeNumber != "") {
+    if (showProductInfo && informationProductObject.barcodeNumber.isNotEmpty()) {
         isLoading = false
         Scaffold(topBar = {
             TopAppBar(

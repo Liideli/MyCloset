@@ -1,6 +1,5 @@
 package com.example.mycloset.Views
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,11 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -43,21 +39,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
-import com.example.mycloset.ApiWorkingSet.ImgDisplay.Companion.DisplayPicture
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
 import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
-import com.example.mycloset.ui.theme.fontFamilyText
 import com.example.mycloset.ui.theme.md_theme_light_outline
-import com.example.mycloset.ui.theme.textType
-import com.example.mycloset.ui.theme.fontFamily
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
-    var viewModel: SignupViewModel = viewModel()
+    val viewModel: SignupViewModel = viewModel()
     //val informationProductObject by rememberUpdatedState(newValue = productViewModel.informationProductObject)
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
@@ -128,12 +120,12 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     //Log.i("IMAGE",product.images)
                     //DisplayPicture(product.images)
                     Image(
-                    painter = rememberAsyncImagePainter(product.images),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(300.dp)
-                        .clip(RoundedCornerShape(18.dp)),
-                )
+                        painter = rememberAsyncImagePainter(product.images),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(300.dp)
+                            .clip(RoundedCornerShape(18.dp)),
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
