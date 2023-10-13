@@ -46,10 +46,11 @@ import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.md_theme_light_outline
 
-//View used
+//View used for show all the information from the product that the user choose from the card list in the applciation home
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
+
     val viewModel: SignupViewModel = viewModel()
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
@@ -67,6 +68,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                             )
                         }
                     },
+                    //title with style adaptation
                     title = {
                         Text(
                             text = "MyCloset",
@@ -76,6 +78,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                             style = MaterialTheme.typography.displayMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer)
                     },
+                    //go to san the product
                     actions = {
                         IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
                             Icon(
@@ -83,6 +86,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                                 contentDescription = "Camera"
                             )
                         }
+                        //logout
                         IconButton(
                             onClick = {
                                 viewModel.logout()
@@ -94,6 +98,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                 )
             }
         ) {
+            //start to showing the item elements
                 innerPadding ->
 
             Column(
@@ -117,8 +122,6 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    //Log.i("IMAGE",product.images)
-                    //DisplayPicture(product.images)
                     Image(
                         painter = rememberAsyncImagePainter(product.images),
                         contentDescription = null,
@@ -159,6 +162,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     }
 
                     //model
+                    //control for check if this file exist, if it doesen't, the application will ingnore this
                     if (product.model != "") {
                         item {
                             Box(
