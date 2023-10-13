@@ -23,22 +23,24 @@ import java.io.InputStream
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
+//used for make the request for showing thee image
 class ImgDisplay {
     companion object {
         @Composable
         fun DisplayPicture(url: String){
             var bitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-
-            //avvio la coroutine
             LaunchedEffect(Dispatchers.IO){
+                //request
                 bitmap= showImg(url)?.asImageBitmap()
             }
+            //style update
             bitmap?.let { bitmap ->
                 Image(modifier = Modifier.size(300.dp)
                     .clip(RoundedCornerShape(16.dp)), bitmap = bitmap, contentDescription = "downloaded picture" )
             }
         }
 
+        //request
         private suspend fun showImg(url:String): Bitmap?= withContext(Dispatchers.IO) {
             var bitmap: Bitmap?=null
             try {
