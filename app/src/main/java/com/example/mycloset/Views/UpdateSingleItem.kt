@@ -46,7 +46,7 @@ import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.md_theme_light_outline
 
-
+//view used for show all the item fileds and allow to modifie their in real-time
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateSingleItem(
@@ -57,8 +57,10 @@ fun UpdateSingleItem(
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
     val context = LocalContext.current
+    
     //used for keeping trak of the edits
     var text by remember { mutableStateOf("") }
+    
     Surface(modifier = Modifier.background(md_theme_light_outline)) {
         Scaffold(
             topBar = {
@@ -72,6 +74,7 @@ fun UpdateSingleItem(
                             )
                         }
                     },
+                    //title with syle adaptation
                     title = {
                         Text(
                             text = "MyCloset",
@@ -81,6 +84,7 @@ fun UpdateSingleItem(
                             style = MaterialTheme.typography.displayMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer)
                     },
+                    //go bacck to the scan view
                     actions = {
                         IconButton(onClick = { LoginAppRouter.navigateTo(Screen.ProductScanView) }) {
                             Icon(
@@ -88,6 +92,7 @@ fun UpdateSingleItem(
                                 contentDescription = "Camera"
                             )
                         }
+                        //logout
                         IconButton(
                             onClick = {
                                 viewModel.logout()
@@ -98,7 +103,9 @@ fun UpdateSingleItem(
                     }
                 )
             }
-        ) { innerPadding ->
+        ) { 
+            //start to show the elements
+            innerPadding ->
             // Content to be displayed below the top bar
             Column(
                 modifier = Modifier
@@ -133,27 +140,25 @@ fun UpdateSingleItem(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
+                
                 Box(
                     modifier = Modifier
                         .weight(1f)
                 ) {
+                    //only the modificable field are scrollable 
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp)
                     ) {
 
-                        //info
-                        item {
-
-                        }
-
                         //prepare the object for save the update
                         var product = products[0]
 
                         //model
+                        //if the field doesn't exist for this product, the application doesnt's show this section
                         if (product.model != "") {
                             item {
-                                EditableTextField(
+                                //this function keep track about all the modification on this field, when you confirm the update the last change applied in this space is use for fill the item field                             EditableTextField(
                                     initialValue = product.model,
                                     onValueChange = { newValue: String ->
                                         product.model = newValue
@@ -238,6 +243,7 @@ fun UpdateSingleItem(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Button(
+                        //go bacck and don't save the changes
                         onClick = {
                             LoginAppRouter.navigateTo(Screen.SingleItemScreen)
                         }
@@ -245,6 +251,7 @@ fun UpdateSingleItem(
                         Text("Cancel")
                     }
                     Button(
+                        //save the changes
                         onClick = {
                             productViewModel.updateProductDetails(product)
                             Toast.makeText(context, "Item Updated!", Toast.LENGTH_SHORT).show()
