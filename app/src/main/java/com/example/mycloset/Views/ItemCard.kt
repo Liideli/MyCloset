@@ -22,9 +22,10 @@ import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.textType
 
-
+//used for store the data that the applciation will shiow in the card
 data class Item(val id: Int, val title: String, val imageUrl: String)
 
+//Card usedd for showing in a list the single item with their name and image in the home
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemCard(
@@ -32,8 +33,8 @@ fun ItemCard(
     name: String?,
     barcodeNumber: String,
     productViewModel: ProductViewModel
-//    onClick: () -> Unit
 ) {
+    
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -49,6 +50,7 @@ fun ItemCard(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //image
             Image(
                 painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = null,
@@ -56,6 +58,7 @@ fun ItemCard(
                     .size(120.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
+            //name
             name?.let { Text(text = it, style = textType.bodyMedium) }
         }
     }
