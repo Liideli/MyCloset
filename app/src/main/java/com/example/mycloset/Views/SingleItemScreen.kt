@@ -46,6 +46,7 @@ import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.md_theme_light_outline
 
+//View used
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SingleItemScreen(productViewModel: ProductViewModel) {
@@ -252,6 +253,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Button(
+                        //delate the item and after go back to the menu
                         onClick = {
                             productViewModel.deleteProduct(productViewModel.selectedProduct)
                             Toast.makeText(context, "Item Deleted!", Toast.LENGTH_SHORT).show()
@@ -261,6 +263,7 @@ fun SingleItemScreen(productViewModel: ProductViewModel) {
                         Text("Delete Item")
                     }
                     Button(
+                        //go to the updateView
                         onClick = {
                             LoginAppRouter.navigateTo(Screen.UpdateSingleScreen)
                         }
