@@ -1,5 +1,19 @@
 # MyCloset
 
+<p align="center">
+   <img src="https://github.com/Liideli/MyCloset/blob/master/InitialScreen.png" alt="InitialScreen" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/LoginScreen.png" alt="LoginScreen" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/RegisterScreen.png" alt="RegisterScreen" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/HomeScreen.png" alt="HomeScreen" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/ProductScanView.png" alt="ProductScanView" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/ScannedProductInformation.png" alt="ScannedProductInformation" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/SingleItemScreen.png" alt="SingleItemScreen" width="120"/>
+   <img src="https://github.com/Liideli/MyCloset/blob/master/UpdateSingleItem.png" alt="UpdateSingleItem" width="120"/>
+</p>
+
+
+
+
 ## Overview
 
 MyCloset is an Android application built using Kotlin Compose, MLKit, and CameraX, following Material Design principles. It enables users to effortlessly organize their wardrobe by scanning clothing barcodes and retrieving detailed information from [BarcodeLookup.com](https://www.barcodelookup.com/). 
