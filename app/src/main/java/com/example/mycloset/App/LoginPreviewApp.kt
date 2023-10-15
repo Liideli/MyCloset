@@ -23,8 +23,10 @@ import com.example.mycloset.navigation.Screen
 
 
 @Composable
-fun MyClosetApp(cameraController: LifecycleCameraController){
+fun MyClosetApp(cameraController: LifecycleCameraController) {
+    // Initialize the ProductViewModel for managing product-related data
     val productViewModel: ProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
     // ViewModel for handling camera and barcode scanning logic
     val viewModel: CameraScanViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
@@ -32,17 +34,18 @@ fun MyClosetApp(cameraController: LifecycleCameraController){
         color = Color.White
     ) {
         Crossfade(targetState = LoginAppRouter.currentScreen, label = "") { currentState ->
-            when(currentState.value){
-                is Screen.SignupScreen ->{
+            when (currentState.value) {
+                is Screen.SignupScreen -> {
                     SignUpScreen()
                 }
-                is Screen.LoginScreen ->{
+                is Screen.LoginScreen -> {
                     LoginScreen()
                 }
-                is Screen.HomeScreen ->{
+                is Screen.HomeScreen -> {
+                    // Display the HomeScreen with the productViewModel
                     HomeScreen(productViewModel)
                 }
-                is Screen.ProductScanView ->{
+                is Screen.ProductScanView -> {
                     ProductScanView(
                         productViewModel,
                         barcodesFlow = viewModel.barcodesFlow,
@@ -58,17 +61,17 @@ fun MyClosetApp(cameraController: LifecycleCameraController){
                 is Screen.MainScreen -> {
                     MainScreen()
                 }
-
-
-                is Screen.SingleItemScreen ->{
+                is Screen.SingleItemScreen -> {
+                    // Display the SingleItemScreen with the productViewModel
                     SingleItemScreen(productViewModel)
                 }
-                is Screen.UpdateSingleScreen->{
+                is Screen.UpdateSingleScreen -> {
+                    // Display the UpdateSingleItem screen with the productViewModel
                     UpdateSingleItem(productViewModel)
                 }
             }
-            
         }
     }
 }
+
 

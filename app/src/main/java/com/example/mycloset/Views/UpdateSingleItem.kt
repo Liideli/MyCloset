@@ -47,6 +47,7 @@ import com.example.mycloset.ui.theme.fontFamily
 import com.example.mycloset.ui.theme.md_theme_light_outline
 
 //view used for show all the item fileds and allow to modifie their in real-time
+//view used for show all the item fileds and allow to modifie their in real-time
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateSingleItem(
@@ -57,10 +58,10 @@ fun UpdateSingleItem(
     productViewModel.getProductWithBarcode(productViewModel.selectedProduct)
     val products = productViewModel.products
     val context = LocalContext.current
-    
+
     //used for keeping trak of the edits
     var text by remember { mutableStateOf("") }
-    
+
     Surface(modifier = Modifier.background(md_theme_light_outline)) {
         Scaffold(
             topBar = {
@@ -103,9 +104,9 @@ fun UpdateSingleItem(
                     }
                 )
             }
-        ) { 
+        ) {
             //start to show the elements
-            innerPadding ->
+                innerPadding ->
             // Content to be displayed below the top bar
             Column(
                 modifier = Modifier
@@ -140,12 +141,12 @@ fun UpdateSingleItem(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
-                
+
                 Box(
                     modifier = Modifier
                         .weight(1f)
                 ) {
-                    //only the modificable field are scrollable 
+                    //only the modificable field are scrollable
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp)
@@ -159,11 +160,11 @@ fun UpdateSingleItem(
                         if (product.model != "") {
                             item {
                                 //this function keep track about all the modification on this field, when you confirm the update the last change applied in this space is use for fill the item field                             EditableTextField(
-                                    initialValue = product.model,
-                                    onValueChange = { newValue: String ->
-                                        product.model = newValue
-                                    },
-                                    "Model"
+                                initialValue = product.model,
+                                onValueChange = { newValue: String ->
+                                    product.model = newValue
+                                },
+                                "Model"
                                 )
                             }
                         }

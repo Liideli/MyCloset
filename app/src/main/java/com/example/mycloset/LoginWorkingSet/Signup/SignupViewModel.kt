@@ -9,56 +9,73 @@ import com.example.mycloset.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 
-class SignupViewModel: ViewModel() {
-
+// Define a ViewModel class for managing signup-related functionality.
+class SignupViewModel : ViewModel() {
     private val TAG = SignupViewModel::class.simpleName
 
- var registrationUIState = mutableStateOf(RegistrationUIState())
- var allValidationPassed = mutableStateOf(false)
+    // Define mutable state variables to hold the current UI state.
+    var registrationUIState = mutableStateOf(RegistrationUIState())
+    var allValidationPassed = mutableStateOf(false)
     var signUpInProgress = mutableStateOf(false)
-    fun onEvent(event: SignupUIEvent){
+
+    // Function to handle UI events triggered by the user.
+    fun onEvent(event: SignupUIEvent) {
+        // Validate the registration data based on predefined rules.
         validateDataWithRules()
-        when(event){
+        when (event) {
             is SignupUIEvent.FirstNameChanged -> {
+                // Update the first name field in the UI state.
                 registrationUIState.value = registrationUIState.value.copy(
                     firstName = event.firstName
                 )
+                // Log the current state for debugging.
                 printState()
             }
             is SignupUIEvent.LastNameChanged -> {
+                // Update the last name field in the UI state.
                 registrationUIState.value = registrationUIState.value.copy(
                     lastName = event.lastname
                 )
+                // Log the current state for debugging.
                 printState()
             }
             is SignupUIEvent.EmailChanged -> {
+                // Update the email field in the UI state.
                 registrationUIState.value = registrationUIState.value.copy(
                     email = event.email
                 )
+                // Log the current state for debugging.
                 printState()
             }
             is SignupUIEvent.PasswordChanged -> {
+                // Update the password field in the UI state.
                 registrationUIState.value = registrationUIState.value.copy(
                     password = event.password
                 )
+                // Log the current state for debugging.
                 printState()
             }
             is SignupUIEvent.RegisterButtonClicked -> {
+                // Initiate the signup process.
                 signUp()
             }
         }
     }
 
-    private fun printState(){
+    // Function to log the current UI state for debugging.
+    private fun printState() {
         Log.d(TAG, "Inside_printState")
         Log.d(TAG, registrationUIState.value.toString())
     }
 
+    // Function to initiate the signup process.
     private fun signUp() {
-        createUserInFirebase(email = registrationUIState.value.email, password = registrationUIState.value.password )
+        // Create a user in Firebase with the provided email and password.
+        createUserInFirebase(email = registrationUIState.value.email, password = registrationUIState.value.password)
         Log.d(TAG, "Inside_signUp")
     }
 
+    // Function to validate the registration data with predefined rules.
     private fun validateDataWithRules() {
         val fnameResult = Validator.validateFirstName(
             fName = registrationUIState.value.firstName
@@ -72,42 +89,49 @@ class SignupViewModel: ViewModel() {
         val password = Validator.validatePassword(
             password = registrationUIState.value.password
         )
+        // Update the UI state with validation results.
         registrationUIState.value = registrationUIState.value.copy(
             firstNameError = fnameResult.status,
             lastNameError = lnameResult.status,
             emailError = email.status,
             passwordError = password.status
         )
+        // Update the variable to track if all validation rules passed.
         allValidationPassed.value = fnameResult.status && lnameResult.status && email.status && password.status
     }
-    private fun createUserInFirebase(email: String, password: String){
+
+    // Function to create a user in Firebase with email and password.
+    private fun createUserInFirebase(email: String, password: String) {
         signUpInProgress.value = true
         FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(){
+            .createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener() {
                 signUpInProgress.value = false
-                if (it.isSuccessful){
+                if (it.isSuccessful) {
+                    // Navigate to the home screen upon successful signup.
                     LoginAppRouter.navigateTo(Screen.HomeScreen)
                 }
                 Log.d(TAG, "Inside_OnCompleteListener")
                 Log.d(TAG, "isSuccessful = ${it.isSuccessful}")
-
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 Log.d(TAG, "Inside_OnFailureListener")
                 Log.d(TAG, "Exception = ${it.message}")
                 Log.d(TAG, "Exception = ${it.localizedMessage}")
             }
     }
-    fun logout(){
+
+    // Function to log out the current user.
+    fun logout() {
         val firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signOut()
 
-        val  authStateListener = AuthStateListener{
-            if (it.currentUser == null){
+        val authStateListener = AuthStateListener {
+            if (it.currentUser == null) {
+                // Navigate to the login screen upon successful sign out.
                 LoginAppRouter.navigateTo(Screen.LoginScreen)
                 Log.d(TAG, "Inside sign outSuccess")
-            } else{
+            } else {
                 Log.d(TAG, "Inside sign out is not complete")
             }
         }
