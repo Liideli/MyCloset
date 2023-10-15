@@ -1,7 +1,5 @@
 package com.example.mycloset.Views
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
@@ -21,28 +18,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mycloset.LoginWorkingSet.Signup.SignupUIEvent
+import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
 import com.example.mycloset.R
 import com.example.mycloset.components.ButtonComponent
 import com.example.mycloset.components.ClickableTextComponent
 import com.example.mycloset.components.DividerTextComponent
-import com.example.mycloset.components.HeadingTextComponent
 import com.example.mycloset.components.NormalTextComponent
 import com.example.mycloset.components.PasswordTextField
 import com.example.mycloset.components.TextField
-import com.example.mycloset.LoginWorkingSet.Signup.SignupViewModel
-import com.example.mycloset.LoginWorkingSet.Signup.SignupUIEvent
 import com.example.mycloset.navigation.LoginAppRouter
 import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
 
-
+/* View used for registration. */
 @Composable
 fun SignUpScreen(signupViewModel: SignupViewModel = viewModel()) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

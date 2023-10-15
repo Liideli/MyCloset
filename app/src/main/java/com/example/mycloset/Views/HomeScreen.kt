@@ -1,7 +1,6 @@
 
 package com.example.mycloset.Views
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycloset.DatabaseWorkingset.ProductViewModel
@@ -34,9 +32,13 @@ import com.example.mycloset.navigation.Screen
 import com.example.mycloset.ui.theme.fontFamily
 import kotlinx.coroutines.flow.*
 
+/* View used for showing all the information about products that the user has.
+Two different screens: one is used when user had added dome items and another one, when user doesn't have any items.
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
 fun HomeScreen(productViewModel: ProductViewModel) {
     val signupViewModel: SignupViewModel = viewModel()
     productViewModel.getProductsWithEmail(LoggedUser.loggedUserEmail)
